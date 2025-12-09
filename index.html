@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>hustrl — WhatsApp‑first tech for the next billion</title>
+  <meta name="description" content="hustrl builds WhatsApp‑native workflows for jobs, payments, and trust in low‑connectivity regions." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="nav-wrap">
+    <nav class="nav container">
+      <a href="#" class="brand">
+        <span class="logo-dot" aria-hidden="true"></span>
+        <span class="brand-text">hustrl</span>
+      </a>
+      <button class="nav-toggle" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="#product">Product</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact" class="btn sm primary">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="bg-glow"></div>
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <p class="kicker">WhatsApp‑first • Low‑data • Human‑simple</p>
+        <h1>Say it or text it. Your job is booked.</h1>
+        <p class="sub">hustrl ships lightweight chat‑native workflows that turn offline chaos into bookable jobs, trackable payments, and real reviews — no app installs.</p>
+        <div class="cta-row">
+          <a class="btn primary" href="#try">Try live demo</a>
+          <a class="btn ghost" href="#product">See how it works</a>
+        </div>
+        <div class="badge-row">
+          <span>🔊 Voice & text (NLP)</span>
+          <span>🔐 Escrow + receipts</span>
+          <span>🌍 English • Shona • Ndebele</span>
+          <span>🛰️ Low‑bandwidth</span>
+        </div>
+      </div>
+      <!-- Hero carousel (replaces phone SVG) -->
+      <div class="hero-carousel reveal">
+        <div class="hc-viewport">
+          <div class="hc-strip"></div>
+          <button class="hc-btn prev" aria-label="Previous">‹</button>
+          <button class="hc-btn next" aria-label="Next">›</button>
+          <div class="hc-dots" aria-label="Carousel pagination"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="product" class="section">
+    <div class="container">
+      <p class="kicker">Product</p>
+      <h2>Everything runs inside WhatsApp</h2>
+      <div class="cards">
+        <div class="card reveal">
+          <h3>🎙️ Natural language</h3>
+          <p>English, Shona, Ndebele — voice or text. Intent ➝ booking in seconds.</p>
+        </div>
+        <div class="card reveal">
+          <h3>🤝 Matching</h3>
+          <p>AI pairs jobs with verified providers nearby, ranked by quality & reliability.</p>
+        </div>
+        <div class="card reveal">
+          <h3>💳 Payments</h3>
+          <p>Escrow + automated receipts. USSD fallback where data is costly.</p>
+        </div>
+        <div class="card reveal">
+          <h3>📲 Reminders</h3>
+          <p>Smart follow‑ups reduce no‑shows and keep jobs on track.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing" class="section">
+    <div class="container">
+      <p class="kicker">Pricing</p>
+      <div class="pricing-head">
+        <h2>Simple & aligned with value</h2>
+        <div class="toggle">
+          <span>Monthly</span>
+          <label class="switch">
+            <input type="checkbox" id="billingToggle" />
+            <span class="slider"></span>
+          </label>
+          <span>Annual <b class="save">save 15%</b></span>
+        </div>
+      </div>
+      <div class="price-cards">
+        <div class="p-card reveal">
+          <h3>Starter</h3>
+          <div class="p">$<span data-month="0" data-annual="0">0</span><small>/mo</small></div>
+          <ul>
+            <li>NGO/municipal pilots</li>
+            <li>Up to 100 jobs / month</li>
+            <li>Email support</li>
+          </ul>
+          <a href="#try" class="btn primary">Start pilot</a>
+        </div>
+        <div class="p-card reveal featured">
+          <div class="flag">Most popular</div>
+          <h3>Pro</h3>
+          <div class="p">$<span data-month="0.02" data-annual="0.017">0.02</span><small>/txn</small></div>
+          <ul>
+            <li>2% per transaction</li>
+            <li>Escrow & receipts</li>
+            <li>Priority support</li>
+          </ul>
+          <a href="#try" class="btn primary">Get Pro</a>
+        </div>
+        <div class="p-card reveal">
+          <h3>Enterprise</h3>
+          <div class="p">Custom</div>
+          <ul>
+            <li>Integrations & SLAs</li>
+            <li>Dashboards</li>
+            <li>Dedicated support</li>
+          </ul>
+          <a href="#contact" class="btn ghost">Talk to sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="try" class="section alt">
+    <div class="container try-grid">
+      <div class="try-copy reveal">
+        <p class="kicker">Try it</p>
+        <h2>Get a live demo in WhatsApp</h2>
+        <p>We’ll send a booking flow via voice or text — the same experience users get. No installs.</p>
+        <div class="cta-row">
+          <a class="btn primary" href="https://wa.me/263712345678" target="_blank">Chat now</a>
+          <button class="btn ghost" id="copyLink">Copy demo link</button>
+        </div>
+        <p id="copyNote" class="copy-note" hidden>Link copied ✔</p>
+      </div>
+      <div class="try-art reveal">
+        <svg viewBox="0 0 420 260" aria-hidden="true">
+          <defs><linearGradient id="g2" x1="0" x2="1"><stop offset="0" stop-color="#22e584"/><stop offset="1" stop-color="#30c7f7"/></linearGradient></defs>
+          <rect x="1" y="1" width="418" height="258" rx="16" fill="#0f141d" stroke="#233041"/>
+          <rect x="20" y="26" width="120" height="18" rx="9" fill="#141a25"/>
+          <rect x="20" y="56" width="200" height="18" rx="9" fill="#141a25"/>
+          <rect x="20" y="86" width="260" height="18" rx="9" fill="#141a25"/>
+          <rect x="20" y="116" width="180" height="18" rx="9" fill="#141a25"/>
+          <rect x="20" y="146" width="140" height="18" rx="9" fill="#141a25"/>
+          <rect x="20" y="176" width="220" height="18" rx="9" fill="#141a25"/>
+          <circle cx="360" cy="200" r="14" fill="url(#g2)"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="section">
+    <div class="container">
+      <p class="kicker">FAQ</p>
+      <h2>Answers you’ll likely want</h2>
+      <div class="accordion">
+        <details class="reveal">
+          <summary>Does it work without installing an app?</summary>
+          <div>Yes. Everything runs inside WhatsApp. We optimize for tiny payloads and low‑bandwidth flows.</div>
+        </details>
+        <details class="reveal">
+          <summary>Which languages are supported?</summary>
+          <div>English, Shona, and Ndebele in voice or text. More on the roadmap.</div>
+        </details>
+        <details class="reveal">
+          <summary>How do payments work?</summary>
+          <div>Jobs are secured via escrow. On completion, funds are released and receipts are issued automatically.</div>
+        </details>
+        <details class="reveal">
+          <summary>Can you integrate with our tools?</summary>
+          <div>Yes. Enterprise plans include custom integrations and SLAs.</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="section alt">
+    <div class="container">
+      <p class="kicker">Contact</p>
+      <h2>Work with us</h2>
+      <form name="contact" method="POST" data-netlify="true" class="contact-form reveal">
+        <input type="hidden" name="form-name" value="contact" />
+        <div class="form-row">
+          <input class="input" type="text" name="name" placeholder="Your name" required />
+          <input class="input" type="email" name="email" placeholder="Email" required />
+        </div>
+        <textarea class="input" name="message" rows="5" placeholder="How can we help?" required></textarea>
+        <button class="btn primary" type="submit">Send</button>
+      </form>
+    </div>
+  </section>
+
+  <a class="floating-wa" href="https://wa.me/263712345678" target="_blank" aria-label="Chat on WhatsApp">💬</a>
+
+  <footer class="footer">
+    <div class="container foot">
+      <div class="brand">
+        <span class="logo-dot"></span><span class="brand-text">hustrl</span>
+      </div>
+      <div class="foot-links">
+        <a href="#product">Product</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="copy">© 2025 hustrl • Built for the next billion workers.</div>
+    </div>
+  </footer>
+
+  <script src="js/app.js" defer></script>
+</body>
+</html>
