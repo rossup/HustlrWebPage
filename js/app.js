@@ -63,7 +63,7 @@ function preload(src) {
     img.onload = () => resolve(img);
     img.onerror = () => resolve(null);
     img.decoding = 'async';
-    img.alt = 'Hustrl slide';
+    img.alt = 'Hustlr slide';
     img.src = src;
   });
 }
