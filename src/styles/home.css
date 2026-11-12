@@ -13,7 +13,9 @@
   --on-dark: #e8f0eb;
   --on-dark-muted: rgba(232, 240, 235, 0.62);
   --bubble-out: #ceeddc;
-  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /* Brand type: Sora for the wordmark and headings, Manrope for UI, chat cards and body copy */
+  --font: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --display: 'Sora', 'Manrope', system-ui, sans-serif;
   --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
 }
 
@@ -36,6 +38,19 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+/* Sora: display headings, section headings, card titles */
+.hero h1,
+.section h2,
+.faq h2,
+.how-steps h3,
+.side h3,
+.hello h2,
+.badge-1chat strong,
+.strip-intro-title,
+.strip-steps strong {
+  font-family: var(--display);
 }
 
 a {
@@ -400,8 +415,8 @@ ol {
    and Dynamic Island. */
 .phone3d {
   position: absolute;
-  width: 216px;
-  height: 461px;
+  width: 214px;
+  height: 459px;
   perspective: 1200px;
   animation: phone-float 7s ease-in-out infinite;
 }
@@ -420,8 +435,8 @@ ol {
 /* Ground & inter-phone 3D occlusion shadow */
 .phone3d-shadow {
   position: absolute;
-  inset: 18px -14px -28px 20px;
-  border-radius: 42px;
+  inset: 18px -12px -24px 18px;
+  border-radius: 38px;
   background: radial-gradient(ellipse at center, rgba(2, 8, 12, 0.8) 0%, rgba(2, 8, 12, 0.38) 52%, transparent 76%);
   filter: blur(20px);
   transform: rotateZ(16deg) skewX(-12deg);
@@ -451,11 +466,11 @@ ol {
     scale(0.94);
 }
 
-/* 20 stacked 3D slabs in Glacier Blue Grade-5 Brushed Titanium (sleek 8.25mm Pro Max profile) */
+/* 20 stacked 3D slabs in Glacier Blue Grade-5 Brushed Titanium (ultra-sleek 8.25mm Pro Max profile) */
 .phone3d-layer {
   position: absolute;
   inset: 0;
-  border-radius: 36px;
+  border-radius: 34px;
   background: linear-gradient(
     154deg,
     #d0e4f4 0%,
@@ -467,9 +482,9 @@ ol {
     #a8c6df 100%
   );
   transform: translate3d(
-    calc(var(--i) * 0.38px),
-    calc(var(--i) * 0.25px),
-    calc(var(--i) * -0.55px - 0.5px)
+    calc(var(--i) * 0.16px),
+    calc(var(--i) * 0.11px),
+    calc(var(--i) * -0.32px - 0.3px)
   );
 }
 
@@ -489,7 +504,7 @@ ol {
 .phone3d-layer[style="--i:19"] {
   background: #1a2a3a;
   box-shadow:
-    0 0 0 1px rgba(176, 205, 228, 0.48),
+    0 0 0 0.8px rgba(176, 205, 228, 0.48),
     12px 20px 32px rgba(0, 0, 0, 0.72),
     26px 44px 68px rgba(2, 8, 14, 0.82),
     3px 6px 20px rgba(138, 184, 222, 0.18);
@@ -498,12 +513,12 @@ ol {
 /* Matte Glacier-Grey polymer antenna split bands across the titanium sidewall */
 .phone3d-antenna {
   position: absolute;
-  right: -6px;
-  width: 6.5px;
-  height: 2.5px;
+  right: -3px;
+  width: 4px;
+  height: 2px;
   border-radius: 1px;
   background: linear-gradient(90deg, rgba(214, 230, 242, 0.75), rgba(71, 95, 115, 0.85));
-  transform: translate3d(2px, 1.5px, -5px);
+  transform: translate3d(1px, 0.8px, -3px);
   opacity: 0.85;
 }
 .phone3d-antenna--top { top: 48px; }
@@ -512,87 +527,87 @@ ol {
 /* Tactile iPhone 18 Pro Max right-rail buttons (Side Power + Sapphire Camera Control) */
 .phone3d-btn {
   position: absolute;
-  right: -6px;
-  width: 4px;
-  border-radius: 1.5px 3px 3px 1.5px;
+  right: -3.5px;
+  width: 2.5px;
+  border-radius: 1px 2.5px 2.5px 1px;
   background: linear-gradient(180deg, #eff7ff 0%, #8eb0cc 36%, #293e52 76%, #b2cfe6 100%);
   box-shadow:
-    inset -0.8px 0.8px 0 rgba(255, 255, 255, 0.82),
-    1.5px 2px 4px rgba(0, 0, 0, 0.52);
-  transform: translate3d(3.5px, 2.2px, -5.5px);
+    inset -0.6px 0.6px 0 rgba(255, 255, 255, 0.82),
+    1px 1.5px 3px rgba(0, 0, 0, 0.52);
+  transform: translate3d(2px, 1.2px, -3px);
 }
 .phone3d-btn--power {
   top: 122px;
-  height: 48px;
+  height: 46px;
 }
 /* Flush Sapphire Crystal Camera Control button on lower-right rail */
 .phone3d-btn--cam-control {
   top: 268px;
-  width: 3px;
-  height: 36px;
-  border-radius: 1.5px 2.5px 2.5px 1.5px;
+  right: -3px;
+  width: 2px;
+  height: 34px;
+  border-radius: 1px 2px 2px 1px;
   background: linear-gradient(180deg, #1b2c3d 0%, #0d1824 50%, #273e54 100%);
   box-shadow:
-    0 0 0 0.8px rgba(190, 218, 240, 0.78),
+    0 0 0 0.7px rgba(190, 218, 240, 0.78),
     inset -0.5px 0 1px rgba(147, 197, 253, 0.55);
-  transform: translate3d(3px, 2px, -5.5px);
+  transform: translate3d(1.6px, 1px, -3px);
 }
 
 /* Bottom 3D Titanium rail: speaker dots + pentalobe screws + USB-C port */
 .phone3d-ports {
   position: absolute;
   left: 50%;
-  bottom: -5px;
+  bottom: -3px;
   display: flex;
   align-items: center;
-  gap: 3px;
-  transform: translate3d(-45%, 1.5px, -6px);
+  gap: 2.5px;
+  transform: translate3d(-46%, 1px, -3.2px);
 }
 .phone3d-ports i {
-  width: 2.5px;
-  height: 2.5px;
+  width: 2px;
+  height: 2px;
   border-radius: 50%;
   background: #0c151e;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.95), 0 0.6px 0 rgba(200, 224, 242, 0.42);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.95), 0 0.5px 0 rgba(200, 224, 242, 0.42);
 }
 .phone3d-screw {
-  width: 2.2px;
-  height: 2.2px;
+  width: 1.8px;
+  height: 1.8px;
   border-radius: 50%;
   background: radial-gradient(circle, #8aa6be 0%, #2d4256 80%);
   text-decoration: none;
 }
 .phone3d-usb {
-  width: 16px;
-  height: 3.8px;
+  width: 14px;
+  height: 2.8px;
   margin: 0 1.5px;
   border-radius: 99px;
   background: #070e14;
   box-shadow:
-    inset 0 1px 1.5px rgba(0, 0, 0, 0.95),
-    0 0 0 1px rgba(198, 222, 240, 0.62);
+    inset 0 1px 1px rgba(0, 0, 0, 0.95),
+    0 0 0 0.8px rgba(198, 222, 240, 0.62);
 }
 
-/* Front face: razor-thin 3px iPhone 18 Pro Max OLED border + Glacier Titanium outer lip */
+/* Front face: razor-thin 2px iPhone 18 Pro Max OLED border + Glacier Titanium outer lip */
 .phone {
   position: absolute;
   inset: 0;
-  padding: 3px;
-  border-radius: 36px;
+  padding: 2px;
+  border-radius: 34px;
   background: #030508;
   box-shadow:
-    inset 0 0 0 1px rgba(216, 236, 252, 0.82),
-    inset 1px 1px 0 rgba(255, 255, 255, 0.45),
-    inset 0 0 0 1.8px #182634,
-    0 2px 5px rgba(0, 0, 0, 0.45);
-  transform: translateZ(1px);
+    inset 0 0 0 0.8px rgba(216, 236, 252, 0.85),
+    inset 0.8px 0.8px 0 rgba(255, 255, 255, 0.45),
+    0 1px 4px rgba(0, 0, 0, 0.45);
+  transform: translateZ(0.6px);
 }
 .phone::after {
   /* Ceramic Shield studio softbox glass reflection */
   content: '';
   position: absolute;
-  inset: 3px;
-  border-radius: 33px;
+  inset: 2px;
+  border-radius: 32px;
   background:
     linear-gradient(
       116deg,
@@ -610,11 +625,11 @@ ol {
 /* Micro-machined top earpiece speaker slit on the upper bezel hairline */
 .phone-earpiece {
   position: absolute;
-  top: 2px;
+  top: 1.5px;
   left: 50%;
   transform: translateX(-50%);
-  width: 28px;
-  height: 1.5px;
+  width: 26px;
+  height: 1.2px;
   border-radius: 99px;
   background: #0b1118;
   box-shadow: 0 0.5px 0 rgba(216, 236, 252, 0.32);
@@ -624,12 +639,12 @@ ol {
 /* Iconic pill-shaped iPhone Pro Max Dynamic Island */
 .phone-island {
   position: absolute;
-  top: 8px;
+  top: 7px;
   left: 50%;
   transform: translateX(-50%);
-  width: 52px;
-  height: 14px;
-  padding: 0 4px;
+  width: 48px;
+  height: 13px;
+  padding: 0 3.5px;
   border-radius: 999px;
   background: #000000;
   box-shadow:
@@ -641,14 +656,14 @@ ol {
   z-index: 6;
 }
 .phone-island-ir {
-  width: 5.5px;
-  height: 5.5px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: radial-gradient(circle, #182235 0%, #05070c 78%);
 }
 .phone-island-lens {
-  width: 7px;
-  height: 7px;
+  width: 6.5px;
+  height: 6.5px;
   border-radius: 50%;
   background: radial-gradient(circle at 34% 34%, #60a5fa 0%, #1d4ed8 38%, #060b19 82%);
   box-shadow:
@@ -664,10 +679,10 @@ ol {
 .phone-screen {
   position: relative;
   height: 100%;
-  border-radius: 33px;
+  border-radius: 32px;
   overflow: hidden;
   background: #0b1014;
-  box-shadow: inset 0 0 0 0.8px rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 0 0 0.6px rgba(255, 255, 255, 0.06);
 }
 
 /* ---- WhatsApp screen ----
@@ -690,7 +705,7 @@ ol {
   transform-origin: 0 0;
   background: var(--wa-bg);
   color: var(--wa-text);
-  font-family: 'Roboto', system-ui, sans-serif;
+  font-family: var(--font); /* Manrope for the WhatsApp conversation cards */
   font-size: 17.4px;
   line-height: 21px;
   letter-spacing: 0;
