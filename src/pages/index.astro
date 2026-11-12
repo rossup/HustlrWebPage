@@ -1,0 +1,1446 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout>
+  <!-- ========================================================================
+       HERO ATMOSPHERE WRAPPER (Sticky Header + Hero + Overlapping Bento Strip)
+       ======================================================================== -->
+  <div class="hero-atmosphere">
+    <div class="hero-glow-orb" aria-hidden="true"></div>
+
+    <!-- 1. STICKY NAVIGATION BAR (Tri-Pod Optical-Rail Command Header) -->
+    <header class="site-header" id="siteHeader">
+      <div class="container">
+        <div class="nav-bar">
+          <!-- Pod 1: Brand & Live Node Status -->
+          <a href="#" class="brand-logo" aria-label="hustlr.chat home">
+            <img src="/assets/logo-reverse.svg" alt="hustlr" class="brand-logo-img" />
+            <span class="brand-pod-divider" aria-hidden="true"></span>
+            <span class="brand-live-pill">
+              <span class="brand-live-dot" aria-hidden="true"></span>
+              <span>LIVE</span>
+            </span>
+          </a>
+
+          <!-- Pod 2: Laser-Indexed Center Navigation Dock -->
+          <nav class="nav-pill-center" id="navMenu" aria-label="Primary Navigation">
+            <a href="#product" class="active">Product</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#use-cases">Use Cases</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#faq">FAQ</a>
+            <a href="#contact">Contact</a>
+          </nav>
+
+          <!-- Pod 3: Concentric Dual-Action CTA Capsule -->
+          <div class="nav-actions">
+            <a href="#how-it-works" class="nav-btn-secondary">
+              <span class="nav-play-badge" aria-hidden="true">&#9654;</span>
+              <span>See how it works</span>
+            </a>
+            <a href="#try" class="btn-white-pill">
+              <span>Try live demo</span>
+              <span class="arrow-circle" aria-hidden="true">&#10140;</span>
+            </a>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Menu">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 2. HERO SECTION -->
+    <section class="hero-section">
+      <div class="container hero-grid">
+        <!-- Left Copy Column (Clean 5-Element Reference Hierarchy) -->
+        <div class="hero-copy">
+          <div class="eyebrow-dark">
+            <span class="eyebrow-pulse" aria-hidden="true"></span>
+            <span>WhatsApp-first • Low-data • Human-simple</span>
+          </div>
+
+          <h1>
+            Say it or text it.<br />
+            Your job is <span class="hero-title-accent">booked.</span>
+          </h1>
+
+          <p class="hero-subheadline">
+            hustlr.chat ships lightweight chat-native workflows that turn offline chaos into bookable jobs, trackable payments, and real reviews — no app installs.
+          </p>
+
+          <div class="hero-cta-row">
+            <a href="#try" class="btn-lime">
+              <span>Try live demo</span>
+              <span class="arrow-circle" aria-hidden="true">&#10140;</span>
+            </a>
+
+            <a href="#how-it-works" class="btn-play-only" aria-label="See how it works">
+              <span class="play-disc" aria-hidden="true">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="8 5 19 12 8 19 8 5"></polygon>
+                </svg>
+              </span>
+            </a>
+          </div>
+
+          <!-- Reference Image Signature Rating & Avatar Stack -->
+          <div class="hero-trust-row">
+            <div class="trust-rating-block">
+              <div class="stars-line">
+                <span class="stars-gold">★★★★★</span>
+                <span class="stars-ratio">(4.9/5)</span>
+              </div>
+              <div class="score-row">
+                <span class="score-big">4.9</span>
+                <span class="score-caption">Positive Reviews From<br />Our Customers</span>
+              </div>
+            </div>
+
+            <div class="trust-divider" aria-hidden="true"></div>
+
+            <div class="trust-avatars-block">
+              <span class="avatars-label">Join Our Network Now:</span>
+              <div class="avatar-stack">
+                <img src="/assets/ref-avatar-1.jpg" alt="Verified artisan" />
+                <img src="/assets/ref-avatar-2.jpg" alt="Verified household client" />
+                <img src="/assets/ref-avatar-3.jpg" alt="Verified provider" />
+                <a href="#try" class="avatar-plus" aria-label="Join on WhatsApp">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Visual Column: Interactive Scroll-Driven Dual Isometric Smartphones -->
+        <div class="hero-visual-stage" id="heroVisualStage" aria-label="Interactive hustlr.chat WhatsApp Booking and Provider Onboarding preview">
+          <div class="phones-ambient-shadow" aria-hidden="true"></div>
+
+          <!-- Interactive Top-Left Story Switcher & Scroll Progress Callout -->
+          <div class="hero-floating-callout hero-story-controller" id="heroStoryController">
+            <div class="hsc-tabs">
+              <button type="button" class="hsc-tab active" data-story-tab="0">
+                <span class="hsc-tab-head">
+                  <span class="hsc-dot"></span>
+                  <span>01 • Customer Booking</span>
+                </span>
+                <span class="hsc-progress"><i id="storyProg0"></i></span>
+              </button>
+              <button type="button" class="hsc-tab" data-story-tab="1">
+                <span class="hsc-tab-head">
+                  <span class="hsc-dot"></span>
+                  <span>02 • Provider Onboarding</span>
+                </span>
+                <span class="hsc-progress"><i id="storyProg1"></i></span>
+              </button>
+            </div>
+            <div class="hsc-hint">&#8597; Scroll on phone or click to switch flow</div>
+          </div>
+
+          <!-- PHONE 1: Customer Booking Process (Exact Rufaro / Bright Cleaning Services WhatsApp Dark UI) -->
+          <div class="iso-phone phone-front is-slot-front" id="heroPhoneBooking" data-phone-index="0">
+            <div class="phone-screen wa-dark-screen">
+              <!-- Android Top Status Bar (15:46 ... 5G 52) -->
+              <div class="wad-statusbar" aria-hidden="true">
+                <div class="wad-sb-left">
+                  <span>15:46</span>
+                  <span class="wad-sb-icons">&#9673;&#9679;&#9675;</span>
+                </div>
+                <div class="wad-sb-right">
+                  <span>5G</span>
+                  <span class="wad-bars">&#9602;&#9604;&#9606;&#9608;</span>
+                  <span class="wad-bat">52</span>
+                </div>
+              </div>
+
+              <!-- WhatsApp Dark Mode App Header (← [Green Avatar] Rufaro [Video] [Call] [⋮]) -->
+              <div class="wad-appbar">
+                <span class="wad-back" aria-hidden="true">&larr;</span>
+                <span class="wad-avatar wad-avatar-green" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor">
+                    <circle cx="12" cy="8" r="4"></circle>
+                    <path d="M4 20c0-4 4-6.5 8-6.5s8 2.5 8 6.5"></path>
+                  </svg>
+                </span>
+                <span class="wad-contact-name">Rufaro</span>
+                <div class="wad-appbar-actions" aria-hidden="true">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="14" height="12" rx="2"></rect><polygon points="22 8 16 12 22 16 22 8"></polygon></svg>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                  <span>&#8942;</span>
+                </div>
+              </div>
+
+              <!-- Scrollable WhatsApp Dark Mode Chat Viewport -->
+              <div class="wad-chat-viewport">
+                <div class="hp-scroll-rail" aria-hidden="true">
+                  <div class="hp-scroll-thumb" id="phoneThumb0"></div>
+                </div>
+
+                <div class="hp-wa-track" id="phoneTrack0">
+                  <!-- Msg 1: Customer Selects Provider #1 -->
+                  <div class="wad-msg wad-msg-in wad-msg-compact">
+                    <span class="wad-text">1</span>
+                    <span class="wad-meta-inline">18:04</span>
+                  </div>
+
+                  <!-- Msg 2: Bot Displays Bright Cleaning Services Profile & Prompt -->
+                  <div class="wad-msg wad-msg-out wad-bot-card">
+                    <div class="wad-quote-box wad-quote-out wad-quote-lavender">
+                      <div class="wad-quote-author">Rufaro</div>
+                      <div class="wad-quote-text">1</div>
+                    </div>
+
+                    <div class="wad-card-section">
+                      <strong>Bright Cleaning Services</strong>
+                      <div>Verified</div>
+                    </div>
+
+                    <div class="wad-card-section">
+                      <div><b>Category:</b> Cleaning Services</div>
+                      <div><b>Areas:</b> Harare, Zimbabwe</div>
+                    </div>
+
+                    <div class="wad-card-section wad-italic">
+                      Comprehensive cleaning services for buildings, offices, homes, schools, hospitals and more, including carpet and after-renovation cleaning.
+                    </div>
+
+                    <div class="wad-divider"></div>
+
+                    <div class="wad-card-section">
+                      <strong>What would you like to do?</strong>
+                      <div>&bull; Describe your job to book this provider</div>
+                      <div>&bull; Reply <b>BACK</b> to see other providers</div>
+                    </div>
+                    <span class="wad-meta">18:04 <i class="wad-ticks-grey">&#10003;&#10003;</i></span>
+                  </div>
+
+                  <!-- Msg 3: Customer Describes the Job -->
+                  <div class="wad-msg wad-msg-in wad-msg-compact">
+                    <span class="wad-text">Home cleaning services</span>
+                    <span class="wad-meta-inline">18:04</span>
+                  </div>
+
+                  <!-- Msg 4: Bot Booking Confirmation Prompt -->
+                  <div class="wad-msg wad-msg-out wad-bot-card">
+                    <div class="wad-quote-box wad-quote-out wad-quote-lavender">
+                      <div class="wad-quote-author">Rufaro</div>
+                      <div class="wad-quote-text">Home cleaning services</div>
+                    </div>
+
+                    <div class="wad-card-section">
+                      <strong>Please confirm your booking:</strong>
+                    </div>
+
+                    <div class="wad-card-section">
+                      <div><b>Provider:</b> Bright Cleaning Services</div>
+                      <div><b>Service:</b> Cleaning</div>
+                      <div><b>Location:</b> Harare</div>
+                      <div><b>Job Details:</b> Home cleaning services</div>
+                    </div>
+
+                    <div class="wad-card-section">
+                      <strong>Reply:</strong>
+                      <div>&bull; <b>CONFIRM</b> or <b>YES</b> to book</div>
+                      <div>&bull; <b>CANCEL</b> or <b>NO</b> to cancel</div>
+                      <div>&bull; Or type a different job description to update</div>
+                    </div>
+                    <span class="wad-meta">18:04 <i class="wad-ticks-grey">&#10003;&#10003;</i></span>
+                  </div>
+
+                  <!-- Msg 5: Customer Replies Yes -->
+                  <div class="wad-msg wad-msg-in wad-msg-compact">
+                    <span class="wad-text">Yes</span>
+                    <span class="wad-meta-inline">18:05</span>
+                  </div>
+
+                  <!-- Msg 6: Bot Dispatches Booking & Offers Favorites Save -->
+                  <div class="wad-msg wad-msg-out wad-bot-card">
+                    <div class="wad-quote-box wad-quote-out wad-quote-lavender">
+                      <div class="wad-quote-author">Rufaro</div>
+                      <div class="wad-quote-text">Yes</div>
+                    </div>
+
+                    <div class="wad-card-section">
+                      <div>Your booking request has been sent to <b>Bright Cleaning Services!</b> They're now reviewing your request and will respond shortly.</div>
+                    </div>
+
+                    <div class="wad-card-section">
+                      <div>I'll keep you updated on the status.</div>
+                      <div>Would you like to save <b>Bright Cleaning Services</b> to your favorites for easy rebooking? Reply <b>SAVE</b> to add them.</div>
+                    </div>
+                    <span class="wad-meta">18:05 <i class="wad-ticks-grey">&#10003;&#10003;</i></span>
+                  </div>
+                </div>
+
+                <div class="wad-scroll-fab" aria-hidden="true">&#65086;</div>
+              </div>
+
+              <!-- WhatsApp Dark Mode Single-Row Pill Composer + Green Mic Circle -->
+              <div class="wad-composer" aria-hidden="true">
+                <div class="wad-composer-row-single">
+                  <div class="wad-pill-input">
+                    <span class="wad-sticker-ico">&#9786;</span>
+                    <span class="wad-green-caret">|</span>
+                    <span class="wad-msg-placeholder">Message</span>
+                    <span class="wad-pill-right-icons">
+                      <span>&#128206;</span>
+                      <span>&#128247;</span>
+                    </span>
+                  </div>
+                  <span class="wad-mic-green">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2z"></path></svg>
+                  </span>
+                </div>
+                <div class="wad-android-nav">
+                  <span>|||</span>
+                  <span>&#9711;</span>
+                  <span>&lsaquo;</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PHONE 2: Provider Onboarding Step 1/7 to 3/7 (Exact Match to Screenshot 2) -->
+          <div class="iso-phone phone-back is-slot-back" id="heroPhoneOnboarding" data-phone-index="1">
+            <div class="phone-screen wa-dark-screen">
+              <!-- Android Top Status Bar -->
+              <div class="wad-statusbar" aria-hidden="true">
+                <div class="wad-sb-left">
+                  <span>15:25</span>
+                  <span class="wad-sb-icons">&#9646;&#9679;</span>
+                </div>
+                <div class="wad-sb-right">
+                  <span>5G</span>
+                  <span class="wad-bars">&#9602;&#9604;&#9606;&#9608;</span>
+                  <span class="wad-bat">50</span>
+                </div>
+              </div>
+
+              <!-- WhatsApp Dark Mode App Header -->
+              <div class="wad-appbar">
+                <span class="wad-back" aria-hidden="true">&larr;</span>
+                <span class="wad-avatar" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor">
+                    <circle cx="12" cy="8" r="4"></circle>
+                    <path d="M4 20c0-4 4-6.5 8-6.5s8 2.5 8 6.5"></path>
+                  </svg>
+                </span>
+                <span class="wad-contact-name">Hustlr</span>
+                <div class="wad-appbar-actions" aria-hidden="true">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"></rect><circle cx="9" cy="10" r="2"></circle><path d="M15 8h2M15 12h2M7 16h10"></path></svg>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                  <span>&#8942;</span>
+                </div>
+              </div>
+
+              <!-- Scrollable Provider Onboarding Conversation Viewport (1:1 Screenshot 2) -->
+              <div class="wad-chat-viewport">
+                <div class="hp-scroll-rail" aria-hidden="true">
+                  <div class="hp-scroll-thumb" id="phoneThumb1"></div>
+                </div>
+
+                <div class="hp-wa-track" id="phoneTrack1">
+                  <!-- Msg 1: Top Bot Greeting -->
+                  <div class="wad-msg wad-msg-in">
+                    <p class="wad-text">
+                      help with a booking, just let me know what you need and where you are.
+                    </p>
+                    <span class="wad-meta">10:20</span>
+                  </div>
+
+                  <!-- Msg 2: User Starts Provider Registration -->
+                  <div class="wad-msg wad-msg-out">
+                    <span class="wad-text">I want to register as a service provider</span>
+                    <span class="wad-meta">10:21 <i class="wad-ticks">&#10003;&#10003;</i></span>
+                  </div>
+
+                  <!-- Msg 3: Bot Step 1/7 Legal Name -->
+                  <div class="wad-msg wad-msg-in">
+                    <div class="wad-quote-box">
+                      <div class="wad-quote-author">You</div>
+                      <div class="wad-quote-text">I want to register as a service provider</div>
+                    </div>
+                    <p class="wad-text">
+                      Great! Let's register you as a service provider on Hustlr.<br /><br />
+                      <b>(Step 1/7)</b> What is your full legal name?
+                    </p>
+                    <span class="wad-meta">10:21</span>
+                  </div>
+
+                  <!-- Msg 4: User Replies Legal Name -->
+                  <div class="wad-msg wad-msg-out">
+                    <div class="wad-quote-box wad-quote-out">
+                      <div class="wad-quote-author">You</div>
+                      <div class="wad-quote-text">Vincent Mugondora</div>
+                    </div>
+                    <span class="wad-text">Vincent Mugondora</span>
+                    <span class="wad-meta">10:21 <i class="wad-ticks">&#10003;&#10003;</i></span>
+                  </div>
+
+                  <!-- Msg 5: Bot Step 2/7 Business Name -->
+                  <div class="wad-msg wad-msg-in">
+                    <div class="wad-quote-box">
+                      <div class="wad-quote-author">You</div>
+                      <div class="wad-quote-text">Vincent Mugondora</div>
+                    </div>
+                    <p class="wad-text">
+                      Thanks, <b>Vincent!</b><br /><br />
+                      <b>(Step 2/7)</b> What is your business name?<br />
+                      <i>(Reply <b>SKIP</b> if you operate under your personal name)</i>
+                    </p>
+                    <span class="wad-meta">10:21</span>
+                  </div>
+
+                  <!-- Msg 6: User Replies Business Name -->
+                  <div class="wad-msg wad-msg-out">
+                    <span class="wad-text">Zimnovate</span>
+                    <span class="wad-meta">10:21 <i class="wad-ticks">&#10003;&#10003;</i></span>
+                  </div>
+
+                  <!-- Msg 7: Bot Step 3/7 Service Category -->
+                  <div class="wad-msg wad-msg-in">
+                    <div class="wad-quote-box">
+                      <div class="wad-quote-author">You</div>
+                      <div class="wad-quote-text">Zimnovate</div>
+                    </div>
+                    <p class="wad-text">
+                      <b>(Step 3/7)</b> Which service category do you provide?<br />
+                      <i>(e.g. Plumbing, Electrical, Transport &amp; Truck for Hire, Software Development)</i>
+                    </p>
+                    <span class="wad-meta">10:21</span>
+                  </div>
+                </div>
+
+                <div class="wad-scroll-fab" aria-hidden="true">&#8964;</div>
+              </div>
+
+              <!-- WhatsApp Dark Mode 2-Row Composer -->
+              <div class="wad-composer" aria-hidden="true">
+                <div class="wad-composer-box">
+                  <div class="wad-comp-top">Message</div>
+                  <div class="wad-comp-bottom">
+                    <span class="wad-my-reply">My reply</span>
+                    <div class="wad-comp-icons">
+                      <span>&#9786;</span>
+                      <span>&#128206;</span>
+                      <span>&#128247;</span>
+                    </div>
+                    <span class="wad-mic-circle">
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2z"></path></svg>
+                    </span>
+                  </div>
+                </div>
+                <div class="wad-android-nav">
+                  <span>|||</span>
+                  <span>&#9711;</span>
+                  <span>&lsaquo;</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom-Right Floating Lime Stat Card -->
+          <div class="hero-floating-stat-card" id="heroStatCard">
+            <div class="hfsc-number" id="heroStatNumber">0 MB</div>
+            <div class="hfsc-label" id="heroStatLabel">App Install Required</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. CORE PRODUCT GRID ("Everything runs inside WhatsApp") -->
+    <section id="product" class="bento-product-section">
+      <div class="container">
+        <!-- Sculpted Command Header Bar -->
+        <div class="bento-command-bar">
+          <div class="bcb-left">
+            <span class="bcb-wa-badge" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+              </svg>
+            </span>
+            <div class="bcb-title-group">
+              <h2>Everything runs inside WhatsApp</h2>
+              <span class="bcb-sub-pill">Zero App Install • Voice, Text &amp; USSD</span>
+            </div>
+          </div>
+          <a href="#how-it-works" class="bento-learn-link">
+            <span>See how it works</span>
+            <span class="mini-lime-dot" aria-hidden="true">&#10140;</span>
+          </a>
+        </div>
+
+        <!-- 4 Bespoke Visual Bento Cards -->
+        <div class="bento-cards-grid">
+          <!-- Card 1: Natural language -->
+          <article class="product-bento-card is-highlighted">
+            <div class="pbc-visual-stage" aria-hidden="true">
+              <div class="pbc-stage-top">
+                <span class="pbc-lang-pills">
+                  <b class="active">EN</b>
+                  <b>Shona</b>
+                  <b>Ndebele</b>
+                </span>
+                <span class="pbc-stage-tag">NLP 0:04s</span>
+              </div>
+              <div class="pbc-voice-box">
+                <span class="pbc-mic-dot">&#9654;</span>
+                <div class="bmf-wave">
+                  <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                </div>
+                <span class="pbc-voice-time">"Fix solar..."</span>
+              </div>
+              <div class="pbc-intent-chip">
+                <span class="pbc-intent-arrow">&#10140;</span>
+                <span>Intent: <b>Solar Tech • Booked</b></span>
+              </div>
+            </div>
+
+            <div class="pbc-body">
+              <div class="pbc-title-row">
+                <div class="lime-icon-badge" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                    <line x1="12" y1="19" x2="12" y2="23"></line>
+                    <line x1="8" y1="23" x2="16" y2="23"></line>
+                  </svg>
+                </div>
+                <h3>Natural language</h3>
+              </div>
+              <p>English, Shona, Ndebele — voice or text. Intent ➝ booking in seconds.</p>
+            </div>
+          </article>
+
+          <!-- Card 2: Matching -->
+          <article class="product-bento-card">
+            <div class="pbc-visual-stage" aria-hidden="true">
+              <div class="pbc-stage-top">
+                <span class="pbc-stage-label">AI Geo-Rank</span>
+                <span class="pbc-stage-tag">99.4% Match</span>
+              </div>
+              <div class="pbc-match-stack">
+                <div class="pbc-pro-row is-top">
+                  <img src="/assets/ref-avatar-1.jpg" alt="" class="pbc-pro-avatar" />
+                  <div class="pbc-pro-info">
+                    <strong>Tendai Moyo</strong>
+                    <span>0.8 km • Verified Pro</span>
+                  </div>
+                  <span class="pbc-pro-score">&#9733; 4.9</span>
+                </div>
+                <div class="pbc-pro-row is-dim">
+                  <img src="/assets/ref-avatar-2.jpg" alt="" class="pbc-pro-avatar" />
+                  <div class="pbc-pro-info">
+                    <strong>Chipo Dube</strong>
+                    <span>1.4 km • 98% Reliable</span>
+                  </div>
+                  <span class="pbc-pro-score">&#9733; 4.8</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="pbc-body">
+              <div class="pbc-title-row">
+                <div class="lime-icon-badge" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="9"></circle>
+                    <circle cx="12" cy="12" r="4"></circle>
+                    <line x1="12" y1="2" x2="12" y2="5"></line>
+                    <line x1="12" y1="19" x2="12" y2="22"></line>
+                  </svg>
+                </div>
+                <h3>Matching</h3>
+              </div>
+              <p>AI pairs jobs with verified providers nearby, ranked by quality &amp; reliability.</p>
+            </div>
+          </article>
+
+          <!-- Card 3: Payments -->
+          <article class="product-bento-card">
+            <div class="pbc-visual-stage" aria-hidden="true">
+              <div class="pbc-stage-top">
+                <span class="pbc-stage-label">Escrow Vault</span>
+                <span class="pbc-stage-tag">#RCP-804</span>
+              </div>
+              <div class="pbc-pay-card">
+                <div class="pbc-pay-main">
+                  <div>
+                    <span class="pbc-pay-lbl">Protected Payout</span>
+                    <strong class="pbc-pay-val">$45.00 USD</strong>
+                  </div>
+                  <span class="pbc-pay-status">&#10003; Escrow</span>
+                </div>
+                <div class="pbc-ussd-bar">
+                  <span class="pbc-ussd-code">*151# USSD</span>
+                  <span>Zero-Data Fallback Active</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="pbc-body">
+              <div class="pbc-title-row">
+                <div class="lime-icon-badge" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="9"></circle>
+                    <path d="M14.8 9A2 2 0 0 0 13 8h-2a2 2 0 0 0 0 4h2a2 2 0 0 1 0 4h-2a2 2 0 0 1-1.8-1"></path>
+                    <line x1="12" y1="6" x2="12" y2="18"></line>
+                  </svg>
+                </div>
+                <h3>Payments</h3>
+              </div>
+              <p>Escrow + automated receipts. USSD fallback where data is costly.</p>
+            </div>
+          </article>
+
+          <!-- Card 4: Reminders -->
+          <article class="product-bento-card">
+            <div class="pbc-visual-stage" aria-hidden="true">
+              <div class="pbc-stage-top">
+                <span class="pbc-stage-label">Smart Cadence</span>
+                <span class="pbc-stage-tag">-68% No-Shows</span>
+              </div>
+              <div class="pbc-remind-card">
+                <div class="pbc-remind-alert">
+                  <span class="pbc-bell-dot"></span>
+                  <span>WhatsApp Ping • <b>15m before arrival</b></span>
+                </div>
+                <div class="pbc-timeline-track">
+                  <span class="ptt-node done">&#10003;</span>
+                  <span class="ptt-line filled"></span>
+                  <span class="ptt-node done">&#10003;</span>
+                  <span class="ptt-line filled"></span>
+                  <span class="ptt-node active">On Track</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="pbc-body">
+              <div class="pbc-title-row">
+                <div class="lime-icon-badge" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                  </svg>
+                </div>
+                <h3>Reminders</h3>
+              </div>
+              <p>Smart follow-ups reduce no-shows and keep jobs on track.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ========================================================================
+       4. HOW IT WORKS SECTION ("From Voice Note to Paid Job in 3 Steps")
+          Exact Reference Split Section Layout + Signature Dark Pill CTA Bar
+       ======================================================================== -->
+  <section id="how-it-works" class="how-it-works-section">
+    <div class="container split-about-grid">
+      <!-- Left Column: Photo Card + Step 01 -->
+      <div class="split-left-column">
+        <div class="split-photo-wrapper">
+          <img src="/assets/ref-about-meeting.jpg" alt="Clients and workers booking via WhatsApp" />
+          <div class="split-photo-badge">
+            <span>🔊 0:07 Voice Note</span> • Instant Shona, Ndebele &amp; English NLP
+          </div>
+        </div>
+
+        <!-- Step 01 Card -->
+        <article class="step-feature-row">
+          <div class="step-title-col">
+            <div class="step-badge-top">
+              <span class="lime-icon-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                </svg>
+              </span>
+              <span class="step-num-tag">Step 01</span>
+            </div>
+            <h3>Pick a Verified Provider</h3>
+          </div>
+          <div class="step-desc-col">
+            <p>Browse verified local providers by category and area (e.g. Harare, Zimbabwe) and reply with their number to inspect their profile.</p>
+          </div>
+        </article>
+      </div>
+
+      <!-- Right Column: Eyebrow + Heading + Step 02 + Step 03 + Dark Pill CTA Bar -->
+      <div class="split-right-column">
+        <span class="eyebrow-light">How It Works</span>
+        <h2>From WhatsApp Message to Booked Job in 3 Steps</h2>
+
+        <div class="steps-stack">
+          <!-- Step 02 Card -->
+          <article class="step-feature-row">
+            <div class="step-title-col">
+              <div class="step-badge-top">
+                <span class="lime-icon-badge" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z"></path>
+                    <line x1="9" y1="21" x2="15" y2="21"></line>
+                  </svg>
+                </span>
+                <span class="step-num-tag">Step 02</span>
+              </div>
+              <h3>Describe Your Job</h3>
+            </div>
+            <div class="step-desc-col">
+              <p>Type or voice-note your job details (e.g. "Home cleaning services"). Hustlr structures your provider, service, location, and job summary automatically.</p>
+            </div>
+          </article>
+
+          <!-- Step 03 Card -->
+          <article class="step-feature-row">
+            <div class="step-title-col">
+              <div class="step-badge-top">
+                <span class="lime-icon-badge" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    <polyline points="9 12 11 14 15 10"></polyline>
+                  </svg>
+                </span>
+                <span class="step-num-tag">Step 03</span>
+              </div>
+              <h3>Reply YES to Book &amp; Save</h3>
+            </div>
+            <div class="step-desc-col">
+              <p>Reply CONFIRM or YES to send your booking request directly to the provider, track live status updates, and reply SAVE to favorite them for easy rebooking.</p>
+            </div>
+          </article>
+        </div>
+
+        <!-- Signature Dark Pill Banner -->
+        <div class="dark-pill-cta-bar">
+          <div class="dpcb-left">
+            <span class="dpcb-check" aria-hidden="true">&#10003;</span>
+            <span>Turn offline chaos into bookable jobs, trackable payments, and real reviews.</span>
+          </div>
+          <a href="#try" class="btn-lime">
+            <span>Try live demo</span>
+            <span class="arrow-circle" aria-hidden="true">&#10140;</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       5. WHO WE SERVE SECTION ("Built for the Next Billion Workers")
+          Exact Reference "Our Services" 3 Photo Cards with Dark Teal Overlays
+       ======================================================================== -->
+  <section id="use-cases" class="who-we-serve-section">
+    <div class="container">
+      <div class="services-top-bar">
+        <div class="services-top-left">
+          <span class="eyebrow-light">Who We Serve</span>
+          <h2>Built for the Next Billion Workers</h2>
+        </div>
+        <div class="services-top-right">
+          <p>
+            Lightweight chat-native workflows engineered for artisans, households, and municipal employment programs operating across low-bandwidth regions.
+          </p>
+          <a href="#try" class="btn-lime">
+            <span>See how it works</span>
+            <span class="arrow-circle" aria-hidden="true">&#10140;</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="serve-cards-grid">
+        <!-- Card 1: Local Artisans & Workers -->
+        <article class="serve-photo-card">
+          <div class="serve-image-box">
+            <img src="/assets/ref-service-1.jpg" alt="Local Artisans and Workers" />
+          </div>
+          <div class="serve-dark-overlay">
+            <div class="serve-overlay-head">
+              <span class="lime-icon-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+              </span>
+              <h3>Local Artisans &amp; Workers</h3>
+            </div>
+            <p>Receive steady, verified job bookings and guaranteed payouts without expensive smartphones or data plans.</p>
+          </div>
+        </article>
+
+        <!-- Card 2: Households & Small Businesses -->
+        <article class="serve-photo-card">
+          <div class="serve-image-box">
+            <img src="/assets/ref-service-2.jpg" alt="Households and Small Businesses" />
+          </div>
+          <div class="serve-dark-overlay">
+            <div class="serve-overlay-head">
+              <span class="lime-icon-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                  <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+              </span>
+              <h3>Households &amp; Small Businesses</h3>
+            </div>
+            <p>Book trusted local pros in seconds with escrow protection and transparent ratings.</p>
+          </div>
+        </article>
+
+        <!-- Card 3: NGOs & Municipalities -->
+        <article class="serve-photo-card">
+          <div class="serve-image-box">
+            <img src="/assets/ref-service-3.jpg" alt="NGOs and Municipalities" />
+          </div>
+          <div class="serve-dark-overlay">
+            <div class="serve-overlay-head">
+              <span class="lime-icon-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="3" y1="9" x2="21" y2="9"></line>
+                  <line x1="9" y1="21" x2="9" y2="9"></line>
+                </svg>
+              </span>
+              <h3>NGOs &amp; Municipalities</h3>
+            </div>
+            <p>Run employment pilots, track disbursements, and verify field work with real-time dashboards.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       6. TRUST, SECURITY & LOW-BANDWIDTH METRICS STRIP
+          Exact Reference Stat Strip Styling (Top Border + Lime Bar + Big Stat)
+       ======================================================================== -->
+  <section class="metrics-strip-section" aria-label="Trust, Security and Low-Bandwidth Metrics">
+    <div class="container">
+      <div class="metrics-bento-grid">
+        <!-- Metric 1 -->
+        <div class="metric-stat-col">
+          <div class="metric-value-row">
+            <span class="metric-big-num">0 MB</span>
+            <span class="metric-lime-plus">+</span>
+          </div>
+          <div class="metric-title">0 MB App Install Required</div>
+          <p class="metric-sub">100% WhatsApp &amp; USSD native</p>
+        </div>
+
+        <!-- Metric 2 -->
+        <div class="metric-stat-col">
+          <div class="metric-value-row">
+            <span class="metric-big-num">3</span>
+            <span class="metric-lime-plus">+</span>
+          </div>
+          <div class="metric-title">3 Languages Supported</div>
+          <p class="metric-sub">English, Shona &amp; Ndebele voice/text NLP</p>
+        </div>
+
+        <!-- Metric 3 -->
+        <div class="metric-stat-col">
+          <div class="metric-value-row">
+            <span class="metric-big-num">100%</span>
+            <span class="metric-lime-plus">&#10003;</span>
+          </div>
+          <div class="metric-title">100% Escrow Protected</div>
+          <p class="metric-sub">Automated release &amp; instant digital receipts</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       7. PRICING SECTION ("Simple & aligned with value")
+       ======================================================================== -->
+  <section id="pricing" class="pricing-section">
+    <div class="container">
+      <div class="pricing-header-row">
+        <div class="pricing-header-left">
+          <span class="eyebrow-light">Pricing</span>
+          <h2>Simple &amp; aligned with value</h2>
+        </div>
+
+        <!-- Interactive Monthly | Annual (save 15%) Toggle -->
+        <div class="billing-toggle-pill" role="group" aria-label="Billing frequency toggle">
+          <span class="toggle-label active" id="labelMonthly">Monthly</span>
+          <label class="switch-control" aria-label="Toggle annual billing">
+            <input type="checkbox" id="billingToggle" />
+            <span class="switch-slider"></span>
+          </label>
+          <span class="toggle-label" id="labelAnnual">
+            Annual <span class="save-badge">save 15%</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="pricing-cards-grid">
+        <!-- Card 1: Starter ($0/mo) -->
+        <article class="pricing-card">
+          <div>
+            <div class="pc-top-header">
+              <span class="lime-icon-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                </svg>
+              </span>
+              <h3 class="pc-tier-name">Starter</h3>
+            </div>
+
+            <div class="pc-price-box">
+              <span class="pc-price-value">$<span data-month="0" data-annual="0">0</span></span>
+              <span class="pc-price-unit">/mo</span>
+            </div>
+
+            <ul class="pc-feature-list">
+              <li><span class="pc-check-dot">&#10003;</span> NGO/municipal pilots</li>
+              <li><span class="pc-check-dot">&#10003;</span> Up to 100 jobs / month</li>
+              <li><span class="pc-check-dot">&#10003;</span> Email support</li>
+            </ul>
+          </div>
+
+          <a href="#try" class="btn-outline-dark">Start pilot</a>
+        </article>
+
+        <!-- Card 2: Pro ($0.02/txn — Highlighted with "Most popular" badge) -->
+        <article class="pricing-card featured-pro">
+          <span class="popular-pill-flag">Most popular</span>
+          <div>
+            <div class="pc-top-header">
+              <span class="lime-icon-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                </svg>
+              </span>
+              <h3 class="pc-tier-name">Pro</h3>
+            </div>
+
+            <div class="pc-price-box">
+              <span class="pc-price-value">$<span data-month="0.02" data-annual="0.017">0.02</span></span>
+              <span class="pc-price-unit">/txn</span>
+            </div>
+
+            <ul class="pc-feature-list">
+              <li><span class="pc-check-dot">&#10003;</span> <span data-month-text="2% per transaction" data-annual-text="1.7% per transaction (annual)">2% per transaction</span></li>
+              <li><span class="pc-check-dot">&#10003;</span> Escrow &amp; receipts</li>
+              <li><span class="pc-check-dot">&#10003;</span> Priority support</li>
+            </ul>
+          </div>
+
+          <a href="#try" class="btn-lime">
+            <span>Get Pro</span>
+            <span class="arrow-circle" aria-hidden="true">&#10140;</span>
+          </a>
+        </article>
+
+        <!-- Card 3: Enterprise (Custom) -->
+        <article class="pricing-card">
+          <div>
+            <div class="pc-top-header">
+              <span class="lime-icon-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                </svg>
+              </span>
+              <h3 class="pc-tier-name">Enterprise</h3>
+            </div>
+
+            <div class="pc-price-box">
+              <span class="pc-price-value">Custom</span>
+            </div>
+
+            <ul class="pc-feature-list">
+              <li><span class="pc-check-dot">&#10003;</span> Integrations &amp; SLAs</li>
+              <li><span class="pc-check-dot">&#10003;</span> Dashboards</li>
+              <li><span class="pc-check-dot">&#10003;</span> Dedicated support</li>
+            </ul>
+          </div>
+
+          <a href="#contact" class="btn-outline-dark">Talk to sales</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       8. LIVE WHATSAPP DEMO CTA BANNER ("Get a live demo in WhatsApp")
+       ======================================================================== -->
+  <section id="try" class="demo-banner-section">
+    <div class="container">
+      <div class="demo-bento-banner">
+        <div class="demo-copy-col">
+          <div class="eyebrow-dark">Live Sandbox</div>
+          <h2>Get a live demo in WhatsApp</h2>
+          <p>
+            We'll send a booking flow via voice or text — the same experience users get. No installs.
+          </p>
+
+          <div class="demo-cta-actions">
+            <a href="https://wa.me/263712345678?text=Hi%20hustlr.chat%2C%20send%20me%20the%20live%20demo" target="_blank" rel="noopener" class="btn-lime">
+              <span>Chat now</span>
+              <span class="arrow-circle" aria-hidden="true">&#10140;</span>
+            </a>
+
+            <button type="button" class="btn-glass-pill" id="copyLink">
+              <span>Copy demo link</span>
+            </button>
+          </div>
+
+          <div id="copyNote" class="copy-toast" role="status" aria-live="polite" hidden>
+            Link copied ✔
+          </div>
+        </div>
+
+        <!-- Live Chat Simulation Box -->
+        <div class="wa-preview-card" aria-label="Sample WhatsApp conversation">
+          <div class="wa-preview-top">
+            <div class="wa-bot-id">
+              <span class="wa-bot-avatar">
+                <img src="/assets/logo-symbol.svg" alt="hustlr symbol" />
+              </span>
+              <div>
+                <div class="wa-bot-name">hustlr.chat Official Bot</div>
+                <div class="wa-bot-status">● Online • Low-Data Mode</div>
+              </div>
+            </div>
+            <span class="feature-pill">USSD *151#</span>
+          </div>
+
+          <div class="wa-bubble-user">
+            <strong>Rufaro:</strong> "Home cleaning services" • Reply <strong>YES</strong>
+          </div>
+
+          <div class="wa-bubble-bot">
+            <strong>Please confirm your booking:</strong><br>
+            <b>Provider:</b> Bright Cleaning Services (Verified) • <b>Service:</b> Cleaning • <b>Location:</b> Harare<br>
+            <span class="wa-escrow-pill">&#10003; Booking sent to Bright Cleaning Services • Reply SAVE to favorite</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       9. INTERACTIVE FAQ SECTION ("Answers you'll likely want") & CONTACT
+       ======================================================================== -->
+  <section id="faq" class="faq-section">
+    <div class="container faq-layout-grid">
+      <!-- Left Intro + Contact Card (#contact) -->
+      <div class="faq-intro-col">
+        <span class="eyebrow-light">FAQ</span>
+        <h2>Answers you'll likely want</h2>
+        <p>
+          Everything you need to know about running voice and text bookings, escrow payouts, and municipal pilots inside WhatsApp.
+        </p>
+
+        <div id="contact" class="contact-mini-card">
+          <h3>Need a custom pilot or integration?</h3>
+          <p>Reach our deployment team directly or launch a pilot in under 48 hours.</p>
+          <form class="contact-quick-form" id="contactForm">
+            <input type="text" name="name" placeholder="Your name or organization" required />
+            <input type="email" name="email" placeholder="Work email" required />
+            <textarea name="message" rows="2" placeholder="Tell us about your pilot or workflow..." required></textarea>
+            <button type="submit" class="btn-lime" style="justify-content:center;width:100%;">
+              <span id="contactBtnText">Contact Sales</span>
+              <span class="arrow-circle" aria-hidden="true">&#10140;</span>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Right Interactive Accordion Column -->
+      <div class="accordion-list">
+        <details class="faq-item" open>
+          <summary>
+            <span>Does it work without installing an app?</span>
+            <span class="faq-toggle-icon" aria-hidden="true">+</span>
+          </summary>
+          <div class="faq-answer">
+            Yes. Everything runs inside WhatsApp. We optimize for tiny payloads and low-bandwidth flows.
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span>Which languages are supported?</span>
+            <span class="faq-toggle-icon" aria-hidden="true">+</span>
+          </summary>
+          <div class="faq-answer">
+            English, Shona, and Ndebele in voice or text. More on the roadmap.
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span>How do payments work?</span>
+            <span class="faq-toggle-icon" aria-hidden="true">+</span>
+          </summary>
+          <div class="faq-answer">
+            Jobs are secured via escrow. On completion, funds are released and receipts are issued automatically.
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span>Can you integrate with our tools?</span>
+            <span class="faq-toggle-icon" aria-hidden="true">+</span>
+          </summary>
+          <div class="faq-answer">
+            Yes. Enterprise plans include custom integrations and SLAs.
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       10. REDESIGNED MULTI-COLUMN FOOTER (5 Columns + Sub-Footer Bar)
+       ======================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid-5">
+        <!-- Column 1: Brand & CTA -->
+        <div class="footer-brand-col">
+          <a href="#" class="brand-logo" aria-label="hustlr.chat home">
+            <img src="/assets/logo-reverse-full.svg" alt="hustlr — Local skills. One message away." class="brand-logo-img" />
+          </a>
+          <p>
+            WhatsApp-first tech for the next billion workers. Turning offline chaos into bookable jobs, trackable payments, and real trust.
+          </p>
+          <a href="https://wa.me/263712345678" target="_blank" rel="noopener" class="btn-lime">
+            <span>Launch WhatsApp Bot</span>
+            <span class="arrow-circle" aria-hidden="true">&#10140;</span>
+          </a>
+        </div>
+
+        <!-- Column 2: Platform -->
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <ul>
+            <li><a href="#product">Natural Language Booking</a></li>
+            <li><a href="#product">AI Provider Matching</a></li>
+            <li><a href="#product">Escrow &amp; Receipts</a></li>
+            <li><a href="#product">USSD Fallback</a></li>
+            <li><a href="#product">Smart Reminders</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Solutions -->
+        <div class="footer-col">
+          <h4>Solutions</h4>
+          <ul>
+            <li><a href="#use-cases">For Workers &amp; Artisans</a></li>
+            <li><a href="#use-cases">For Households &amp; SMEs</a></li>
+            <li><a href="#use-cases">NGO &amp; Municipal Pilots</a></li>
+            <li><a href="#pricing">Enterprise Integrations</a></li>
+            <li><a href="#try">Live Demo</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 4: Languages & Access -->
+        <div class="footer-col">
+          <h4>Languages &amp; Access</h4>
+          <ul>
+            <li><a href="#how-it-works">English Workflows</a></li>
+            <li><a href="#how-it-works">Shona Voice &amp; Text</a></li>
+            <li><a href="#how-it-works">Ndebele Voice &amp; Text</a></li>
+            <li><a href="#product">Low-Bandwidth Mode</a></li>
+            <li><a href="#faq">Help Center &amp; FAQ</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 5: Company & Legal -->
+        <div class="footer-col">
+          <h4>Company &amp; Legal</h4>
+          <ul>
+            <li><a href="#how-it-works">About hustlr.chat</a></li>
+            <li><a href="#contact">Contact Sales</a></li>
+            <li><a href="/privacy">Privacy Policy</a></li>
+            <li><a href="#pricing">Escrow Terms of Service</a></li>
+            <li><a href="#faq">Security &amp; Trust</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Bottom Sub-Footer -->
+      <div class="sub-footer-bar">
+        <div>© 2026 hustlr.chat • Built for the next billion workers.</div>
+        <div class="status-pill-indicator">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          <span>All WhatsApp &amp; USSD nodes operational</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // 1. Sticky Header Scroll State
+    const siteHeader = document.getElementById('siteHeader');
+    const handleScroll = () => {
+      if (!siteHeader) return;
+      if (window.scrollY > 24) {
+        siteHeader.classList.add('scrolled');
+      } else {
+        siteHeader.classList.remove('scrolled');
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    // 2. Mobile Menu Toggle, Active Nav Link Switching & Scroll-Spy
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navMenu = document.getElementById('navMenu');
+    if (mobileMenuBtn && navMenu) {
+      mobileMenuBtn.addEventListener('click', () => {
+        navMenu.classList.toggle('open');
+      });
+      const navLinks = Array.from(navMenu.querySelectorAll('a'));
+      navLinks.forEach((link) => {
+        link.addEventListener('click', () => {
+          navLinks.forEach((item) => item.classList.remove('active'));
+          link.classList.add('active');
+          navMenu.classList.remove('open');
+        });
+      });
+
+      const sectionIds = navLinks
+        .map((link) => link.getAttribute('href')?.replace('#', ''))
+        .filter((id): id is string => Boolean(id));
+
+      const updateActiveOnScroll = () => {
+        const scrollPos = window.scrollY + 160;
+        let currentId = sectionIds[0];
+        for (const id of sectionIds) {
+          const el = document.getElementById(id);
+          if (el && el.offsetTop <= scrollPos) {
+            currentId = id;
+          }
+        }
+        navLinks.forEach((link) => {
+          const isMatch = link.getAttribute('href') === `#${currentId}`;
+          link.classList.toggle('active', isMatch);
+        });
+      };
+
+      window.addEventListener('scroll', updateActiveOnScroll, { passive: true });
+    }
+
+    // 3. Interactive Pricing Toggle ("Monthly | Annual (save 15%)")
+    const billingToggle = document.getElementById('billingToggle') as HTMLInputElement | null;
+    const labelMonthly = document.getElementById('labelMonthly');
+    const labelAnnual = document.getElementById('labelAnnual');
+
+    const updateBillingView = (isAnnual: boolean) => {
+      if (labelMonthly && labelAnnual) {
+        labelMonthly.classList.toggle('active', !isAnnual);
+        labelAnnual.classList.toggle('active', isAnnual);
+      }
+      document.querySelectorAll('[data-month]').forEach((el) => {
+        el.textContent = isAnnual
+          ? el.getAttribute('data-annual')
+          : el.getAttribute('data-month');
+      });
+      document.querySelectorAll('[data-month-text]').forEach((el) => {
+        el.textContent = isAnnual
+          ? el.getAttribute('data-annual-text')
+          : el.getAttribute('data-month-text');
+      });
+    };
+
+    if (billingToggle) {
+      billingToggle.addEventListener('change', () => {
+        updateBillingView(billingToggle.checked);
+      });
+    }
+    if (labelMonthly && billingToggle) {
+      labelMonthly.addEventListener('click', () => {
+        billingToggle.checked = false;
+        updateBillingView(false);
+      });
+    }
+    if (labelAnnual && billingToggle) {
+      labelAnnual.addEventListener('click', () => {
+        billingToggle.checked = true;
+        updateBillingView(true);
+      });
+    }
+
+    // 4. Copy Demo Link with Toast ("Link copied ✔")
+    const copyBtn = document.getElementById('copyLink');
+    const copyNote = document.getElementById('copyNote');
+    let copyTimer: ReturnType<typeof setTimeout> | null = null;
+
+    if (copyBtn && copyNote) {
+      copyBtn.addEventListener('click', async () => {
+        const demoUrl = 'https://wa.me/263712345678?text=Hi%20hustlr.chat%2C%20send%20me%20the%20live%20demo';
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(demoUrl);
+          } else {
+            const tempInput = document.createElement('input');
+            tempInput.value = demoUrl;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+          }
+        } catch (_) {
+          // Fallback still shows confirmation toast
+        }
+        copyNote.hidden = false;
+        if (copyTimer) clearTimeout(copyTimer);
+        copyTimer = setTimeout(() => {
+          copyNote.hidden = true;
+        }, 2800);
+      });
+    }
+
+    // 5. Contact Form Quick Confirmation
+    const contactForm = document.getElementById('contactForm') as HTMLFormElement | null;
+    const contactBtnText = document.getElementById('contactBtnText');
+    if (contactForm && contactBtnText) {
+      contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        contactBtnText.textContent = 'Enquiry Sent ✔';
+        contactForm.reset();
+        setTimeout(() => {
+          contactBtnText.textContent = 'Contact Sales';
+        }, 3000);
+      });
+    }
+
+    // 6. Hero Dual-Phone WhatsApp Scroll & Auto-Play Sequencer
+    const heroVisualStage = document.getElementById('heroVisualStage');
+    const phoneBooking = document.getElementById('heroPhoneBooking');
+    const phoneOnboarding = document.getElementById('heroPhoneOnboarding');
+    const track0 = document.getElementById('phoneTrack0');
+    const track1 = document.getElementById('phoneTrack1');
+    const thumb0 = document.getElementById('phoneThumb0');
+    const thumb1 = document.getElementById('phoneThumb1');
+    const prog0 = document.getElementById('storyProg0');
+    const prog1 = document.getElementById('storyProg1');
+    const statNum = document.getElementById('heroStatNumber');
+    const statLbl = document.getElementById('heroStatLabel');
+    const storyTabs = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-story-tab]'));
+
+    if (heroVisualStage && phoneBooking && phoneOnboarding && track0 && track1) {
+      // Master timeline: 0..100 = Phone 1 (Booking), 100..200 = Phone 2 (Onboarding)
+      let timeline = 0;
+      let userPauseUntil = 0;
+
+      const getMaxScroll = (trackEl: HTMLElement) => {
+        const viewport = trackEl.parentElement;
+        if (!viewport) return 140;
+        return Math.max(0, trackEl.scrollHeight - viewport.clientHeight + 10);
+      };
+
+      const renderStoryState = () => {
+        const isSecondPhone = timeline >= 100;
+        const p0 = isSecondPhone ? 1 : Math.max(0, Math.min(1, timeline / 100));
+        const p1 = isSecondPhone ? Math.max(0, Math.min(1, (timeline - 100) / 100)) : 0;
+
+        // Swap 3D front/back slots
+        phoneBooking.classList.toggle('is-slot-front', !isSecondPhone);
+        phoneBooking.classList.toggle('is-slot-back', isSecondPhone);
+        phoneOnboarding.classList.toggle('is-slot-front', isSecondPhone);
+        phoneOnboarding.classList.toggle('is-slot-back', !isSecondPhone);
+
+        // Scroll conversation tracks inside both phones
+        const max0 = getMaxScroll(track0);
+        const max1 = getMaxScroll(track1);
+        track0.style.top = `-${(p0 * max0).toFixed(1)}px`;
+        track1.style.top = `-${(p1 * max1).toFixed(1)}px`;
+
+        if (thumb0) thumb0.style.top = `${(p0 * 64).toFixed(1)}%`;
+        if (thumb1) thumb1.style.top = `${(p1 * 64).toFixed(1)}%`;
+
+        // Update controller tabs & progress bars
+        if (prog0) prog0.style.width = `${(p0 * 100).toFixed(1)}%`;
+        if (prog1) prog1.style.width = `${(p1 * 100).toFixed(1)}%`;
+
+        storyTabs.forEach((btn) => {
+          const idx = Number(btn.getAttribute('data-story-tab'));
+          btn.classList.toggle('active', (idx === 0 && !isSecondPhone) || (idx === 1 && isSecondPhone));
+        });
+
+        // Update floating lime badge stat
+        if (statNum && statLbl) {
+          if (isSecondPhone) {
+            statNum.textContent = '2 Min';
+            statLbl.textContent = 'Artisan Onboarding';
+          } else {
+            statNum.textContent = '0 MB';
+            statLbl.textContent = 'App Install Required';
+          }
+        }
+      };
+
+      // Mouse wheel scrubbing over the Hero Phones
+      heroVisualStage.addEventListener(
+        'wheel',
+        (e: WheelEvent) => {
+          const goingDown = e.deltaY > 0;
+          const goingUp = e.deltaY < 0;
+          if ((goingDown && timeline < 200) || (goingUp && timeline > 0)) {
+            e.preventDefault();
+            userPauseUntil = Date.now() + 4000;
+            const step = Math.sign(e.deltaY) * Math.min(18, Math.max(5, Math.abs(e.deltaY) * 0.14));
+            timeline = Math.max(0, Math.min(200, timeline + step));
+            renderStoryState();
+          }
+        },
+        { passive: false }
+      );
+
+      // Click tabs to jump directly to Phone 1 or Phone 2
+      storyTabs.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const idx = Number(btn.getAttribute('data-story-tab'));
+          userPauseUntil = Date.now() + 3000;
+          timeline = idx === 1 ? 100 : 0;
+          renderStoryState();
+        });
+      });
+
+      // Click back phone to bring it forward
+      phoneBooking.addEventListener('click', () => {
+        if (timeline >= 100) {
+          userPauseUntil = Date.now() + 3000;
+          timeline = 0;
+          renderStoryState();
+        }
+      });
+      phoneOnboarding.addEventListener('click', () => {
+        if (timeline < 100) {
+          userPauseUntil = Date.now() + 3000;
+          timeline = 100;
+          renderStoryState();
+        }
+      });
+
+      // Gentle auto-play sequencer when user is not actively scrubbing
+      setInterval(() => {
+        if (Date.now() < userPauseUntil) return;
+        timeline += 0.85;
+        if (timeline > 206) {
+          timeline = 0;
+        }
+        renderStoryState();
+      }, 60);
+
+      renderStoryState();
+    }
+  </script>
+</Layout>
