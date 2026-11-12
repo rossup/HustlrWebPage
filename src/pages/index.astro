@@ -1,7 +1,7 @@
 ---
 import HomeLayout from '../layouts/HomeLayout.astro';
 
-const WA = 'https://wa.me/263712345678';
+const WA = 'https://wa.me/263719351207'; // +263 71 935 1207
 // WhatsApp conversation shown on the hero phones (copied from a real Hustlr chat).
 type WaMsg = { from: 'in' | 'out'; html: string; time: string; quote?: string };
 const chat: WaMsg[] = [
@@ -113,6 +113,45 @@ const reasons = [
   },
 ];
 
+const proSteps = [
+  { n: '1', title: 'Say hello', text: 'Send “I want to register as a service provider” to Hustlr on WhatsApp.' },
+  { n: '2', title: 'Answer a few questions', text: 'Your name, business name, trade and the areas you cover, in 7 short steps.' },
+  { n: '3', title: 'Start getting jobs', text: 'Booking requests from customers in your areas arrive in the same chat.' },
+];
+
+const proBenefits = [
+  {
+    title: 'Jobs come to you',
+    text: 'Booking requests from people nearby who are ready to hire. No flyers, adverts or website needed.',
+    icon: '<path d="M4 8.5h16v11H4z"/><path d="M9 8.5V6a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 6v2.5"/><path d="M4 13h16"/>',
+  },
+  {
+    title: 'Work in your areas',
+    text: 'Tell Hustlr the suburbs and towns you cover, and get jobs where you already work.',
+    icon: '<path d="M12 21s-6.5-5.8-6.5-11a6.5 6.5 0 0 1 13 0c0 5.2-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/>',
+  },
+  {
+    title: 'Accept in one reply',
+    text: 'Every request shows the service, the time and the place. Reply YES to take the job.',
+    icon: '<circle cx="12" cy="12" r="9"/><path d="m8 12.3 2.7 2.7L16.2 9.5"/>',
+  },
+  {
+    title: 'A profile that sells for you',
+    text: 'Customers see your business name, trade, areas and what you do before they book.',
+    icon: '<rect x="3.5" y="5" width="17" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M6 16c.6-1.6 1.7-2.4 3-2.4s2.4.8 3 2.4M14.5 10h3M14.5 13.5h3"/>',
+  },
+  {
+    title: 'Customers come back',
+    text: 'Happy customers can save you to their favourites and rebook you with one message.',
+    icon: '<path d="M12 20s-7.5-4.4-7.5-10A4.3 4.3 0 0 1 12 7.4 4.3 4.3 0 0 1 19.5 10c0 5.6-7.5 10-7.5 10z"/>',
+  },
+  {
+    title: 'Nothing new to learn',
+    text: 'No app and no dashboard. Run it all from the WhatsApp you already use every day.',
+    icon: '<rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 18.5h3"/>',
+  },
+];
+
 const faqs = [
   {
     q: 'Do I need to install anything?',
@@ -153,7 +192,7 @@ const faqs = [
         <a href="#top" data-section="top" class="is-active">Home</a>
         <a href="#how-it-works" data-section="how-it-works">How it works</a>
         <a href="#services" data-section="services">Services</a>
-        <a href="#providers" data-section="providers">Providers</a>
+        <a href="#for-providers" data-section="for-providers">Providers</a>
         <a href="#questions" data-section="questions">Questions</a>
       </nav>
 
@@ -178,7 +217,7 @@ const faqs = [
       <a href="#top">Home</a>
       <a href="#how-it-works">How it works</a>
       <a href="#services">Services</a>
-      <a href="#providers">Providers</a>
+      <a href="#for-providers">Providers</a>
       <a href="#questions">Questions</a>
       <div class="nav-panel-actions">
         <a href={WA_PROVIDER} class="nav-panel-secondary" target="_blank" rel="noopener">Join as a provider →</a>
@@ -462,12 +501,74 @@ const faqs = [
       </div>
     </section>
 
+    <!-- ============================== FOR PROVIDERS ============================== -->
+    <section class="section wrap-wide" id="for-providers">
+      <div class="section-head">
+        <div>
+          <span class="mono mono--green">04 / For providers</span>
+          <h2>Grow your business on WhatsApp</h2>
+        </div>
+        <p>Hustlr brings booking requests from people nearby straight to your WhatsApp. You decide which jobs to take.</p>
+      </div>
+
+      <div class="pro-layout">
+        <div class="pro-join">
+          <h3>Get set up in one chat</h3>
+          <ol class="pro-steps">
+            {proSteps.map((st) => (
+              <li>
+                <span class="pro-step-num">{st.n}</span>
+                <div>
+                  <strong>{st.title}</strong>
+                  <p>{st.text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+          <a href={WA_PROVIDER} class="btn btn--dark" target="_blank" rel="noopener">Join as a provider</a>
+        </div>
+
+        <div class="pro-preview" aria-label="Example of a booking request a provider receives on WhatsApp">
+          <div class="pro-chat">
+            <div class="pro-chat-head">
+              <span class="pro-chat-avatar">H</span>
+              <span>Hustlr<small>online</small></span>
+            </div>
+            <div class="pro-chat-body">
+              <div class="pro-bubble pro-bubble--in">You have a new job near you.</div>
+              <div class="pro-bubble pro-bubble--in pro-request">
+                <span class="mono">New booking request</span>
+                <div class="pro-row"><span>Service</span><span>Plumber</span></div>
+                <div class="pro-row"><span>When</span><span>Today, 3:00 pm</span></div>
+                <div class="pro-row"><span>Where</span><span>Avondale</span></div>
+                <p>Reply <b>YES</b> to accept this job.</p>
+              </div>
+              <div class="pro-bubble pro-bubble--out">YES</div>
+            </div>
+          </div>
+          <p class="pro-preview-caption">What a booking request looks like when it arrives.</p>
+        </div>
+      </div>
+
+      <ul class="pro-benefits">
+        {proBenefits.map((b) => (
+          <li>
+            <span class="pro-benefit-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={b.icon} />
+            </span>
+            <h3>{b.title}</h3>
+            <p>{b.text}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
     <!-- ============================== BUILT FOR WHATSAPP ============================== -->
     <section class="section wrap-wide" id="why">
       <div class="why">
         <div class="section-head section-head--dark">
           <div>
-            <span class="mono mono--yellow">04 / Why it works</span>
+            <span class="mono mono--yellow">05 / Why it works</span>
             <h2>Built for WhatsApp</h2>
           </div>
           <p>The way people already find help: ask someone. Hustlr just makes sure the right person answers.</p>
@@ -489,7 +590,7 @@ const faqs = [
     <!-- ============================== QUESTIONS ============================== -->
     <section class="section wrap-wide faq" id="questions">
       <div class="faq-intro">
-        <span class="mono mono--green">05 / Good to know</span>
+        <span class="mono mono--green">06 / Good to know</span>
         <h2>Questions</h2>
         <p>The short answers. For anything else, ask in the chat.</p>
       </div>
