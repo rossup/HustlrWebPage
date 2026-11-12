@@ -35,6 +35,8 @@ const phones = [
 
 // Stacked layers that give each phone its physical 3D titanium thickness.
 const depth = Array.from({ length: 20 }, (_, i) => i);
+// WhatsApp glyph used on every button (all buttons open WhatsApp)
+const waIcon = `<svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg>`;
 const WA_PROVIDER = `${WA}?text=${encodeURIComponent('Hi Hustlr, I want to register as a service provider')}`;
 
 const steps = [
@@ -176,38 +178,29 @@ const faqs = [
   <!-- ============================== NAV ============================== -->
   <header class="nav" id="siteNav">
     <div class="nav-shell">
-      <div class="nav-brand">
-        <a href="#top" class="nav-logo" aria-label="Hustlr home">
-          <img src="/assets/logo-reverse.svg" alt="Hustlr" width="106" height="36" />
-        </a>
-      </div>
+      <a href="#top" class="nav-logo" aria-label="Hustlr home">
+        <img class="nav-logo--light" src="/assets/logo-reverse.svg" alt="Hustlr" width="106" height="38" />
+        <img class="nav-logo--dark" src="/assets/logo-primary.svg" alt="" width="106" height="38" aria-hidden="true" />
+      </a>
 
       <nav class="nav-links" aria-label="Primary">
-        <a href="#how-it-works" data-section="how-it-works" class="is-active">
-          <span>How it works</span>
-          <svg class="nav-link-chevron" width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 4.5 3 3 3-3"/></svg>
-        </a>
-        <a href="#services" data-section="services">
-          <span>Services</span>
-          <svg class="nav-link-chevron" width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 4.5 3 3 3-3"/></svg>
-        </a>
-        <a href="#for-providers" data-section="for-providers">
-          <span>Providers</span>
-          <svg class="nav-link-chevron" width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 4.5 3 3 3-3"/></svg>
-        </a>
-        <a href="#questions" data-section="questions">
-          <span>Questions</span>
-        </a>
+        <button class="nav-trigger" type="button" data-menu="menu-how" data-section="how-it-works" aria-expanded="false" aria-controls="menu-how">
+          How it works <svg class="nav-chevron" width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 4.5 3 3 3-3"/></svg>
+        </button>
+        <button class="nav-trigger" type="button" data-menu="menu-services" data-section="services" aria-expanded="false" aria-controls="menu-services">
+          Services <svg class="nav-chevron" width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 4.5 3 3 3-3"/></svg>
+        </button>
+        <button class="nav-trigger" type="button" data-menu="menu-providers" data-section="for-providers" aria-expanded="false" aria-controls="menu-providers">
+          Providers <svg class="nav-chevron" width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 4.5 3 3 3-3"/></svg>
+        </button>
+        <a class="nav-trigger" href="#questions" data-section="questions">Questions</a>
       </nav>
 
       <div class="nav-right">
-        <a href="#services" class="nav-icon-btn" aria-label="Browse services" title="Browse services">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-        </a>
-        <span class="nav-divider" aria-hidden="true"></span>
-        <a href={WA_PROVIDER} class="nav-ghost" target="_blank" rel="noopener">Join as pro</a>
-        <a href={WA} class="nav-cta" target="_blank" rel="noopener">
-          <span class="nav-cta-label">Chat on WhatsApp</span>
+        <a href={WA_PROVIDER} class="nav-ghost" target="_blank" rel="noopener">Join as a provider</a>
+        <a href={WA} class="btn btn--yellow btn--sm nav-cta" target="_blank" rel="noopener">
+          <Fragment set:html={waIcon} />
+          <span>Chat on WhatsApp</span>
         </a>
         <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navPanel">
           <span></span><span></span>
@@ -215,15 +208,71 @@ const faqs = [
       </div>
     </div>
 
+    <!-- Dropdown panels -->
+    <div class="nav-menu" id="menu-how" hidden>
+      <div class="menu-grid menu-grid--how">
+        {steps.map((s) => (
+          <a href="#how-it-works" class="menu-step">
+            <span class="menu-step-num">{s.n}</span>
+            <strong>{s.title}</strong>
+            <span>{s.text}</span>
+          </a>
+        ))}
+      </div>
+      <a href="#how-it-works" class="menu-foot">See an example chat <span aria-hidden="true">&rarr;</span></a>
+    </div>
+
+    <div class="nav-menu" id="menu-services" hidden>
+      <div class="menu-grid menu-grid--services">
+        {services.map((sv) => (
+          <a class="menu-service" href={`${WA}?text=${encodeURIComponent(sv.ask)}`} target="_blank" rel="noopener">
+            <span class="menu-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={sv.icon} />
+            </span>
+            <span>
+              <strong>{sv.name}</strong>
+              <span>{sv.text}</span>
+            </span>
+          </a>
+        ))}
+      </div>
+      <a href={WA} class="menu-foot" target="_blank" rel="noopener">Something else? Describe any job in the chat <span aria-hidden="true">&rarr;</span></a>
+    </div>
+
+    <div class="nav-menu" id="menu-providers" hidden>
+      <div class="menu-grid menu-grid--providers">
+        <div class="menu-pro-card">
+          <span class="mono mono--yellow">For providers</span>
+          <strong>Grow your business on WhatsApp</strong>
+          <span>Booking requests from people nearby, straight to your chat.</span>
+          <a href={WA_PROVIDER} class="btn btn--yellow btn--sm" target="_blank" rel="noopener"><Fragment set:html={waIcon} />Join as a provider</a>
+        </div>
+        <ul class="menu-pro-list">
+          {proBenefits.slice(0, 3).map((b) => (
+            <li>
+              <span class="menu-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={b.icon} />
+              </span>
+              <span>
+                <strong>{b.title}</strong>
+                <span>{b.text}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <a href="#for-providers" class="menu-foot">How Hustlr works for providers <span aria-hidden="true">&rarr;</span></a>
+    </div>
+
+    <!-- Mobile menu -->
     <div class="nav-panel" id="navPanel" hidden>
-      <a href="#top">Home</a>
       <a href="#how-it-works">How it works</a>
       <a href="#services">Services</a>
       <a href="#for-providers">Providers</a>
       <a href="#questions">Questions</a>
       <div class="nav-panel-actions">
-        <a href={WA_PROVIDER} class="nav-panel-secondary" target="_blank" rel="noopener">Join as a provider →</a>
-        <a href={WA} class="btn btn--yellow" target="_blank" rel="noopener">Chat on WhatsApp</a>
+        <a href={WA_PROVIDER} class="nav-panel-secondary" target="_blank" rel="noopener">Join as a provider &rarr;</a>
+        <a href={WA} class="btn btn--yellow" target="_blank" rel="noopener"><Fragment set:html={waIcon} />Chat on WhatsApp</a>
       </div>
     </div>
   </header>
@@ -243,7 +292,7 @@ const faqs = [
           </h1>
           <p class="hero-sub">Plumbers, electricians, cleaners and tutors, found and booked in a WhatsApp chat.</p>
           <div class="hero-actions">
-            <a href={WA} class="btn btn--yellow btn--lg" target="_blank" rel="noopener">Chat on WhatsApp</a>
+            <a href={WA} class="btn btn--yellow" target="_blank" rel="noopener"><Fragment set:html={waIcon} />Chat on WhatsApp</a>
             <a href="#how-it-works" class="btn-circle" aria-label="See how it works">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
             </a>
@@ -486,7 +535,7 @@ const faqs = [
             <li><span class="mono">02</span>Get providers that suit your area</li>
             <li><span class="mono">03</span>Book from the same conversation</li>
           </ol>
-          <a href={WA} class="btn btn--dark" target="_blank" rel="noopener">Start a chat</a>
+          <a href={WA} class="btn btn--dark" target="_blank" rel="noopener"><Fragment set:html={waIcon} />Start a chat</a>
         </article>
 
         <article class="side side--dark">
@@ -498,7 +547,7 @@ const faqs = [
             <li><span class="mono">02</span>Tell Hustlr your trade and the areas you cover</li>
             <li><span class="mono">03</span>Receive booking requests on WhatsApp</li>
           </ol>
-          <a href={WA_PROVIDER} class="btn btn--yellow" target="_blank" rel="noopener">Join as a provider</a>
+          <a href={WA_PROVIDER} class="btn btn--yellow" target="_blank" rel="noopener"><Fragment set:html={waIcon} />Join as a provider</a>
         </article>
       </div>
     </section>
@@ -527,7 +576,7 @@ const faqs = [
               </li>
             ))}
           </ol>
-          <a href={WA_PROVIDER} class="btn btn--dark" target="_blank" rel="noopener">Join as a provider</a>
+          <a href={WA_PROVIDER} class="btn btn--dark" target="_blank" rel="noopener"><Fragment set:html={waIcon} />Join as a provider</a>
         </div>
 
         <div class="pro-preview" aria-label="Example of a booking request a provider receives on WhatsApp">
@@ -621,73 +670,188 @@ const faqs = [
         </div>
         <div class="hello-side">
           <p>Tell Hustlr what you need, or what you do. It takes one message.</p>
-          <a href={WA} class="btn btn--yellow" target="_blank" rel="noopener">Chat on WhatsApp</a>
+          <a href={WA} class="btn btn--yellow" target="_blank" rel="noopener"><Fragment set:html={waIcon} />Chat on WhatsApp</a>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="footer wrap-wide">
-    <div class="footer-left">
-      <a href="#top" class="footer-logo" aria-label="Hustlr home"><img src="/assets/logo-primary.svg" alt="Hustlr" width="117" height="42" /></a>
-      <span>Built by Zimnovate</span>
+  <footer class="footer wrap-wide" aria-label="Site footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#top" class="footer-logo" aria-label="Hustlr home">
+          <img src="/assets/logo-primary.svg" alt="Hustlr" width="122" height="44" />
+        </a>
+        <p class="footer-tagline">
+          Trusted plumbers, electricians, cleaners and tutors across Zimbabwe—found and booked inside a single WhatsApp chat.
+        </p>
+        <div class="footer-meta">
+          <span class="footer-status">
+            <span class="footer-status-dot" aria-hidden="true"></span>
+            <span>WhatsApp Bot Online · 24/7</span>
+          </span>
+          <a href={WA} class="footer-phone" target="_blank" rel="noopener">
+            <Fragment set:html={waIcon} />
+            <span>+263 78 683 5133</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <span class="mono footer-heading">01 / Services</span>
+        <ul>
+          <li><a href="#plumbers">Plumbers &amp; Pipework</a></li>
+          <li><a href="#electricians">Electricians &amp; Solar</a></li>
+          <li><a href="#cleaners">Home &amp; Office Cleaners</a></li>
+          <li><a href="#tutors">Private Tutors</a></li>
+          <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I need geyser or appliance repair')}`} target="_blank" rel="noopener">Geyser &amp; Appliance Repair</a></li>
+          <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I am looking for a service provider')}`} target="_blank" rel="noopener" class="footer-accent-link">Ask for another trade →</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <span class="mono footer-heading">02 / Product</span>
+        <ul>
+          <li><a href="#top">Home overview</a></li>
+          <li><a href="#how-it-works">How Hustlr works</a></li>
+          <li><a href="#services">Browse categories</a></li>
+          <li><a href="#providers">Customers vs Providers</a></li>
+          <li><a href="#why">Built for WhatsApp</a></li>
+          <li><a href="#questions">Common questions</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <span class="mono footer-heading">03 / For Providers</span>
+        <ul>
+          <li><a href="#for-providers">Provider overview</a></li>
+          <li><a href={WA_PROVIDER} target="_blank" rel="noopener">Register your business</a></li>
+          <li><a href="#for-providers">Verified business profiles</a></li>
+          <li><a href="#for-providers">Instant job alerts</a></li>
+          <li><a href="#for-providers">Customer favourites &amp; rebooking</a></li>
+          <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I need help updating my provider profile')}`} target="_blank" rel="noopener">Provider support</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <span class="mono footer-heading">04 / Areas Covered</span>
+        <ul>
+          <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I need a service provider in Harare')}`} target="_blank" rel="noopener">Harare &amp; Chitungwiza</a></li>
+          <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I need a service provider in Bulawayo')}`} target="_blank" rel="noopener">Bulawayo</a></li>
+          <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I need a service provider in Mutare')}`} target="_blank" rel="noopener">Mutare</a></li>
+          <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I need a service provider in Gweru')}`} target="_blank" rel="noopener">Gweru &amp; Kwekwe</a></li>
+          <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I need a service provider in Masvingo')}`} target="_blank" rel="noopener">Masvingo &amp; Vic Falls</a></li>
+          <li><span class="footer-pill-tag">Expanding nationwide</span></li>
+        </ul>
+      </div>
     </div>
-    <div class="footer-right">
-      <a href="/privacy">Privacy policy</a>
-      <a href={WA} target="_blank" rel="noopener">WhatsApp</a>
+
+    <div class="footer-prompts" aria-label="Quick WhatsApp starter prompts">
+      <span class="mono footer-prompts-label">Try one tap on WhatsApp:</span>
+      <div class="footer-prompts-list">
+        <a href={`${WA}?text=${encodeURIComponent('My geyser is leaking in Avondale')}`} target="_blank" rel="noopener">“My geyser is leaking in Avondale”</a>
+        <a href={`${WA}?text=${encodeURIComponent('I need home cleaning on Saturday')}`} target="_blank" rel="noopener">“I need home cleaning on Saturday”</a>
+        <a href={`${WA}?text=${encodeURIComponent('Looking for a maths tutor for Form 4')}`} target="_blank" rel="noopener">“Looking for a Form 4 Maths tutor”</a>
+        <a href={`${WA}?text=${encodeURIComponent('My solar inverter is beeping')}`} target="_blank" rel="noopener">“My solar inverter is beeping”</a>
+        <a href={WA_PROVIDER} target="_blank" rel="noopener">“Register my business as a provider”</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-bottom-left">
+        <span>© {new Date().getFullYear()} Hustlr. All rights reserved.</span>
+        <span class="footer-dot" aria-hidden="true">·</span>
+        <span>Built by <strong>Zimnovate</strong> in Zimbabwe</span>
+      </div>
+      <div class="footer-bottom-right">
+        <a href="/privacy">Privacy policy</a>
+        <a href="/privacy">Terms &amp; data use</a>
+        <a href={WA} target="_blank" rel="noopener">WhatsApp</a>
+        <a href="#top" class="footer-top-btn" aria-label="Back to top">
+          <span>Back to top</span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+        </a>
+      </div>
     </div>
   </footer>
 
   <script>
-    // ---- Nav: scrolled state, active-section indicator, mobile menu ----
+    // ---- Nav: light/dark state, active section, dropdowns, mobile menu ----
     const nav = document.getElementById('siteNav');
-    const links = [...document.querySelectorAll<HTMLAnchorElement>('.nav-links a')];
-    const indicator = document.querySelector<HTMLElement>('.nav-indicator');
+    const heroEl = document.getElementById('top');
+    const triggers = [...document.querySelectorAll<HTMLElement>('.nav-trigger')];
     const toggle = document.querySelector<HTMLButtonElement>('.nav-toggle');
     const panel = document.getElementById('navPanel');
 
-    const moveIndicator = (link?: HTMLAnchorElement) => {
-      if (!indicator || !link) return;
-      indicator.style.width = `${link.offsetWidth}px`;
-      indicator.style.transform = `translateX(${link.offsetLeft}px)`;
-    };
-    const setActive = (id: string) => {
-      links.forEach((a) => a.classList.toggle('is-active', a.dataset.section === id));
-      moveIndicator(links.find((a) => a.dataset.section === id));
-    };
-
+    // Over the dark hero the bar is see-through; after it, it turns light.
     const onScroll = () => {
       const y = window.scrollY;
       nav?.classList.toggle('is-scrolled', y > 20);
-      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-      const progress = Math.min(1, Math.max(0, y / maxScroll));
-      nav?.style.setProperty('--scroll-progress', progress.toFixed(4));
+      const heroEnd = (heroEl?.offsetHeight ?? 700) - 90;
+      nav?.classList.toggle('is-light', y > heroEnd);
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
 
-    const sections = links
-      .map((a) => document.getElementById(a.dataset.section || ''))
-      .filter((el): el is HTMLElement => !!el);
     // Active section = the last one whose top has passed 40% of the viewport
+    const sections = triggers
+      .map((t) => document.getElementById(t.dataset.section || ''))
+      .filter((el): el is HTMLElement => !!el);
     let current = '';
     const pickActive = () => {
       const line = window.innerHeight * 0.4;
-      let id = 'top';
+      let id = '';
       sections.forEach((el) => {
         if (el.getBoundingClientRect().top <= line) id = el.id;
       });
       if (id !== current) {
         current = id;
-        setActive(id);
+        triggers.forEach((t) => t.classList.toggle('is-active', t.dataset.section === id));
       }
     };
     window.addEventListener('scroll', () => requestAnimationFrame(pickActive), { passive: true });
-    window.addEventListener('resize', () => moveIndicator(links.find((a) => a.classList.contains('is-active'))));
-    document.fonts?.ready.then(() => { current = ''; pickActive(); });
     pickActive();
 
-    const closeMenu = () => {
+    // Dropdown panels: open on hover (mouse) or click (touch/keyboard)
+    const menuTriggers = triggers.filter((t) => t.dataset.menu);
+    let closeTimer = 0;
+    const closeMenus = () => {
+      menuTriggers.forEach((t) => {
+        t.setAttribute('aria-expanded', 'false');
+        const m = document.getElementById(t.dataset.menu || '');
+        if (m) m.hidden = true;
+      });
+      nav?.classList.remove('has-menu');
+    };
+    const openMenu = (t: HTMLElement) => {
+      window.clearTimeout(closeTimer);
+      menuTriggers.forEach((o) => {
+        const isThis = o === t;
+        o.setAttribute('aria-expanded', String(isThis));
+        const m = document.getElementById(o.dataset.menu || '');
+        if (m) m.hidden = !isThis;
+      });
+      nav?.classList.add('has-menu');
+    };
+    const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    menuTriggers.forEach((t) => {
+      t.addEventListener('click', () => (t.getAttribute('aria-expanded') === 'true' ? closeMenus() : openMenu(t)));
+      if (canHover) t.addEventListener('pointerenter', () => openMenu(t));
+    });
+    if (canHover) {
+      nav?.addEventListener('pointerleave', () => {
+        closeTimer = window.setTimeout(closeMenus, 180);
+      });
+      nav?.addEventListener('pointerenter', () => window.clearTimeout(closeTimer));
+      document.querySelector('.nav-trigger[href]')?.addEventListener('pointerenter', closeMenus);
+    }
+    document.querySelectorAll('.nav-menu a').forEach((a) => a.addEventListener('click', closeMenus));
+    document.addEventListener('click', (e) => {
+      if (nav && !nav.contains(e.target as Node)) closeMenus();
+    });
+
+    // Mobile menu
+    const closeMobile = () => {
       if (!toggle || !panel) return;
       toggle.setAttribute('aria-expanded', 'false');
       toggle.setAttribute('aria-label', 'Open menu');
@@ -702,9 +866,13 @@ const faqs = [
       toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
       nav?.classList.toggle('is-open', open);
     });
-    panel?.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeMenu));
-    nav?.addEventListener('focusin', () => nav.classList.remove('is-hidden'));
-    document.addEventListener('keydown', (e) => e.key === 'Escape' && closeMenu());
+    panel?.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeMobile));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeMenus();
+        closeMobile();
+      }
+    });
 
     // ---- Tilt the 3D phones toward the pointer ----
     const hero = document.querySelector<HTMLElement>('.hero');
