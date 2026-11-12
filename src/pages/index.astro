@@ -553,15 +553,12 @@ const faqs = [
       moveIndicator(links.find((a) => a.dataset.section === id));
     };
 
-    let lastY = window.scrollY;
     const onScroll = () => {
       const y = window.scrollY;
-      nav?.classList.toggle('is-scrolled', y > 24);
-      // hide while scrolling down past the hero's top, show again on any scroll up
-      if (Math.abs(y - lastY) > 6) {
-        nav?.classList.toggle('is-hidden', y > lastY && y > 240);
-        lastY = y;
-      }
+      nav?.classList.toggle('is-scrolled', y > 20);
+      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const progress = Math.min(1, Math.max(0, y / maxScroll));
+      nav?.style.setProperty('--scroll-progress', progress.toFixed(4));
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
