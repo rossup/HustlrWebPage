@@ -178,39 +178,41 @@ const faqs = [
     <div class="nav-shell">
       <div class="nav-brand">
         <a href="#top" class="nav-logo" aria-label="Hustlr home">
-          <img src="/assets/logo-reverse.svg" alt="Hustlr" width="104" height="36" />
+          <img src="/assets/logo-reverse.svg" alt="Hustlr" width="106" height="36" />
         </a>
-        <span class="nav-divider" aria-hidden="true"></span>
-        <span class="nav-status" title="WhatsApp assistant live across Zimbabwe">
-          <span class="nav-status-dot" aria-hidden="true"></span>
-          <span>ZW · Live</span>
-        </span>
       </div>
 
       <nav class="nav-links" aria-label="Primary">
-        <span class="nav-indicator" aria-hidden="true"></span>
-        <a href="#top" data-section="top" class="is-active">Home</a>
-        <a href="#how-it-works" data-section="how-it-works">How it works</a>
-        <a href="#services" data-section="services">Services</a>
-        <a href="#for-providers" data-section="for-providers">Providers</a>
-        <a href="#questions" data-section="questions">Questions</a>
+        <a href="#how-it-works" data-section="how-it-works" class="is-active">
+          <span>How it works</span>
+          <svg class="nav-link-chevron" width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 4.5 3 3 3-3"/></svg>
+        </a>
+        <a href="#services" data-section="services">
+          <span>Services</span>
+          <svg class="nav-link-chevron" width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 4.5 3 3 3-3"/></svg>
+        </a>
+        <a href="#for-providers" data-section="for-providers">
+          <span>Providers</span>
+          <svg class="nav-link-chevron" width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 4.5 3 3 3-3"/></svg>
+        </a>
+        <a href="#questions" data-section="questions">
+          <span>Questions</span>
+        </a>
       </nav>
 
       <div class="nav-right">
+        <a href="#services" class="nav-icon-btn" aria-label="Browse services" title="Browse services">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        </a>
+        <span class="nav-divider" aria-hidden="true"></span>
         <a href={WA_PROVIDER} class="nav-ghost" target="_blank" rel="noopener">Join as pro</a>
         <a href={WA} class="nav-cta" target="_blank" rel="noopener">
-          <span class="nav-cta-icon" aria-hidden="true">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg>
-          </span>
           <span class="nav-cta-label">Chat on WhatsApp</span>
-          <svg class="nav-cta-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>
         </a>
         <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navPanel">
           <span></span><span></span>
         </button>
       </div>
-
-      <span class="nav-progress" aria-hidden="true"></span>
     </div>
 
     <div class="nav-panel" id="navPanel" hidden>
