@@ -132,14 +132,20 @@ const faqs = [
         </div>
 
         <div class="hero-visual" aria-hidden="true">
+          <div class="hero-3d-pedestal"></div>
           {phones.map((ph) => (
             <div class={`phone3d phone3d--${ph.kind}`}>
+              <div class="phone3d-shadow"></div>
               <div class="phone3d-body">
                 {depth.map((i) => <span class="phone3d-layer" style={`--i:${i}`}></span>)}
                 <span class="phone3d-btn phone3d-btn--power"></span>
                 <span class="phone3d-btn phone3d-btn--vol-up"></span>
                 <span class="phone3d-btn phone3d-btn--vol-down"></span>
+                <span class="phone3d-ports">
+                  <i></i><i></i><i></i><b class="phone3d-usb"></b><i></i><i></i><i></i>
+                </span>
                 <div class="phone">
+                  <span class="phone-cam"></span>
                   <div class="phone-screen">
                     <div class="wa">
                       <div class="wa-status">
