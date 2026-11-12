@@ -33,8 +33,8 @@ const phones = [
   { kind: 'front', clock: '15:45', messages: chat, fab: false },
 ];
 
-// Stacked layers that give each phone its physical 3D thickness.
-const depth = Array.from({ length: 24 }, (_, i) => i);
+// Stacked layers that give each phone its physical 3D titanium thickness.
+const depth = Array.from({ length: 20 }, (_, i) => i);
 const WA_PROVIDER = `${WA}?text=${encodeURIComponent('Hi Hustlr, I want to register as a service provider')}`;
 
 const steps = [
@@ -138,14 +138,23 @@ const faqs = [
               <div class="phone3d-shadow"></div>
               <div class="phone3d-body">
                 {depth.map((i) => <span class="phone3d-layer" style={`--i:${i}`}></span>)}
+                <span class="phone3d-antenna phone3d-antenna--top"></span>
+                <span class="phone3d-antenna phone3d-antenna--bottom"></span>
                 <span class="phone3d-btn phone3d-btn--power"></span>
-                <span class="phone3d-btn phone3d-btn--vol-up"></span>
-                <span class="phone3d-btn phone3d-btn--vol-down"></span>
+                <span class="phone3d-btn phone3d-btn--cam-control"></span>
                 <span class="phone3d-ports">
-                  <i></i><i></i><i></i><b class="phone3d-usb"></b><i></i><i></i><i></i>
+                  <i></i><i></i><i></i><i></i>
+                  <u class="phone3d-screw"></u>
+                  <b class="phone3d-usb"></b>
+                  <u class="phone3d-screw"></u>
+                  <i></i><i></i><i></i><i></i>
                 </span>
                 <div class="phone">
-                  <span class="phone-cam"></span>
+                  <span class="phone-earpiece"></span>
+                  <span class="phone-island">
+                    <i class="phone-island-ir"></i>
+                    <i class="phone-island-lens"></i>
+                  </span>
                   <div class="phone-screen">
                     <div class="wa">
                       <div class="wa-status">

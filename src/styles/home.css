@@ -379,29 +379,30 @@ ol {
   pointer-events: none;
 }
 
-/* Soft volumetric studio backlight behind the 3D phones so the metallic rims pop */
+/* Soft volumetric studio backlight behind the 3D phones so the Glacier Blue Titanium rims pop */
 .hero-3d-pedestal {
   position: absolute;
-  left: 155px;
-  top: 40px;
-  width: 540px;
-  height: 520px;
+  left: 150px;
+  top: 36px;
+  width: 550px;
+  height: 530px;
   border-radius: 50%;
   background:
-    radial-gradient(circle at 46% 44%, rgba(61, 204, 141, 0.22) 0%, rgba(20, 96, 62, 0.12) 42%, transparent 72%);
-  filter: blur(28px);
+    radial-gradient(circle at 46% 42%, rgba(148, 197, 237, 0.22) 0%, rgba(61, 204, 141, 0.12) 44%, transparent 72%);
+  filter: blur(30px);
   z-index: 0;
 }
 
-/* ---- 3D phones ----
-   Each phone is a solid 3D machined object: 24 extruded metallic slabs form
-   the right & bottom 3D chassis walls, with tactile side buttons, bottom USB-C
-   & speaker ports, recessed glass bezel, and dynamic specular glare. */
+/* ---- 3D phones (Apple iPhone 18 Pro Max — Glacier Blue Titanium) ----
+   20 extruded Grade-5 Titanium slabs form the contoured right & bottom 3D rails,
+   complete with polymer antenna breaks, Side Power button, flush sapphire
+   Camera Control button, bottom USB-C + pentalobe screws, ultra-thin OLED bezel,
+   and Dynamic Island. */
 .phone3d {
   position: absolute;
   width: 250px;
   height: 525px;
-  perspective: 1150px;
+  perspective: 1200px;
   animation: phone-float 7s ease-in-out infinite;
 }
 .phone3d--front {
@@ -419,9 +420,9 @@ ol {
 /* Ground & inter-phone 3D occlusion shadow */
 .phone3d-shadow {
   position: absolute;
-  inset: 24px -18px -34px 28px;
-  border-radius: 48px;
-  background: radial-gradient(ellipse at center, rgba(2, 10, 6, 0.78) 0%, rgba(2, 10, 6, 0.38) 52%, transparent 76%);
+  inset: 22px -18px -34px 26px;
+  border-radius: 52px;
+  background: radial-gradient(ellipse at center, rgba(2, 8, 12, 0.82) 0%, rgba(2, 8, 12, 0.42) 52%, transparent 76%);
   filter: blur(22px);
   transform: rotateZ(16deg) skewX(-12deg);
   z-index: -1;
@@ -437,178 +438,222 @@ ol {
   inset: 0;
   transform-style: preserve-3d;
   transform:
-    rotateX(calc(20deg + var(--tilt-x)))
-    rotateY(calc(-29deg + var(--tilt-y)))
-    rotateZ(15deg);
+    rotateX(calc(19deg + var(--tilt-x)))
+    rotateY(calc(-28deg + var(--tilt-y)))
+    rotateZ(14deg);
   transition: transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 .phone3d--back .phone3d-body {
   transform:
-    rotateX(calc(22deg + var(--tilt-x)))
-    rotateY(calc(-33deg + var(--tilt-y)))
-    rotateZ(18deg)
+    rotateX(calc(21deg + var(--tilt-x)))
+    rotateY(calc(-32deg + var(--tilt-y)))
+    rotateZ(17deg)
     scale(0.94);
 }
 
-/* 24 stacked 3D slabs with oblique XYZ extrusion so both the right metallic rail
-   and bottom 3D thickness wall read unmistakably as a solid 3D hardware block. */
+/* 20 stacked 3D slabs in Glacier Blue Grade-5 Brushed Titanium */
 .phone3d-layer {
   position: absolute;
   inset: 0;
-  border-radius: 42px;
+  border-radius: 48px;
   background: linear-gradient(
-    152deg,
-    #88c7a8 0%,
-    #4c8569 18%,
-    #26503c 42%,
-    #132e21 65%,
-    #3b6f56 84%,
-    #7ec0a0 100%
+    154deg,
+    #d0e4f4 0%,
+    #92b3ce 15%,
+    #587894 34%,
+    #283c4f 56%,
+    #182635 71%,
+    #4c6b86 86%,
+    #a8c6df 100%
   );
-  box-shadow: inset -1px -1px 0 rgba(215, 250, 232, 0.18);
   transform: translate3d(
-    calc(var(--i) * 0.92px),
-    calc(var(--i) * 0.66px),
-    calc(var(--i) * -1.3px - 1px)
+    calc(var(--i) * 0.78px),
+    calc(var(--i) * 0.52px),
+    calc(var(--i) * -1.15px - 1px)
   );
 }
 
-/* Front diamond-cut chamfer bevel (layers 0-1) */
+/* Front contoured titanium chamfer (layers 0-1) */
 .phone3d-layer[style="--i:0"],
 .phone3d-layer[style="--i:1"] {
-  background: linear-gradient(145deg, #e5fff2 0%, #8ed6b3 32%, #4a8569 68%, #c2f5dc 100%);
-  box-shadow: inset -1.5px -1.5px 0 rgba(255, 255, 255, 0.65);
+  background: linear-gradient(145deg, #f4faff 0%, #b0cde4 30%, #5e7e99 66%, #d9ecfc 100%);
 }
 
-/* Subtle machined anodized groove bands along the 3D rail */
-.phone3d-layer[style="--i:7"],
-.phone3d-layer[style="--i:15"] {
-  background: linear-gradient(152deg, #a6e3c5 0%, #5b997b 24%, #1b3d2d 55%, #528e71 85%, #99d9ba 100%);
-}
-.phone3d-layer[style="--i:11"],
-.phone3d-layer[style="--i:12"] {
-  background: linear-gradient(152deg, #52876d 0%, #2b5440 30%, #0e2419 62%, #244937 88%, #497d63 100%);
+/* Rear contoured titanium chamfer (layers 17-18) */
+.phone3d-layer[style="--i:17"],
+.phone3d-layer[style="--i:18"] {
+  background: linear-gradient(145deg, #c2dcf0 0%, #4e6d87 50%, #9fc0db 100%);
 }
 
-/* Rear diamond-cut chamfer rim (layers 21-22) */
-.phone3d-layer[style="--i:21"],
-.phone3d-layer[style="--i:22"] {
-  background: linear-gradient(145deg, #a4e0c2 0%, #437a60 50%, #8fd1b0 100%);
-  box-shadow: inset -1px -1px 0 rgba(220, 255, 236, 0.42);
-}
-
-/* Backplate slab (layer 23) + multi-stage 3D elevation & rim shadows */
-.phone3d-layer[style="--i:23"] {
-  background: #122a1e;
+/* Backplate slab (layer 19) + multi-stage 3D studio shadows */
+.phone3d-layer[style="--i:19"] {
+  background: #1a2a3a;
   box-shadow:
-    0 0 0 1.5px rgba(142, 214, 179, 0.42),
-    14px 24px 36px rgba(0, 0, 0, 0.72),
-    30px 52px 76px rgba(2, 10, 6, 0.82),
-    4px 8px 24px rgba(61, 204, 141, 0.22);
+    0 0 0 1.2px rgba(176, 205, 228, 0.48),
+    14px 24px 36px rgba(0, 0, 0, 0.74),
+    30px 52px 78px rgba(2, 8, 14, 0.84),
+    4px 8px 26px rgba(138, 184, 222, 0.2);
 }
 
-/* Tactile 3D hardware buttons protruding from the visible right sidewall */
+/* Matte Glacier-Grey polymer antenna split bands across the titanium sidewall */
+.phone3d-antenna {
+  position: absolute;
+  right: -11px;
+  width: 12px;
+  height: 3.5px;
+  border-radius: 1px;
+  background: linear-gradient(90deg, rgba(214, 230, 242, 0.75), rgba(71, 95, 115, 0.85));
+  transform: translate3d(4px, 3px, -9px);
+  opacity: 0.85;
+}
+.phone3d-antenna--top { top: 58px; }
+.phone3d-antenna--bottom { bottom: 58px; }
+
+/* Tactile iPhone 18 Pro Max right-rail buttons (Side Power + Sapphire Camera Control) */
 .phone3d-btn {
   position: absolute;
-  right: -13px;
-  width: 8px;
-  border-radius: 3px 5px 5px 3px;
-  background: linear-gradient(180deg, #d8faea 0%, #6da98c 38%, #214634 78%, #8fd1b0 100%);
+  right: -11px;
+  width: 6.5px;
+  border-radius: 2px 4px 4px 2px;
+  background: linear-gradient(180deg, #eff7ff 0%, #8eb0cc 36%, #293e52 76%, #b2cfe6 100%);
   box-shadow:
-    inset -1px 1px 0 rgba(255, 255, 255, 0.75),
-    2px 4px 6px rgba(0, 0, 0, 0.55);
-  transform: translate3d(9px, 6px, -12px);
-}
-.phone3d-btn--vol-up {
-  top: 108px;
-  height: 44px;
-}
-.phone3d-btn--vol-down {
-  top: 162px;
-  height: 44px;
+    inset -1px 1px 0 rgba(255, 255, 255, 0.82),
+    2px 3px 5px rgba(0, 0, 0, 0.55);
+  transform: translate3d(7px, 4.5px, -10px);
 }
 .phone3d-btn--power {
-  top: 232px;
-  height: 64px;
-  background: linear-gradient(180deg, #fff3b8 0%, #f4c20d 42%, #9c7800 80%, #ffe47a 100%);
+  top: 142px;
+  height: 58px;
+}
+/* Flush Sapphire Crystal Camera Control button on lower-right rail */
+.phone3d-btn--cam-control {
+  top: 310px;
+  width: 5px;
+  height: 44px;
+  border-radius: 2px 3px 3px 2px;
+  background: linear-gradient(180deg, #1b2c3d 0%, #0d1824 50%, #273e54 100%);
+  box-shadow:
+    0 0 0 1px rgba(190, 218, 240, 0.78),
+    inset -0.5px 0 1px rgba(147, 197, 253, 0.55);
+  transform: translate3d(6px, 4px, -10px);
 }
 
-/* Bottom 3D USB-C port & speaker grille array along the visible bottom wall */
+/* Bottom 3D Titanium rail: speaker dots + pentalobe screws + USB-C port */
 .phone3d-ports {
   position: absolute;
   left: 50%;
-  bottom: -11px;
+  bottom: -9px;
   display: flex;
   align-items: center;
-  gap: 5px;
-  transform: translate3d(-42%, 4px, -14px);
+  gap: 4px;
+  transform: translate3d(-44%, 3px, -11px);
 }
 .phone3d-ports i {
-  width: 4px;
-  height: 4px;
+  width: 3.5px;
+  height: 3.5px;
   border-radius: 50%;
-  background: #07140e;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.9), 0 1px 0 rgba(190, 240, 215, 0.35);
+  background: #0c151e;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.95), 0 0.8px 0 rgba(200, 224, 242, 0.42);
+}
+.phone3d-screw {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #8aa6be 0%, #2d4256 80%);
+  text-decoration: none;
 }
 .phone3d-usb {
-  width: 24px;
-  height: 6px;
-  margin: 0 4px;
+  width: 22px;
+  height: 5.5px;
+  margin: 0 2px;
   border-radius: 99px;
-  background: #05100b;
+  background: #070e14;
   box-shadow:
     inset 0 1px 2px rgba(0, 0, 0, 0.95),
-    0 0 0 1px rgba(185, 238, 212, 0.38);
+    0 0 0 1.2px rgba(198, 222, 240, 0.62);
 }
 
-/* Front face: recessed ceramic glass + multi-ring metallic bezel */
+/* Front face: ultra-thin iPhone 18 Pro Max OLED border + Glacier Titanium outer lip */
 .phone {
   position: absolute;
   inset: 0;
-  padding: 8px;
-  border-radius: 42px;
-  background: linear-gradient(160deg, #163828 0%, #071710 48%, #0d2419 100%);
+  padding: 6px;
+  border-radius: 48px;
+  background: #030508;
   box-shadow:
-    inset 0 0 0 1.8px rgba(220, 252, 235, 0.65),
-    inset 2px 2px 0 rgba(255, 255, 255, 0.3),
-    inset 0 0 0 3.5px #06130d,
-    0 2px 6px rgba(0, 0, 0, 0.45);
-  transform: translateZ(1.5px);
+    inset 0 0 0 1.6px rgba(216, 236, 252, 0.78),
+    inset 1.5px 1.5px 0 rgba(255, 255, 255, 0.42),
+    inset 0 0 0 3px #182634,
+    0 2px 6px rgba(0, 0, 0, 0.5);
+  transform: translateZ(1.2px);
 }
 .phone::after {
-  /* crisp multi-band studio glass reflection across the screen */
+  /* Ceramic Shield studio softbox glass reflection */
   content: '';
   position: absolute;
-  inset: 8px;
-  border-radius: 34px;
+  inset: 6px;
+  border-radius: 42px;
   background:
     linear-gradient(
-      118deg,
-      rgba(255, 255, 255, 0.24) 0%,
-      rgba(255, 255, 255, 0.07) 22%,
-      rgba(255, 255, 255, 0) 40%,
-      rgba(61, 204, 141, 0.05) 78%,
-      rgba(255, 255, 255, 0.1) 100%
+      116deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(216, 236, 255, 0.06) 22%,
+      rgba(255, 255, 255, 0) 38%,
+      rgba(168, 208, 240, 0.04) 78%,
+      rgba(255, 255, 255, 0.09) 100%
     );
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.32);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28);
   pointer-events: none;
   z-index: 4;
 }
 
-/* Front punch-hole camera lens at top center of the screen */
-.phone-cam {
+/* Micro-machined top earpiece speaker slit on the upper bezel hairline */
+.phone-earpiece {
   position: absolute;
-  top: 15px;
+  top: 4px;
   left: 50%;
   transform: translateX(-50%);
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #38bdf8 0%, #0f172a 45%, #020617 100%);
+  width: 34px;
+  height: 2px;
+  border-radius: 99px;
+  background: #0b1118;
+  box-shadow: 0 0.6px 0 rgba(216, 236, 252, 0.32);
+  z-index: 6;
+}
+
+/* Iconic pill-shaped iPhone Pro Max Dynamic Island */
+.phone-island {
+  position: absolute;
+  top: 11px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 64px;
+  height: 17px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: #000000;
   box-shadow:
-    0 0 0 1.5px rgba(255, 255, 255, 0.12),
-    inset 0 1px 2px rgba(255, 255, 255, 0.45);
-  z-index: 5;
+    0 0 0 0.8px rgba(255, 255, 255, 0.07),
+    inset 0 1px 2px rgba(0, 0, 0, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 6;
+}
+.phone-island-ir {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #182235 0%, #05070c 78%);
+}
+.phone-island-lens {
+  width: 8.5px;
+  height: 8.5px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 34%, #60a5fa 0%, #1d4ed8 38%, #060b19 82%);
+  box-shadow:
+    inset 0 0 0 0.8px rgba(147, 197, 253, 0.4),
+    0 0 2px rgba(59, 130, 246, 0.35);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -619,15 +664,15 @@ ol {
 .phone-screen {
   position: relative;
   height: 100%;
-  border-radius: 33px;
+  border-radius: 42px;
   overflow: hidden;
   background: #0b1014;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
 }
 
 /* ---- WhatsApp screen ----
    Built at the real screenshot size (540 × 1170, Android dark mode)
-   and scaled down to the phone's 234px-wide screen. */
+   and scaled down to the phone's 238px-wide edge-to-edge Pro Max screen. */
 .wa {
   --wa-bg: #0b1014;
   --wa-out: #134d37;
@@ -641,7 +686,7 @@ ol {
   height: 1170px;
   display: flex;
   flex-direction: column;
-  transform: scale(calc(234 / 540));
+  transform: scale(calc(238 / 540));
   transform-origin: 0 0;
   background: var(--wa-bg);
   color: var(--wa-text);

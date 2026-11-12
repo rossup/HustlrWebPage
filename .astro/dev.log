@@ -1,6 +1,5 @@
 {"message":"connected.","label":"vite","level":"info"}
-{"message":"Generated 15ms","label":"types","level":"info"}
+{"message":"Generated 4ms","label":"types","level":"info"}
 {"message":"connected.","label":"vite","level":"info"}
-{"message":"Port 4321 is in use, trying another one...","label":"vite","level":"info"}
-{"message":" astro  v7.4.2 ready in 4354 ms\n┃ Local    http://localhost:4322/\n┃ Network  use --host to expose","label":"SKIP_FORMAT","level":"info"}
+{"message":" astro  v7.4.11 ready in 548 ms\n┃ Local    http://localhost:4321/\n┃ Network  use --host to expose","label":"SKIP_FORMAT","level":"info"}
 {"message":"watching for file changes...","label":null,"level":"info"}
