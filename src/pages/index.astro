@@ -49,6 +49,70 @@ const howSteps = [
   { n: '03', title: 'Book it', text: 'Pick one and Hustlr sets it up. The provider messages you to confirm the details.' },
 ];
 
+const services = [
+  {
+    id: 'plumbers',
+    name: 'Plumbers',
+    text: 'Leaks, burst pipes, geysers, blocked drains and new fittings.',
+    ask: 'My geyser is leaking in Avondale',
+    icon: '<path d="M12 3c3.5 4.2 6 7.6 6 10.6A6 6 0 0 1 6 13.6C6 10.6 8.5 7.2 12 3z"/><path d="M9.5 14.5a2.6 2.6 0 0 0 2.5 2.4"/>',
+  },
+  {
+    id: 'electricians',
+    name: 'Electricians',
+    text: 'Faults, wiring, plugs, lights and new installations.',
+    ask: 'The plugs in my kitchen stopped working',
+    icon: '<path d="M13 2.5 5 13.5h6l-1 8 8-11h-6z"/>',
+  },
+  {
+    id: 'cleaners',
+    name: 'Cleaners',
+    text: 'Homes, offices, carpets and after-renovation cleaning.',
+    ask: 'I need home cleaning on Saturday',
+    icon: '<path d="M4 20.5h16"/><path d="M7 20.5l1.2-6h7.6l1.2 6"/><path d="M12 14.5V3.5"/><path d="M18.5 4.5l.5 1.3 1.3.5-1.3.5-.5 1.3-.5-1.3-1.3-.5 1.3-.5z"/>',
+  },
+  {
+    id: 'tutors',
+    name: 'Tutors',
+    text: 'Help with school subjects, homework and exam preparation.',
+    ask: 'Looking for a maths tutor for Form 4',
+    icon: '<path d="M2.5 9 12 4.5 21.5 9 12 13.5z"/><path d="M6.5 11v4.5c1.6 1.4 3.5 2 5.5 2s3.9-.6 5.5-2V11"/><path d="M21.5 9v5"/>',
+  },
+];
+
+const reasons = [
+  {
+    title: 'No app to install',
+    text: 'If WhatsApp is on your phone, Hustlr is too. Nothing to download, no account to create.',
+    icon: '<rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 18.5h3"/>',
+  },
+  {
+    title: 'Just type it',
+    text: 'No menus or forms. Describe the job the way you would tell a friend.',
+    icon: '<path d="M4 5.5h16v10H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/>',
+  },
+  {
+    title: 'Light on data',
+    text: 'Everything happens in text messages, so a small data bundle goes a long way.',
+    icon: '<path d="M2.5 9a14 14 0 0 1 19 0"/><path d="M5.5 12.5a9.5 9.5 0 0 1 13 0"/><path d="M8.7 16a5 5 0 0 1 6.6 0"/><circle cx="12" cy="19.2" r="1"/>',
+  },
+  {
+    title: 'See who you are booking',
+    text: 'Each provider comes with their category, the areas they cover and what they do.',
+    icon: '<circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/>',
+  },
+  {
+    title: 'Nothing happens until you say yes',
+    text: 'Hustlr shows you the booking details first. Reply YES to book, or NO to cancel.',
+    icon: '<circle cx="12" cy="12" r="9"/><path d="m8 12.3 2.7 2.7L16.2 9.5"/>',
+  },
+  {
+    title: 'Rebook in one reply',
+    text: 'Liked the work? Reply SAVE to keep that provider in your favourites for next time.',
+    icon: '<path d="M12 20s-7.5-4.4-7.5-10A4.3 4.3 0 0 1 12 7.4 4.3 4.3 0 0 1 19.5 10c0 5.6-7.5 10-7.5 10z"/>',
+  },
+];
+
 const faqs = [
   {
     q: 'Do I need to install anything?',
@@ -81,6 +145,7 @@ const faqs = [
         <span class="nav-indicator" aria-hidden="true"></span>
         <a href="#top" data-section="top" class="is-active">Home</a>
         <a href="#how-it-works" data-section="how-it-works">How it works</a>
+        <a href="#services" data-section="services">Services</a>
         <a href="#providers" data-section="providers">Providers</a>
         <a href="#questions" data-section="questions">Questions</a>
       </nav>
@@ -102,6 +167,7 @@ const faqs = [
     <div class="nav-panel" id="navPanel" hidden>
       <a href="#top">Home</a>
       <a href="#how-it-works">How it works</a>
+      <a href="#services">Services</a>
       <a href="#providers">Providers</a>
       <a href="#questions">Questions</a>
       <a href={WA} class="btn btn--yellow" target="_blank" rel="noopener">Chat on WhatsApp</a>
@@ -313,11 +379,44 @@ const faqs = [
       </div>
     </section>
 
+    <!-- ============================== SERVICES ============================== -->
+    <section class="section wrap-wide" id="services">
+      <div class="section-head">
+        <div>
+          <span class="mono mono--green">02 / What you can book</span>
+          <h2>Services</h2>
+        </div>
+        <p>Start with one of these, or just describe the job. Tap a card to open WhatsApp with the message ready to send.</p>
+      </div>
+
+      <div class="services-grid">
+        {services.map((sv) => (
+          <a
+            class="service-card"
+            href={`${WA}?text=${encodeURIComponent(sv.ask)}`}
+            target="_blank"
+            rel="noopener"
+          >
+            <span class="service-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={sv.icon} />
+            </span>
+            <h3>{sv.name}</h3>
+            <p>{sv.text}</p>
+            <span class="service-ask">
+              <span class="mono">Try saying</span>
+              <span class="service-bubble">“{sv.ask}”</span>
+            </span>
+            <span class="service-link">Ask on WhatsApp <span aria-hidden="true">&rarr;</span></span>
+          </a>
+        ))}
+      </div>
+    </section>
+
     <!-- ============================== ONE CHAT, TWO SIDES ============================== -->
     <section class="section wrap-wide" id="providers">
       <div class="section-head">
         <div>
-          <span class="mono mono--green">02 / Made for both sides</span>
+          <span class="mono mono--green">03 / Made for both sides</span>
           <h2>One chat, two sides</h2>
         </div>
         <p>Whether you need the work or do the work, you start the same way: by saying hello.</p>
@@ -350,10 +449,34 @@ const faqs = [
       </div>
     </section>
 
+    <!-- ============================== BUILT FOR WHATSAPP ============================== -->
+    <section class="section wrap-wide" id="why">
+      <div class="why">
+        <div class="section-head section-head--dark">
+          <div>
+            <span class="mono mono--yellow">04 / Why it works</span>
+            <h2>Built for WhatsApp</h2>
+          </div>
+          <p>The way people already find help: ask someone. Hustlr just makes sure the right person answers.</p>
+        </div>
+        <ul class="why-grid">
+          {reasons.map((r) => (
+            <li>
+              <span class="why-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={r.icon} />
+              </span>
+              <h3>{r.title}</h3>
+              <p>{r.text}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
     <!-- ============================== QUESTIONS ============================== -->
     <section class="section wrap-wide faq" id="questions">
       <div class="faq-intro">
-        <span class="mono mono--green">03 / Good to know</span>
+        <span class="mono mono--green">05 / Good to know</span>
         <h2>Questions</h2>
         <p>The short answers. For anything else, ask in the chat.</p>
       </div>
