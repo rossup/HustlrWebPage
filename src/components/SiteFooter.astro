@@ -1,102 +1,50 @@
 ---
 // Site-wide footer: used on every page.
-// Compact: logo + contact, four link columns, a cropped logo band, then the bottom bar.
-import { WA, WA_PROVIDER, waIcon } from '../data/site';
+import { WA, WA_PROVIDER, services } from '../data/site';
+import '../styles/redesign.css';
+
+const areas = ['Harare & Chitungwiza', 'Bulawayo', 'Mutare', 'Gweru & Kwekwe', 'Masvingo & Vic Falls'];
+const year = new Date().getFullYear();
 ---
 
-<footer class="footer" aria-label="Site footer">
-  <div class="wrap-wide">
-    <div class="footer-top">
-      <div class="footer-lead">
-        <a href="/" class="footer-logo" aria-label="Hustlr home">
-          <img src="/assets/logo-reverse.svg" alt="Hustlr" width="106" height="38" />
-        </a>
-        <p class="footer-tagline">
-          Trusted plumbers, electricians, cleaners and tutors across Zimbabwe—found and booked inside a single WhatsApp chat.
-        </p>
-        <div class="footer-meta">
-          <span class="footer-status">
-            <span class="footer-status-dot" aria-hidden="true"></span>
-            <span>WhatsApp Bot Online · 24/7</span>
-          </span>
-          <a href={WA} class="footer-phone" target="_blank" rel="noopener">
-            <Fragment set:html={waIcon} />
-            <span>+263 71 935 1207</span>
-          </a>
-        </div>
+<footer class="rd-footer" aria-label="Site footer">
+  <div class="rd-wrap">
+    <div class="rd-footer-top">
+      <div class="rd-footer-brand">
+        <a href="/" aria-label="Hustlr home"><img src="/assets/logo-reverse.svg" alt="Hustlr" width="100" height="36" /></a>
+        <p>Trusted plumbers, electricians, cleaners and tutors across Zimbabwe, found and booked in one WhatsApp chat.</p>
       </div>
 
-      <div class="footer-cols">
-        <div class="footer-col">
-          <span class="mono footer-heading">Services</span>
-          <ul>
-            <li><a href="/#plumbers">Plumbers &amp; Pipework</a></li>
-            <li><a href="/#electricians">Electricians &amp; Solar</a></li>
-            <li><a href="/#cleaners">Home &amp; Office Cleaners</a></li>
-            <li><a href="/#tutors">Private Tutors</a></li>
-            <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I need geyser or appliance repair')}`} target="_blank" rel="noopener">Geyser &amp; Appliance Repair</a></li>
-            <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I am looking for a service provider')}`} target="_blank" rel="noopener" class="footer-accent-link">Ask for another trade →</a></li>
-          </ul>
+      <div class="rd-footer-cols">
+        <div class="rd-footer-col">
+          <h2>Services</h2>
+          {services.map((s) => <a href="/#services">{s.name}</a>)}
         </div>
-
-        <div class="footer-col">
-          <span class="mono footer-heading">Product</span>
-          <ul>
-            <li><a href="/#top">Home overview</a></li>
-            <li><a href="/#how-it-works">How Hustlr works</a></li>
-            <li><a href="/#services">Browse categories</a></li>
-            <li><a href="/#providers">Customers vs Providers</a></li>
-            <li><a href="/#why">Built for WhatsApp</a></li>
-            <li><a href="/#questions">Common questions</a></li>
-          </ul>
+        <div class="rd-footer-col">
+          <h2>Hustlr</h2>
+          <a href="/#how-it-works">How it works</a>
+          <a href="/#why">Built for WhatsApp</a>
+          <a href="/#questions">Questions</a>
+          <a href={WA_PROVIDER} target="_blank" rel="noopener">Join as a provider</a>
         </div>
-
-        <div class="footer-col">
-          <span class="mono footer-heading">For Providers</span>
-          <ul>
-            <li><a href="/#for-providers">Provider overview</a></li>
-            <li><a href={WA_PROVIDER} target="_blank" rel="noopener">Register your business</a></li>
-            <li><a href="/#for-providers">Verified business profiles</a></li>
-            <li><a href="/#for-providers">Instant job alerts</a></li>
-            <li><a href="/#for-providers">Customer favourites &amp; rebooking</a></li>
-            <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I need help updating my provider profile')}`} target="_blank" rel="noopener">Provider support</a></li>
-          </ul>
+        <div class="rd-footer-col">
+          <h2>Areas</h2>
+          {areas.map((a) => <span>{a}</span>)}
         </div>
-
-        <div class="footer-col">
-          <span class="mono footer-heading">Areas Covered</span>
-          <ul>
-            <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I need a service provider in Harare')}`} target="_blank" rel="noopener">Harare &amp; Chitungwiza</a></li>
-            <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I need a service provider in Bulawayo')}`} target="_blank" rel="noopener">Bulawayo</a></li>
-            <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I need a service provider in Mutare')}`} target="_blank" rel="noopener">Mutare</a></li>
-            <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I need a service provider in Gweru')}`} target="_blank" rel="noopener">Gweru &amp; Kwekwe</a></li>
-            <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I need a service provider in Masvingo')}`} target="_blank" rel="noopener">Masvingo &amp; Vic Falls</a></li>
-            <li><span class="footer-pill-tag">Expanding nationwide</span></li>
-          </ul>
+        <div class="rd-footer-col">
+          <h2>Contact</h2>
+          <a href={WA} target="_blank" rel="noopener">+263 71 935 1207</a>
+          <span class="rd-online">Online 24/7</span>
         </div>
       </div>
     </div>
 
-    <!-- Closing band: the logo set wide and cropped, fading into the page -->
-    <div class="footer-wordmark" aria-hidden="true">
-      <span class="footer-wordmark-art"></span>
+    <div class="rd-footer-bottom">
+      <span>© {year} Hustlr. Built by Zimnovate in Zimbabwe.</span>
+      <nav aria-label="Legal">
+        <a href="/privacy">Privacy policy</a>
+        <a href="/terms">Terms &amp; conditions</a>
+      </nav>
     </div>
-
-      <div class="footer-bottom">
-        <div class="footer-bottom-left">
-          <span>© {new Date().getFullYear()} Hustlr. All rights reserved.</span>
-          <span class="footer-dot" aria-hidden="true">·</span>
-          <span>Built by <strong>Zimnovate</strong> in Zimbabwe</span>
-        </div>
-        <div class="footer-bottom-right">
-          <a href="/privacy">Privacy policy</a>
-          <a href="/terms">Terms &amp; conditions</a>
-          <a href={WA} target="_blank" rel="noopener">WhatsApp</a>
-          <a href="#top" class="footer-top-btn" aria-label="Back to top">
-            <span>Back to top</span>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
-          </a>
-        </div>
-      </div>
   </div>
 </footer>

@@ -2,8 +2,8 @@
 import HomeLayout from '../layouts/HomeLayout.astro';
 import SiteNav from '../components/SiteNav.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import ChatSteps from '../components/ChatSteps.astro';
 import { WA, WA_PROVIDER, waIcon, steps, services, proBenefits } from '../data/site';
+import '../styles/redesign.css';
 
 // WhatsApp conversation shown on the hero phones (copied from a real Hustlr chat).
 type WaMsg = { from: 'in' | 'out'; html: string; time: string; quote?: string };
@@ -38,37 +38,6 @@ const phones = [
 
 // Stacked layers that give each phone its physical 3D titanium thickness.
 const depth = Array.from({ length: 20 }, (_, i) => i);
-
-const howSteps = [
-  {
-    n: '01',
-    title: 'Say what you need',
-    text: 'Type it the way you would tell a friend. “My geyser is leaking” works.',
-    messages: [
-      { from: 'me', html: 'I need a plumber' },
-      { from: 'bot', html: 'Sure. Which area are you in, and when do you need someone?' },
-    ],
-  },
-  {
-    n: '02',
-    title: 'Meet your match',
-    text: 'Hustlr asks a question or two, then suggests providers who fit the job and your area.',
-    messages: [
-      { from: 'me', html: 'Avondale, today if possible' },
-      { from: 'bot', html: 'I found plumbers who work around Avondale. Want me to book the first one for this afternoon?' },
-    ],
-  },
-  {
-    n: '03',
-    title: 'Book it',
-    text: 'Pick one and Hustlr sets it up. The provider messages you to confirm the details.',
-    messages: [
-      { from: 'me', html: 'Yes please' },
-      { from: 'bot', html: "Done. They'll message you to confirm the time." },
-    ],
-  },
-] satisfies { n: string; title: string; text: string; messages: { from: 'me' | 'bot'; html: string }[] }[];
-
 
 const reasons = [
   {
@@ -115,36 +84,27 @@ const reasons = [
   },
 ];
 
-const proSteps = [
-  {
-    n: '01',
-    title: 'Say hello',
-    text: 'Send “I want to register as a service provider” to Hustlr on WhatsApp.',
-    messages: [
-      { from: 'me', html: 'I want to register as a service provider' },
-      { from: 'bot', html: "Great! Let's register you as a service provider on Hustlr.<br><br><b>(Step 1/7)</b> What is your full legal name?" },
-    ],
-  },
-  {
-    n: '02',
-    title: 'Answer a few questions',
-    text: 'Your name, business name, trade and the areas you cover, in 7 short steps.',
-    messages: [
-      { from: 'bot', html: '<b>(Step 2/7)</b> What is your business name?<br><i>(Reply <b>SKIP</b> if you operate under your personal name)</i>' },
-      { from: 'me', html: 'Bright Cleaning Services' },
-    ],
-  },
-  {
-    n: '03',
-    title: 'Start getting jobs',
-    text: 'Booking requests from customers in your areas arrive in the same chat. Reply YES to take the job.',
-    messages: [
-      { from: 'bot', html: '<span class="ex-card-title">New booking request</span><span class="ex-row"><span>Service</span><span>Cleaning</span></span><span class="ex-row"><span>Where</span><span>Harare</span></span><span class="ex-row"><span>Job</span><span>Home cleaning services</span></span><span class="ex-note">Reply <b>YES</b> to accept this job.</span>' },
-      { from: 'me', html: 'YES' },
-    ],
-  },
-] satisfies { n: string; title: string; text: string; messages: { from: 'me' | 'bot'; html: string }[] }[];
+// Quick links under the hero: each opens WhatsApp with the request typed in.
+const cats = [
+  { label: 'Plumbers', text: 'I need a plumber' },
+  { label: 'Electricians', text: 'I need an electrician' },
+  { label: 'Cleaners', text: 'I need a cleaner' },
+  { label: 'Tutors', text: 'I need a tutor' },
+];
 
+// How it works: one card per message in the chat.
+const how = [
+  { word: 'Ask.', bubble: 'I need a plumber', from: 'me', title: 'Say what you need', text: 'Type it the way you would tell a friend. “My geyser is leaking” works.' },
+  { word: 'Match.', bubble: 'Which area are you in, and when do you need someone?', from: 'bot', title: 'Meet your match', text: 'Hustlr asks a question or two, then suggests providers who fit the job and your area.' },
+  { word: 'Book.', bubble: 'YES', from: 'yes', title: 'Book it', text: 'Pick one and Hustlr sets it up. The provider messages you to confirm the details.' },
+];
+
+// Provider sign-up, in three plain steps.
+const join = [
+  { title: 'Say hello.', text: 'Send “I want to register as a service provider”.' },
+  { title: 'Answer a few questions.', text: 'Your name, business, trade and the areas you cover.' },
+  { title: 'Start getting jobs.', text: 'Reply YES to take a request.' },
+];
 
 const faqs = [
   {
@@ -325,198 +285,130 @@ const faqs = [
     </div>
   </section>
 
-  <main>
-    <!-- ============================== CATEGORIES ============================== -->
-    <div class="wrap-wide">
-      <div class="categories">
-        <span class="mono">What do you need?</span>
-        <a href={`${WA}?text=${encodeURIComponent('I need a plumber')}`} target="_blank" rel="noopener">Plumbers</a>
-        <a href={`${WA}?text=${encodeURIComponent('I need an electrician')}`} target="_blank" rel="noopener">Electricians</a>
-        <a href={`${WA}?text=${encodeURIComponent('I need a cleaner')}`} target="_blank" rel="noopener">Cleaners</a>
-        <a href={`${WA}?text=${encodeURIComponent('I need a tutor')}`} target="_blank" rel="noopener">Tutors</a>
+  <main class="rd">
+    <!-- What do you need? -->
+    <div class="rd-wrap">
+      <div class="rd-cats">
+        <span class="rd-label">What do you need?</span>
+        <div class="rd-cats-links">
+          {cats.map((c) => (
+            <a href={`${WA}?text=${encodeURIComponent(c.text)}`} target="_blank" rel="noopener">{c.label}</a>
+          ))}
+        </div>
       </div>
     </div>
 
-    <!-- ============================== HOW IT WORKS ============================== -->
-    <section class="section wrap-wide" id="how-it-works">
-      <div class="section-head">
-        <div>
-          <span class="mono mono--green">How it works</span>
-          <h2>How it works</h2>
-        </div>
-        <p>If you can send a WhatsApp message, you can use Hustlr. There are no menus to learn.</p>
+    <!-- How it works -->
+    <section class="rd-section rd-wrap" id="how-it-works">
+      <div class="rd-head">
+        <h2 class="rd-h2">Three messages.<br />One booking.</h2>
+        <p class="rd-lead">If you can send a WhatsApp message, you can use Hustlr. There are no menus to learn.</p>
       </div>
-
-      <!-- The example chat and the steps share rows: each step sits beside the messages it describes -->
-      <ChatSteps rows={howSteps}>
-        <a href={WA} class="how-try" target="_blank" rel="noopener">Try it on WhatsApp <span aria-hidden="true">&rarr;</span></a>
-      </ChatSteps>
+      <div class="rd-how">
+        {how.map((h) => (
+          <article class={`rd-how-card${h.from === 'yes' ? ' rd-how-card--dark' : ''}`}>
+            <p class="rd-how-word">{h.word}</p>
+            <div class={`rd-bubble rd-bubble--${h.from}`}>{h.bubble}</div>
+            <div class="rd-how-copy">
+              <h3>{h.title}</h3>
+              <p>{h.text}</p>
+            </div>
+          </article>
+        ))}
+      </div>
     </section>
 
-    <!-- ============================== SERVICES ============================== -->
-    <section class="section wrap-wide" id="services">
-      <div class="section-head">
-        <div>
-          <span class="mono mono--green">What you can book</span>
-          <h2>Services</h2>
-        </div>
-        <p>Start with one of these, or just describe the job. Tap a card to open WhatsApp with the message ready to send.</p>
+    <!-- Services -->
+    <section class="rd-section rd-wrap" id="services">
+      <div class="rd-head">
+        <h2 class="rd-h2">What you can book</h2>
+        <p class="rd-lead">Four trades today, with more on the way. Not sure who you need? Describe the job and ask.</p>
       </div>
-
-      <div class="services-grid">
+      <div class="rd-services">
         {services.map((sv) => (
-          <a
-            id={sv.id}
-            class="service-card"
-            href={`${WA}?text=${encodeURIComponent(sv.ask)}`}
-            target="_blank"
-            rel="noopener"
-          >
-            <span class="service-icon" aria-hidden="true">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={sv.icon} />
+          <article class="rd-service">
+            <span class="rd-service-icon" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" set:html={sv.icon} />
             </span>
             <h3>{sv.name}</h3>
             <p>{sv.text}</p>
-            <span class="service-ask">
-              <span class="mono">Try saying</span>
-              <span class="service-bubble">“{sv.ask}”</span>
-            </span>
-            <span class="service-link">Ask on WhatsApp <span aria-hidden="true">&rarr;</span></span>
-          </a>
+            <a class="rd-service-ask" href={`${WA}?text=${encodeURIComponent(sv.ask)}`} target="_blank" rel="noopener">“{sv.ask}”</a>
+          </article>
         ))}
       </div>
+      <a class="rd-ask-any" href={WA} target="_blank" rel="noopener">
+        <span>Something else? Describe any job in the chat.</span>
+        <span class="rd-ask-any-cta">Ask Hustlr <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+      </a>
     </section>
 
-    <!-- ============================== ONE CHAT, TWO SIDES ============================== -->
-    <section class="section wrap-wide" id="providers">
-      <div class="section-head">
-        <div>
-          <span class="mono mono--green">Made for both sides</span>
-          <h2>One chat, two sides</h2>
-        </div>
-        <p>Whether you need the work or do the work, you start the same way: by saying hello.</p>
-      </div>
-
-      <div class="sides">
-        <article class="side side--light">
-          <span class="mono mono--green">For customers</span>
-          <h3>Ask.</h3>
-          <p class="side-lead">Find someone for the job without calling around.</p>
-          <ol>
-            <li><span class="side-dot" aria-hidden="true"></span>Describe the job in your own words</li>
-            <li><span class="side-dot" aria-hidden="true"></span>Get providers that suit your area</li>
-            <li><span class="side-dot" aria-hidden="true"></span>Book from the same conversation</li>
+    <!-- For providers -->
+    <section class="rd-section rd-wrap" id="for-providers">
+      <div class="rd-pro">
+        <div class="rd-pro-main">
+          <p class="rd-eyebrow">For providers</p>
+          <h2 class="rd-h2">Your next job is a message away.</h2>
+          <p class="rd-pro-lead">Plumbers, electricians, cleaners and tutors: get booking requests from people nearby, straight to the WhatsApp you already use.</p>
+          <ol class="rd-pro-steps">
+            {join.map((j) => (
+              <li><span class="rd-dot" aria-hidden="true"></span><span><strong>{j.title}</strong> {j.text}</span></li>
+            ))}
           </ol>
-          <a href={WA} class="btn btn--dark" target="_blank" rel="noopener"><Fragment set:html={waIcon} />Start a chat</a>
-        </article>
-
-        <article class="side side--dark">
-          <span class="mono mono--yellow">For providers</span>
-          <h3>Be found.</h3>
-          <p class="side-lead">Get in front of people who are ready to hire.</p>
-          <ol>
-            <li><span class="side-dot" aria-hidden="true"></span>Set up your profile by chatting</li>
-            <li><span class="side-dot" aria-hidden="true"></span>Tell Hustlr your trade and the areas you cover</li>
-            <li><span class="side-dot" aria-hidden="true"></span>Receive booking requests on WhatsApp</li>
-          </ol>
-          <a href={WA_PROVIDER} class="btn btn--yellow" target="_blank" rel="noopener"><Fragment set:html={waIcon} />Join as a provider</a>
-        </article>
-      </div>
-    </section>
-
-    <!-- ============================== FOR PROVIDERS ============================== -->
-    <section class="section wrap-wide" id="for-providers">
-      <div class="section-head">
-        <div>
-          <span class="mono mono--green">For providers</span>
-          <h2>Grow your business on WhatsApp</h2>
+          <a href={WA_PROVIDER} class="rd-btn rd-btn--yellow" target="_blank" rel="noopener"><Fragment set:html={waIcon} />Join as a provider</a>
         </div>
-        <p>Hustlr brings booking requests from people nearby straight to your WhatsApp. You decide which jobs to take.</p>
-      </div>
-
-      <ChatSteps rows={proSteps} status="online · provider sign-up">
-        <a href={WA_PROVIDER} class="btn btn--dark" target="_blank" rel="noopener"><Fragment set:html={waIcon} />Join as a provider</a>
-      </ChatSteps>
-
-      <ul class="pro-benefits">
-        {proBenefits.map((b) => (
-          <li>
-            <span class="pro-benefit-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={b.icon} />
-            </span>
-            <h3>{b.title}</h3>
-            <p>{b.text}</p>
-          </li>
-        ))}
-      </ul>
-    </section>
-
-    <!-- ============================== BUILT FOR WHATSAPP ============================== -->
-    <section class="section wrap-wide" id="why">
-      <div class="why">
-        <div class="section-head section-head--dark">
-          <div>
-            <span class="mono mono--yellow">Why it works</span>
-            <h2>Built for WhatsApp</h2>
-          </div>
-          <p>The way people already find help: ask someone. Hustlr just makes sure the right person answers.</p>
-        </div>
-        <!-- Pick a reason on the left; the right shows the chat that proves it.
-             On phones each proof opens under its reason. -->
-        <ol class="why-list" data-why>
-          {reasons.map((r, i) => (
-            <li class={`why-item${i === 0 ? ' is-active' : ''}`}>
-              <button class="why-trigger" type="button" aria-expanded={i === 0 ? 'true' : 'false'} aria-controls={`why-proof-${i}`}>
-                <span class="why-index" aria-hidden="true"></span>
-                <span class="why-title">{r.title}</span>
-                <span class="why-icon" aria-hidden="true">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={r.icon} />
-                </span>
-              </button>
-              <p class="why-text">{r.text}</p>
-              <figure class="why-proof" id={`why-proof-${i}`}>
-                <div class="wm-phone" set:html={r.proof} />
-                <figcaption class="mono">{r.caption}</figcaption>
-              </figure>
-            </li>
+        <div class="rd-pro-grid">
+          {proBenefits.map((b) => (
+            <div class="rd-pro-card">
+              <strong>{b.title}</strong>
+              <p>{b.text}</p>
+            </div>
           ))}
-        </ol>
+        </div>
       </div>
     </section>
 
-    <!-- ============================== QUESTIONS ============================== -->
-    <section class="section wrap-wide faq" id="questions">
-      <div class="faq-intro">
-        <span class="mono mono--green">Good to know</span>
-        <h2>Questions</h2>
-        <p>The short answers. For anything else, ask in the chat.</p>
+    <!-- Built for WhatsApp -->
+    <section class="rd-section rd-wrap" id="why">
+      <div class="rd-head">
+        <h2 class="rd-h2">Built for WhatsApp</h2>
+        <p class="rd-lead">The way people already find help: ask someone. Hustlr just makes sure the right person answers.</p>
       </div>
-      <div class="faq-list">
-        {faqs.map((f) => (
-          <details>
-            <summary>
-              <span>{f.q}</span>
-              <span class="faq-plus" aria-hidden="true"></span>
-            </summary>
-            <p>
-              {f.a}
-              {f.q === 'What happens to my details?' && <> <a href="/privacy">Privacy policy</a></>}
-            </p>
+      <div class="rd-why">
+        {reasons.map((r) => (
+          <div class="rd-why-item">
+            <span class="rd-why-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" set:html={r.icon} />
+            </span>
+            <h3>{r.title}</h3>
+            <p>{r.text}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Questions -->
+    <section class="rd-section rd-wrap rd-faq" id="questions">
+      <div class="rd-faq-intro">
+        <h2 class="rd-h2">Good to know</h2>
+        <p class="rd-lead">Anything else? Just ask in the chat.</p>
+      </div>
+      <div class="rd-faq-list">
+        {faqs.map((f, i) => (
+          <details open={i === 0}>
+            <summary>{f.q}<span class="rd-faq-plus" aria-hidden="true"></span></summary>
+            <p>{f.a}</p>
           </details>
         ))}
       </div>
     </section>
 
-    <!-- ============================== SAY HELLO ============================== -->
-    <section class="wrap-wide">
-      <div class="hello">
-        <div>
-          <span class="mono mono--yellow">Your next job starts here</span>
-          <h2>Say hello.</h2>
-        </div>
-        <div class="hello-side">
-          <p>Tell Hustlr what you need, or what you do. It takes one message.</p>
-          <a href={WA} class="btn btn--yellow" target="_blank" rel="noopener"><Fragment set:html={waIcon} />Chat on WhatsApp</a>
+    <!-- Closing call to action -->
+    <section class="rd-section rd-wrap">
+      <div class="rd-cta">
+        <h2>Got a job that needs doing?</h2>
+        <div class="rd-cta-side">
+          <a href={WA} class="rd-btn rd-btn--dark" target="_blank" rel="noopener"><Fragment set:html={waIcon} />Chat on WhatsApp</a>
+          <span>or save +263 71 935 1207</span>
         </div>
       </div>
     </section>
@@ -525,61 +417,6 @@ const faqs = [
   <SiteFooter />
 
   <script>
-    // ---- How it works: reveal each row (message, reply, step) as it scrolls in ----
-    const howRows = document.querySelectorAll<HTMLElement>('.how-row');
-    if (howRows.length && 'IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      document.documentElement.classList.add('how-animate');
-      const io = new IntersectionObserver(
-        (entries) => entries.forEach((e) => {
-          if (e.isIntersecting) {
-            // rows use display: contents, so we watch each row's chat block
-            e.target.parentElement?.classList.add('is-in');
-            io.unobserve(e.target);
-          }
-        }),
-        { rootMargin: '0px 0px -18% 0px' }
-      );
-      howRows.forEach((r) => {
-        const chat = r.querySelector('.how-row-chat');
-        if (chat) io.observe(chat);
-      });
-    }
-
-    // ---- Why it works: pick a reason, show its proof; rotates until someone picks ----
-    const whyList = document.querySelector<HTMLElement>('[data-why]');
-    if (whyList) {
-      const items = [...whyList.querySelectorAll<HTMLElement>('.why-item')];
-      let active = 0;
-      let timer = 0;
-      const show = (i: number) => {
-        active = i;
-        items.forEach((it, j) => {
-          it.classList.toggle('is-active', j === i);
-          it.querySelector('.why-trigger')?.setAttribute('aria-expanded', String(j === i));
-        });
-      };
-      const stop = () => window.clearInterval(timer);
-      items.forEach((it, i) => {
-        const btn = it.querySelector<HTMLButtonElement>('.why-trigger');
-        btn?.addEventListener('click', () => { stop(); show(i); });
-        btn?.addEventListener('keydown', (e) => {
-          if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
-          e.preventDefault();
-          const next = (i + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length;
-          items[next].querySelector<HTMLButtonElement>('.why-trigger')?.focus();
-        });
-      });
-      const wide = window.matchMedia('(min-width: 1025px)');
-      const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
-      if (wide.matches && !calm.matches && 'IntersectionObserver' in window) {
-        new IntersectionObserver((entries) => entries.forEach((e) => {
-          stop();
-          if (e.isIntersecting) timer = window.setInterval(() => show((active + 1) % items.length), 6000);
-        }), { threshold: 0.4 }).observe(whyList);
-        whyList.addEventListener('pointerenter', stop);
-      }
-    }
-
     // ---- Tilt the 3D phones toward the pointer ----
     const hero = document.querySelector<HTMLElement>('.hero');
     const visual = document.querySelector<HTMLElement>('.hero-visual');

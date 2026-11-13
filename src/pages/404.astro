@@ -3,6 +3,7 @@ import HomeLayout from '../layouts/HomeLayout.astro';
 import SiteNav from '../components/SiteNav.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { WA, waIcon } from '../data/site';
+import '../styles/redesign.css';
 
 
 const quick = [
@@ -15,51 +16,53 @@ const quick = [
 
 <HomeLayout title="Page not found — Hustlr" description="This page doesn't exist. Head back home, or tell Hustlr on WhatsApp what you need.">
   <SiteNav />
-  <div class="nf" id="top">
 
-    <main class="nf-main wrap-wide">
-      <div class="nf-copy">
-        <span class="mono mono--yellow">Error 404 · Page not found</span>
+  <main class="rd-nf" id="top">
+    <div class="rd-wrap rd-nf-inner">
+      <div class="rd-nf-copy">
+        <p class="rd-eyebrow">Error 404 · Page not found</p>
 
         <!-- The "0" is a chat bubble that's still typing -->
-        <p class="nf-code" aria-hidden="true">
+        <p class="rd-nf-code" aria-hidden="true">
           <span>4</span>
-          <svg class="nf-bubble" viewBox="0 0 120 150" fill="none">
-            <path d="M60 8c28.7 0 52 19.6 52 50v28c0 30.4-23.3 50-52 50-8.4 0-16.3-1.7-23.3-4.8L14 141l7.4-21.3C12.7 110.6 8 99.4 8 86V58C8 27.6 31.3 8 60 8z" />
-            <circle class="nf-dot" cx="38" cy="72" r="7.5" />
-            <circle class="nf-dot" cx="60" cy="72" r="7.5" />
-            <circle class="nf-dot" cx="82" cy="72" r="7.5" />
+          <svg viewBox="0 0 120 150" fill="none">
+            <path d="M60 8c28.7 0 52 19.6 52 50v28c0 30.4-23.3 50-52 50-8.4 0-16.3-1.7-23.3-4.8L14 141l7.4-21.3C12.7 110.6 8 99.4 8 86V58C8 27.6 31.3 8 60 8z" fill="var(--yellow)" />
+            <circle class="rd-nf-dot" cx="38" cy="72" r="7.5" fill="var(--ink)" />
+            <circle class="rd-nf-dot" cx="60" cy="72" r="7.5" fill="var(--ink)" />
+            <circle class="rd-nf-dot" cx="82" cy="72" r="7.5" fill="var(--ink)" />
           </svg>
           <span>4</span>
         </p>
 
         <h1>This page took a wrong turn.</h1>
-        <p class="nf-lead">The link may be old, or the page has moved. Help is still one message away.</p>
+        <p class="rd-nf-lead">The link may be old, or the page has moved. Help is still one message away.</p>
 
-        <div class="nf-actions">
-          <a href={WA} class="btn btn--yellow" target="_blank" rel="noopener"><Fragment set:html={waIcon} />Chat on WhatsApp</a>
-          <a href="/" class="nf-text-link">Go to the homepage <span aria-hidden="true">&rarr;</span></a>
+        <div class="rd-nf-actions">
+          <a href={WA} class="rd-btn rd-btn--yellow" target="_blank" rel="noopener"><Fragment set:html={waIcon} />Chat on WhatsApp</a>
+          <a href="/" class="rd-link">Go to the homepage <span aria-hidden="true">&rarr;</span></a>
         </div>
       </div>
 
-      <div class="nf-chat" aria-label="Example conversation with Hustlr">
-        <div class="nf-chat-head">
-          <span class="nf-chat-avatar">H</span>
-          <span>Hustlr<small>online</small></span>
-        </div>
-        <div class="nf-chat-body">
-          <div class="nf-msg nf-msg--out">I was looking for <span class="nf-path" id="nfPath">a page</span></div>
-          <div class="nf-msg nf-msg--in">That page isn't here anymore. But I can still find you someone. What do you need?</div>
-          <div class="nf-chips">
-            {quick.map((q) => (
-              <a href={`${WA}?text=${encodeURIComponent(q.text)}`} target="_blank" rel="noopener">{q.label}</a>
-            ))}
+      <div class="rd-nf-chat-wrap">
+        <div class="rd-nf-chat">
+          <div class="rd-nf-chat-head">
+            <span class="rd-nf-avatar" aria-hidden="true">H</span>
+            <span><strong>Hustlr</strong><small>online</small></span>
+          </div>
+          <div class="rd-nf-chat-body">
+            <div class="rd-bubble rd-bubble--me">I was looking for <span class="rd-nf-path" id="nfPath">a page</span></div>
+            <div class="rd-bubble rd-bubble--bot">That page isn't here anymore. But I can still find you someone. What do you need?</div>
+            <div class="rd-nf-chips">
+              {quick.map((q) => (
+                <a href={`${WA}?text=${encodeURIComponent(q.text)}`} target="_blank" rel="noopener">{q.label}</a>
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    </main>
+    </div>
+  </main>
 
-  </div>
   <SiteFooter />
 
   <script>
@@ -69,201 +72,3 @@ const quick = [
     if (el && path && path !== '/') el.textContent = path.length > 32 ? `${path.slice(0, 31)}…` : path;
   </script>
 </HomeLayout>
-
-<style>
-  .nf {
-    min-height: 100vh;
-    padding-top: 96px;
-    display: flex;
-    flex-direction: column;
-    background:
-      radial-gradient(900px 520px at 78% 38%, rgba(61, 204, 141, 0.09), transparent 70%),
-      var(--ink);
-    color: var(--on-dark);
-  }
-
-
-  .nf-main {
-    flex: 1;
-    display: grid;
-    grid-template-columns: 1.15fr 1fr;
-    align-items: center;
-    gap: 64px;
-    padding: 24px 0 64px;
-  }
-
-  .nf-code {
-    display: flex;
-    align-items: center;
-    margin: 22px 0 0 -6px;
-    font-family: var(--display);
-    font-size: clamp(132px, 17vw, 236px);
-    font-weight: 700;
-    line-height: 0.9;
-    letter-spacing: -0.06em;
-    color: var(--on-dark);
-  }
-  .nf-bubble {
-    width: 0.62em;
-    height: 0.78em;
-    margin: 0 0.09em 0 0.07em;
-    overflow: visible;
-  }
-  .nf-bubble path {
-    stroke: var(--mint);
-    stroke-width: 12;
-    stroke-linejoin: round;
-  }
-  .nf-dot {
-    fill: var(--yellow);
-    animation: nf-typing 1.4s ease-in-out infinite;
-  }
-  .nf-dot:nth-of-type(2) { animation-delay: 0.18s; }
-  .nf-dot:nth-of-type(3) { animation-delay: 0.36s; }
-  @keyframes nf-typing {
-    0%, 60%, 100% { transform: translateY(0); opacity: 0.45; }
-    30% { transform: translateY(-7px); opacity: 1; }
-  }
-
-  .nf h1 {
-    margin-top: 30px;
-    max-width: 560px;
-    font-family: var(--display);
-    font-size: 44px;
-    line-height: 1.08;
-    font-weight: 700;
-    letter-spacing: -0.035em;
-  }
-  .nf-lead {
-    margin-top: 16px;
-    max-width: 440px;
-    font-size: 18px;
-    line-height: 1.6;
-    color: var(--on-dark-muted);
-  }
-
-  .nf-actions {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 14px 28px;
-    margin-top: 34px;
-  }
-  .nf-text-link {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--on-dark);
-  }
-  .nf-text-link span {
-    display: inline-block;
-    color: var(--mint);
-    transition: transform 0.2s ease;
-  }
-  .nf-text-link:hover span { transform: translateX(3px); }
-
-  /* Chat card */
-  .nf-chat {
-    justify-self: end;
-    width: 100%;
-    max-width: 420px;
-    overflow: hidden;
-    border-radius: 24px;
-    background: #0b1014;
-    box-shadow: 0 0 0 1px rgba(232, 240, 235, 0.08), 0 40px 80px -24px rgba(0, 0, 0, 0.6);
-    color: #e9edef;
-    font-size: 15.5px;
-  }
-  .nf-chat-head {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 16px 18px;
-    background: #134d37;
-    font-weight: 700;
-  }
-  .nf-chat-head small {
-    display: block;
-    font-size: 12px;
-    font-weight: 400;
-    opacity: 0.75;
-  }
-  .nf-chat-avatar {
-    display: grid;
-    place-items: center;
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    background: var(--yellow);
-    color: var(--ink);
-    font-weight: 700;
-  }
-  .nf-chat-body {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 22px 18px 24px;
-  }
-  .nf-msg {
-    max-width: 84%;
-    padding: 11px 14px;
-    border-radius: 14px;
-    line-height: 1.45;
-  }
-  .nf-msg--out {
-    align-self: flex-end;
-    background: #134d37;
-    border-top-right-radius: 4px;
-  }
-  .nf-msg--in {
-    align-self: flex-start;
-    background: #1f272a;
-    border-top-left-radius: 4px;
-  }
-  .nf-path {
-    font-family: var(--mono);
-    font-size: 13.5px;
-    word-break: break-all;
-    color: var(--yellow);
-  }
-  .nf-chips {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    width: 84%;
-    padding-top: 4px;
-  }
-  .nf-chips a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 40px;
-    padding: 0 14px;
-    border-radius: 999px;
-    border: 1px solid rgba(61, 204, 141, 0.45);
-    color: var(--mint);
-    font-size: 14.5px;
-    font-weight: 700;
-    transition: background 0.15s ease, border-color 0.15s ease;
-  }
-  .nf-chips a:hover {
-    background: rgba(61, 204, 141, 0.12);
-    border-color: var(--mint);
-  }
-  .nf-chips a:focus-visible,
-  .nf-text-link:focus-visible {
-    outline: 2px solid var(--mint);
-    outline-offset: 3px;
-    border-radius: 8px;
-  }
-
-
-  @media (max-width: 960px) {
-    .nf-main { grid-template-columns: 1fr; gap: 48px; padding-top: 8px; }
-    .nf-chat { justify-self: start; }
-  }
-  @media (max-width: 560px) {
-  
-  @media (prefers-reduced-motion: reduce) {
-    .nf-dot { animation: none; opacity: 1; }
-  }
-</style>

@@ -2,6 +2,13 @@
 import HomeLayout from '../layouts/HomeLayout.astro';
 import SiteNav from '../components/SiteNav.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import { WA } from '../data/site';
+import '../styles/redesign.css';
+
+const sections = [
+  { id: 'information', title: 'Information we receive' },
+  { id: 'use', title: 'How we use information' },
+];
 ---
 
 <HomeLayout
@@ -10,17 +17,23 @@ import SiteFooter from '../components/SiteFooter.astro';
 >
   <SiteNav />
 
-  <header class="legal-hero" id="top">
-    <div class="wrap-wide">
-      <span class="mono mono--yellow">Legal</span>
+  <header class="rd-page-head" id="top">
+    <div class="rd-wrap">
+      <p class="rd-eyebrow">Legal</p>
       <h1>Privacy policy</h1>
-      <p>Last updated: <time datetime="2026-10-26">26 October 2026</time></p>
+      <p class="rd-updated">Last updated: <time datetime="2026-10-26">26 October 2026</time></p>
     </div>
   </header>
 
-  <main class="wrap-wide legal">
-    <article class="legal-body">
-      <p class="legal-intro">
+  <main class="rd-wrap">
+    <div class="rd-legal">
+      <nav class="rd-toc" aria-label="On this page">
+        <span class="rd-label">On this page</span>
+        {sections.map((s) => <a href={`#${s.id}`}>{s.title}</a>)}
+        <a href={WA} class="rd-btn rd-btn--dark" target="_blank" rel="noopener">Questions? Ask on WhatsApp</a>
+      </nav>
+    <article class="rd-legal-body">
+      <p class="rd-legal-intro">
         This policy explains how hustlr.chat handles personal information through this website and enquiries you send to us. It covers the website and initial contact; individual services, pilots, or payment providers may have additional privacy notices presented when you use them.
       </p>
 
@@ -41,6 +54,7 @@ import SiteFooter from '../components/SiteFooter.astro';
         </p>
       </section>
     </article>
+    </div>
   </main>
 
   <SiteFooter />

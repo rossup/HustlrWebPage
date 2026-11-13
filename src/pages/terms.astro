@@ -2,8 +2,10 @@
 import HomeLayout from '../layouts/HomeLayout.astro';
 import SiteNav from '../components/SiteNav.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import { WA } from '../data/site';
+import '../styles/redesign.css';
 
-// Sections drive both the table of contents and the numbered headings.
+// Sections drive the "On this page" list.
 const sections = [
   { id: 'about', title: 'About these terms' },
   { id: 'service', title: 'What Hustlr does' },
@@ -27,23 +29,24 @@ const sections = [
 >
   <SiteNav />
 
-  <header class="legal-hero" id="top">
-    <div class="wrap-wide">
-      <span class="mono mono--yellow">Legal</span>
+  <header class="rd-page-head" id="top">
+    <div class="rd-wrap">
+      <p class="rd-eyebrow">Legal</p>
       <h1>Terms &amp; conditions</h1>
-      <p>Last updated: <span class="legal-ph">[add date]</span></p>
+      <p class="rd-updated">Last updated: <span class="rd-ph">[add date]</span></p>
     </div>
   </header>
 
-  <main class="wrap-wide legal">
-    <div class="legal-layout">
-      <nav class="legal-toc" aria-label="On this page">
-        <span class="mono">On this page</span>
+  <main class="rd-wrap">
+    <div class="rd-legal">
+      <nav class="rd-toc" aria-label="On this page">
+        <span class="rd-label">On this page</span>
         {sections.map((s) => <a href={`#${s.id}`}>{s.title}</a>)}
+        <a href={WA} class="rd-btn rd-btn--dark" target="_blank" rel="noopener">Questions? Ask on WhatsApp</a>
       </nav>
 
-      <article class="legal-body">
-        <div class="legal-summary">
+      <article class="rd-legal-body">
+        <div class="rd-summary">
           <h2>The short version</h2>
           <ul>
             <li>Hustlr connects you with independent providers over WhatsApp. The provider, not Hustlr, does the work.</li>
@@ -56,7 +59,7 @@ const sections = [
         <section aria-labelledby="about">
           <h2 id="about">About these terms</h2>
           <p>
-            These terms apply when you use Hustlr, including the website at hustlr.chat and the Hustlr service on WhatsApp. Hustlr is operated by <span class="legal-ph">[legal company name]</span>, <span class="legal-ph">[registered address]</span> ("Hustlr", "we", "us").
+            These terms apply when you use Hustlr, including the website at hustlr.chat and the Hustlr service on WhatsApp. Hustlr is operated by <span class="rd-ph">[legal company name]</span>, <span class="rd-ph">[registered address]</span> ("Hustlr", "we", "us").
           </p>
           <p>By messaging Hustlr or using the website, you agree to these terms. If you do not agree, please do not use Hustlr.</p>
         </section>
@@ -74,7 +77,7 @@ const sections = [
         <section aria-labelledby="using">
           <h2 id="using">Using Hustlr</h2>
           <ul>
-            <li>You must be at least <span class="legal-ph">[18]</span> years old, or have permission from a parent or guardian.</li>
+            <li>You must be at least <span class="rd-ph">[18]</span> years old, or have permission from a parent or guardian.</li>
             <li>Give accurate information, including the job you need and where you are.</li>
             <li>You need a WhatsApp account to use Hustlr. WhatsApp's own terms and privacy policy also apply to your use of WhatsApp.</li>
             <li>Normal mobile data or messaging charges from your network may apply.</li>
@@ -96,7 +99,7 @@ const sections = [
           <p>
             Prices, call-out fees and payment terms for a job are agreed directly between you and the provider. Ask for a quote before work starts. Hustlr does not set providers' prices.
           </p>
-          <p><span class="legal-ph">[If Hustlr charges customers or providers any fee, or takes payments, describe it here.]</span></p>
+          <p><span class="rd-ph">[If Hustlr charges customers or providers any fee, or takes payments, describe it here.]</span></p>
         </section>
 
         <section aria-labelledby="providers">
@@ -108,7 +111,7 @@ const sections = [
             <li>Do the work safely and to a reasonable standard, and treat customers and their property with respect.</li>
           </ul>
           <p>
-            A "Verified" label means <span class="legal-ph">[describe the checks Hustlr carries out]</span>. It is not a guarantee of the quality of any individual job.
+            A "Verified" label means <span class="rd-ph">[describe the checks Hustlr carries out]</span>. It is not a guarantee of the quality of any individual job.
           </p>
         </section>
 
@@ -157,17 +160,17 @@ const sections = [
 
         <section aria-labelledby="law">
           <h2 id="law">Governing law</h2>
-          <p>These terms are governed by the laws of <span class="legal-ph">[Zimbabwe]</span>.</p>
+          <p>These terms are governed by the laws of <span class="rd-ph">[Zimbabwe]</span>.</p>
         </section>
 
         <section aria-labelledby="contact">
           <h2 id="contact">Contact us</h2>
           <p>
-            Questions about these terms? Message us on WhatsApp at <a href="https://wa.me/263719351207" target="_blank" rel="noopener">+263 71 935 1207</a> or email <span class="legal-ph">[add email]</span>.
+            Questions about these terms? Message us on WhatsApp at <a href="https://wa.me/263719351207" target="_blank" rel="noopener">+263 71 935 1207</a> or email <span class="rd-ph">[add email]</span>.
           </p>
         </section>
 
-        <p class="legal-note">
+        <p class="rd-legal-note">
           This page is a plain-language starting point, not legal advice. Have it reviewed by a lawyer in Zimbabwe before you rely on it, and fill in the highlighted details.
         </p>
       </article>
