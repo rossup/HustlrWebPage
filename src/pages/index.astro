@@ -39,9 +39,27 @@ const phones = [
 const depth = Array.from({ length: 20 }, (_, i) => i);
 
 const howSteps = [
-  { n: '01', title: 'Say what you need', text: 'Type it the way you would tell a friend. “My geyser is leaking” works.' },
-  { n: '02', title: 'Meet your match', text: 'Hustlr asks a question or two, then suggests providers who fit the job and your area.' },
-  { n: '03', title: 'Book it', text: 'Pick one and Hustlr sets it up. The provider messages you to confirm the details.' },
+  {
+    n: '01',
+    title: 'Say what you need',
+    text: 'Type it the way you would tell a friend. “My geyser is leaking” works.',
+    ask: 'I need a plumber',
+    reply: 'Sure. Which area are you in, and when do you need someone?',
+  },
+  {
+    n: '02',
+    title: 'Meet your match',
+    text: 'Hustlr asks a question or two, then suggests providers who fit the job and your area.',
+    ask: 'Avondale, today if possible',
+    reply: 'I found plumbers who work around Avondale. Want me to book the first one for this afternoon?',
+  },
+  {
+    n: '03',
+    title: 'Book it',
+    text: 'Pick one and Hustlr sets it up. The provider messages you to confirm the details.',
+    ask: 'Yes please',
+    reply: "Done. They'll message you to confirm the time.",
+  },
 ];
 
 
@@ -286,30 +304,41 @@ const faqs = [
         <p>If you can send a WhatsApp message, you can use Hustlr. There are no menus to learn.</p>
       </div>
 
-      <div class="how-grid">
-        <div class="how-card">
-          <div class="example-chat">
-            <span class="mono example-label">Example chat</span>
-            <div class="ex ex--out">I need a plumber</div>
-            <div class="ex ex--in">Sure. Which area are you in, and when do you need someone?</div>
-            <div class="ex ex--out">Avondale, today if possible</div>
-            <div class="ex ex--in">I found plumbers who work around Avondale. Want me to book the first one for this afternoon?</div>
-            <div class="ex ex--out">Yes please</div>
-            <div class="ex ex--in">Done. They'll message you to confirm the time.</div>
+      <!-- The example chat and the steps share rows: each step sits beside the messages it describes -->
+      <div class="how-flow">
+        <div class="how-flow-top">
+          <div class="how-chat-head">
+            <span class="how-chat-avatar" aria-hidden="true">H</span>
+            <span>Hustlr<small>online · example chat</small></span>
           </div>
+          <span class="mono">What's happening</span>
         </div>
 
-        <ol class="how-steps">
-          {howSteps.map((s) => (
-            <li>
-              <span class="mono mono--green">{s.n}</span>
+        {howSteps.map((s) => (
+          <div class="how-row">
+            <div class="how-row-chat" aria-label={`Example messages for step ${s.n}`}>
+              <div class="ex ex--out">{s.ask}</div>
+              <div class="ex ex--in">{s.reply}</div>
+            </div>
+            <div class="how-row-step">
+              <span class="how-num" aria-hidden="true">{s.n}</span>
               <div>
-                <h3>{s.title}</h3>
+                <h3><span class="sr-only">Step {s.n}: </span>{s.title}</h3>
                 <p>{s.text}</p>
               </div>
-            </li>
-          ))}
-        </ol>
+            </div>
+          </div>
+        ))}
+
+        <div class="how-flow-foot">
+          <div class="how-composer" aria-hidden="true">
+            <span>Message</span>
+            <span class="how-composer-send">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </span>
+          </div>
+          <a href={WA} class="how-try" target="_blank" rel="noopener">Try it on WhatsApp <span aria-hidden="true">&rarr;</span></a>
+        </div>
       </div>
     </section>
 
@@ -511,6 +540,26 @@ const faqs = [
   <SiteFooter />
 
   <script>
+    // ---- How it works: reveal each row (message, reply, step) as it scrolls in ----
+    const howRows = document.querySelectorAll<HTMLElement>('.how-row');
+    if (howRows.length && 'IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('how-animate');
+      const io = new IntersectionObserver(
+        (entries) => entries.forEach((e) => {
+          if (e.isIntersecting) {
+            // rows use display: contents, so we watch each row's chat block
+            e.target.parentElement?.classList.add('is-in');
+            io.unobserve(e.target);
+          }
+        }),
+        { rootMargin: '0px 0px -18% 0px' }
+      );
+      howRows.forEach((r) => {
+        const chat = r.querySelector('.how-row-chat');
+        if (chat) io.observe(chat);
+      });
+    }
+
     // ---- Tilt the 3D phones toward the pointer ----
     const hero = document.querySelector<HTMLElement>('.hero');
     const visual = document.querySelector<HTMLElement>('.hero-visual');

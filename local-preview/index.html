@@ -47,7 +47,6 @@ body {
 .hero h1,
 .section h2,
 .faq h2,
-.how-steps h3,
 .side h3,
 .hello h2,
 .badge-1chat strong,
@@ -1373,78 +1372,233 @@ ol {
   color: var(--muted);
 }
 
-/* How it works */
-.how-grid {
-  display: grid;
-  grid-template-columns: 551px 1fr;
-  gap: 78px;
-  margin-top: var(--head-gap);
+/* How it works — the example chat and the steps share rows */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
-.how-card {
-  min-height: 567px;
-  padding: 40px 56px;
-  border-radius: 24px;
+.how-flow {
+  --chat-col: 520px;
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--chat-col) 1fr;
+  margin-top: var(--head-gap);
+  border-radius: 28px;
   background: var(--panel);
+  overflow: hidden;
 }
-.example-chat {
+/* the chat "screen": one continuous lighter plane down the left */
+.how-flow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--chat-col);
+  background: #f8faf7;
+  box-shadow: 1px 0 0 rgba(11, 31, 22, 0.07);
+}
+.how-flow-top,
+.how-row,
+.how-flow-foot {
+  position: relative;
+  z-index: 1;
+  display: contents;
+}
+
+.how-flow-top > *,
+.how-flow-foot > * { align-self: center; }
+
+.how-chat-head {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 26px 40px 18px;
+  font-weight: 700;
+  font-size: 15px;
+}
+.how-chat-head small {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--green);
+}
+.how-chat-avatar {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--yellow);
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 700;
+}
+.how-flow-top > .mono {
+  position: relative;
+  z-index: 1;
+  padding: 26px 56px 18px calc(56px + 44px + 24px);
+  justify-self: start;
+}
+
+.how-row-chat {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 16px 16px 26px;
-  border: 1px solid #cdd7ce;
-  border-radius: 14px;
-}
-.example-label {
-  align-self: center;
-  margin-bottom: 2px;
-  font-size: 10px;
+  gap: 10px;
+  padding: 18px 40px;
 }
 .ex {
-  max-width: 322px;
-  padding: 9px 14px;
-  border-radius: 10px;
+  max-width: 82%;
+  padding: 11px 15px;
+  border-radius: 16px;
   font-size: 15.5px;
   line-height: 1.45;
 }
 .ex--out {
   align-self: flex-end;
   background: var(--bubble-out);
+  border-bottom-right-radius: 5px;
 }
 .ex--in {
   align-self: flex-start;
   background: #fff;
+  border-bottom-left-radius: 5px;
+  box-shadow: 0 1px 0 rgba(11, 31, 22, 0.06);
 }
 
-.how-steps {
-  padding-top: 33px;
-}
-.how-steps li {
+.how-row-step {
+  position: relative;
+  z-index: 1;
   display: grid;
-  grid-template-columns: 58px 1fr;
-  padding: 30px 0 35px;
-  border-top: 1px solid var(--line);
+  grid-template-columns: 44px 1fr;
+  gap: 24px;
+  align-items: center;
+  padding: 18px 56px 18px 56px;
 }
-.how-steps li:last-child {
-  border-bottom: 1px solid var(--line);
+/* timeline rail: one segment per row, starting and ending at the circles */
+.how-row-step::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(56px + 21px);
+  border-left: 2px dashed rgba(11, 31, 22, 0.14);
 }
-.how-steps li .mono {
-  padding-top: 12px;
-  font-size: 10.5px;
+.how-flow-top + .how-row .how-row-step::after { top: 50%; }
+.how-row:has(+ .how-flow-foot) .how-row-step::after { bottom: 50%; }
+/* dashed connector from the reply to its step */
+.how-row-step::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 56px;
+  border-top: 2px dashed rgba(11, 31, 22, 0.14);
 }
-.how-steps h3 {
-  font-size: 40px;
+.how-num {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--green);
+  background: var(--panel);
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--green);
+  transition: background 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+}
+.how-row-step h3 {
+  font-family: var(--display);
+  font-size: 34px;
   line-height: 1.1;
   font-weight: 700;
   letter-spacing: -0.03em;
 }
-.how-steps p {
-  margin-top: 10px;
-  font-size: 16px;
-  line-height: 1.62;
+.how-row-step p {
+  margin-top: 8px;
+  max-width: 460px;
+  font-size: 16.5px;
+  line-height: 1.6;
   color: var(--muted);
-  max-width: 560px;
 }
+
+.how-composer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 14px 40px 28px;
+  height: 48px;
+  padding: 0 6px 0 20px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px rgba(11, 31, 22, 0.08);
+  font-size: 15px;
+  color: #8b968f;
+}
+.how-composer-send {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--green);
+  color: #fff;
+}
+.how-try {
+  position: relative;
+  z-index: 1;
+  justify-self: start;
+  margin: 14px 56px 28px calc(56px + 44px + 24px);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--green);
+}
+.how-try span {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+.how-try:hover span { transform: translateX(3px); }
+.how-try:focus-visible {
+  outline: 2px solid var(--mint);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Reveal: message, then reply, then the step lights up (only when JS adds .how-animate) */
+.how-animate .how-row .ex,
+.how-animate .how-row .how-row-step > div {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.how-animate .how-row.is-in .ex,
+.how-animate .how-row.is-in .how-row-step > div {
+  opacity: 1;
+  transform: none;
+}
+.how-animate .how-row.is-in .ex--in { transition-delay: 0.35s; }
+.how-animate .how-row.is-in .how-row-step > div { transition-delay: 0.5s; }
+.how-animate .how-row.is-in .how-num,
+html:not(.how-animate) .how-num {
+  background: var(--yellow);
+  border-color: var(--yellow);
+  color: var(--ink);
+}
+.how-animate .how-row.is-in .how-num { transition-delay: 0.5s; }
 
 /* Services */
 .services-grid {
@@ -2332,7 +2486,12 @@ details[open] .faq-plus::after { transform: rotate(0deg); }
    ===================================================================== */
 @media (max-width: 1240px) {
   .hero-visual { left: auto; right: -110px; transform: scale(0.66); transform-origin: top right; }
-  .how-grid { grid-template-columns: 1fr 1fr; gap: 48px; }
+  .how-flow { --chat-col: 440px; }
+  .how-row-step { padding-left: 40px; padding-right: 32px; }
+  .how-row-step::after { left: calc(40px + 21px); }
+  .how-flow-top > .mono { padding-left: calc(40px + 44px + 24px); }
+  .how-try { margin-left: calc(40px + 44px + 24px); }
+  .how-row-step h3 { font-size: 28px; }
   .categories { grid-template-columns: 220px repeat(4, 1fr); padding-right: 28px; }
   .faq { grid-template-columns: 1fr 1.4fr; gap: 40px; }
 }
@@ -2362,7 +2521,6 @@ details[open] .faq-plus::after { transform: rotate(0deg); }
   }
   .strip-intro { min-height: 182px; }
   .section-head,
-  .how-grid,
   .sides,
   .faq,
   .hello { grid-template-columns: 1fr; }
@@ -2376,8 +2534,19 @@ details[open] .faq-plus::after { transform: rotate(0deg); }
   .why-grid li:nth-child(2n) { padding-left: 24px; border-left: 1px solid rgba(232, 240, 235, 0.14); }
   .why-grid li:nth-last-child(-n + 3) { border-bottom: 1px solid rgba(232, 240, 235, 0.14); padding-bottom: 30px; }
   .why-grid li:nth-last-child(-n + 2) { border-bottom: 0; }
-  .how-card { min-height: 0; }
   .section-head p { top: 0; }
+  .how-flow { grid-template-columns: 1fr; }
+  .how-flow::before, .how-row-step::before, .how-row-step::after { display: none; }
+  .how-flow-top > .mono { display: none; }
+  .how-chat-head { padding: 22px 24px 4px; }
+  .how-row { display: flex; flex-direction: column-reverse; }
+  .how-row-step { padding: 24px 24px 8px; gap: 16px; align-items: start; }
+  .how-row-step h3 { font-size: 26px; }
+  .how-row-chat { padding: 10px 24px 20px; background: #f8faf7; margin: 0 16px; border-radius: 18px; }
+  .how-row + .how-row { border-top: 1px solid rgba(11, 31, 22, 0.08); margin-top: 18px; }
+  .how-flow-foot { display: block; }
+  .how-composer { display: none; }
+  .how-try { display: inline-block; margin: 22px 24px 26px; }
   .hello h2 { font-size: 88px; margin-top: 24px; }
   .hello-side { padding-top: 0; }
   .hello-side .btn { margin-top: 24px; }
@@ -2414,9 +2583,6 @@ details[open] .faq-plus::after { transform: rotate(0deg); }
   .why-grid li:nth-child(2n),
   .why-grid li:not(:nth-child(3n + 1)) { padding: 24px 0; border-left: 0; border-bottom: 1px solid rgba(232, 240, 235, 0.14); }
   .why-grid li:last-child { border-bottom: 0; }
-  .how-card { padding: 20px; }
-  .how-steps h3 { font-size: 28px; }
-  .how-steps li { grid-template-columns: 40px 1fr; }
   .side { padding: 30px 26px 40px; min-height: 0; }
   .side h3 { font-size: 64px; }
   .side .btn { margin-top: 32px; }
@@ -3105,46 +3271,69 @@ details[open] .faq-plus::after { transform: rotate(0deg); }
         <p>If you can send a WhatsApp message, you can use Hustlr. There are no menus to learn.</p>
       </div>
 
-      <div class="how-grid">
-        <div class="how-card">
-          <div class="example-chat">
-            <span class="mono example-label">Example chat</span>
-            <div class="ex ex--out">I need a plumber</div>
-            <div class="ex ex--in">Sure. Which area are you in, and when do you need someone?</div>
-            <div class="ex ex--out">Avondale, today if possible</div>
-            <div class="ex ex--in">I found plumbers who work around Avondale. Want me to book the first one for this afternoon?</div>
-            <div class="ex ex--out">Yes please</div>
-            <div class="ex ex--in">Done. They'll message you to confirm the time.</div>
+      <!-- The example chat and the steps share rows: each step sits beside the messages it describes -->
+      <div class="how-flow">
+        <div class="how-flow-top">
+          <div class="how-chat-head">
+            <span class="how-chat-avatar" aria-hidden="true">H</span>
+            <span>Hustlr<small>online · example chat</small></span>
           </div>
+          <span class="mono">What's happening</span>
         </div>
 
-        <ol class="how-steps">
-          
-            <li>
-              <span class="mono mono--green">01</span>
+        
+          <div class="how-row">
+            <div class="how-row-chat" aria-label="Example messages for step 01">
+              <div class="ex ex--out">I need a plumber</div>
+              <div class="ex ex--in">Sure. Which area are you in, and when do you need someone?</div>
+            </div>
+            <div class="how-row-step">
+              <span class="how-num" aria-hidden="true">01</span>
               <div>
-                <h3>Say what you need</h3>
+                <h3><span class="sr-only">Step 01: </span>Say what you need</h3>
                 <p>Type it the way you would tell a friend. “My geyser is leaking” works.</p>
               </div>
-            </li>
-          
-            <li>
-              <span class="mono mono--green">02</span>
+            </div>
+          </div>
+        
+          <div class="how-row">
+            <div class="how-row-chat" aria-label="Example messages for step 02">
+              <div class="ex ex--out">Avondale, today if possible</div>
+              <div class="ex ex--in">I found plumbers who work around Avondale. Want me to book the first one for this afternoon?</div>
+            </div>
+            <div class="how-row-step">
+              <span class="how-num" aria-hidden="true">02</span>
               <div>
-                <h3>Meet your match</h3>
+                <h3><span class="sr-only">Step 02: </span>Meet your match</h3>
                 <p>Hustlr asks a question or two, then suggests providers who fit the job and your area.</p>
               </div>
-            </li>
-          
-            <li>
-              <span class="mono mono--green">03</span>
+            </div>
+          </div>
+        
+          <div class="how-row">
+            <div class="how-row-chat" aria-label="Example messages for step 03">
+              <div class="ex ex--out">Yes please</div>
+              <div class="ex ex--in">Done. They'll message you to confirm the time.</div>
+            </div>
+            <div class="how-row-step">
+              <span class="how-num" aria-hidden="true">03</span>
               <div>
-                <h3>Book it</h3>
+                <h3><span class="sr-only">Step 03: </span>Book it</h3>
                 <p>Pick one and Hustlr sets it up. The provider messages you to confirm the details.</p>
               </div>
-            </li>
-          
-        </ol>
+            </div>
+          </div>
+        
+
+        <div class="how-flow-foot">
+          <div class="how-composer" aria-hidden="true">
+            <span>Message</span>
+            <span class="how-composer-send">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </span>
+          </div>
+          <a href="https://wa.me/263719351207" class="how-try" target="_blank" rel="noopener">Try it on WhatsApp <span aria-hidden="true">&rarr;</span></a>
+        </div>
       </div>
     </section>
 
@@ -3588,6 +3777,26 @@ details[open] .faq-plus::after { transform: rotate(0deg); }
 
 
   <script>
+    // ---- How it works: reveal each row (message, reply, step) as it scrolls in ----
+    const howRows = document.querySelectorAll('.how-row');
+    if (howRows.length && 'IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('how-animate');
+      const io = new IntersectionObserver(
+        (entries) => entries.forEach((e) => {
+          if (e.isIntersecting) {
+            // rows use display: contents, so we watch each row's chat block
+            e.target.parentElement.classList.add('is-in');
+            io.unobserve(e.target);
+          }
+        }),
+        { rootMargin: '0px 0px -18% 0px' }
+      );
+      howRows.forEach((r) => {
+        const chat = r.querySelector('.how-row-chat');
+        if (chat) io.observe(chat);
+      });
+    }
+
     // ---- Tilt the 3D phones toward the pointer ----
     const hero = document.querySelector('.hero');
     const visual = document.querySelector('.hero-visual');
