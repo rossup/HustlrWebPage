@@ -1,0 +1,207 @@
+---
+// Site-wide navigation: used on every page.
+// The bar is see-through over a dark top section with id="top",
+// then turns light once you scroll past it.
+import { WA, WA_PROVIDER, waIcon, steps, services, proBenefits } from '../data/site';
+---
+
+    <header class="nav" id="siteNav">
+    <div class="nav-shell">
+      <a href="/" class="nav-logo" aria-label="Hustlr home">
+        <img class="nav-logo--light" src="/assets/logo-reverse.svg" alt="Hustlr" width="106" height="38" />
+        <img class="nav-logo--dark" src="/assets/logo-primary.svg" alt="" width="106" height="38" aria-hidden="true" />
+      </a>
+
+      <nav class="nav-links" aria-label="Primary">
+        <button class="nav-trigger" type="button" data-menu="menu-how" data-section="how-it-works" aria-expanded="false" aria-controls="menu-how">
+          How it works <svg class="nav-chevron" width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 4.5 3 3 3-3"/></svg>
+        </button>
+        <button class="nav-trigger" type="button" data-menu="menu-services" data-section="services" aria-expanded="false" aria-controls="menu-services">
+          Services <svg class="nav-chevron" width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 4.5 3 3 3-3"/></svg>
+        </button>
+        <button class="nav-trigger" type="button" data-menu="menu-providers" data-section="for-providers" aria-expanded="false" aria-controls="menu-providers">
+          Providers <svg class="nav-chevron" width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 4.5 3 3 3-3"/></svg>
+        </button>
+        <a class="nav-trigger" href="/#questions" data-section="questions">Questions</a>
+      </nav>
+
+      <div class="nav-right">
+        <a href={WA_PROVIDER} class="nav-ghost" target="_blank" rel="noopener">Join as a provider</a>
+        <a href={WA} class="btn btn--yellow btn--sm nav-cta" target="_blank" rel="noopener">
+          <Fragment set:html={waIcon} />
+          <span>Chat on WhatsApp</span>
+        </a>
+        <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navPanel">
+          <span></span><span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Dropdown panels -->
+    <div class="nav-menu" id="menu-how" hidden>
+      <div class="menu-grid menu-grid--how">
+        {steps.map((s) => (
+          <a href="/#how-it-works" class="menu-step">
+            <span class="menu-step-num">{s.n}</span>
+            <strong>{s.title}</strong>
+            <span>{s.text}</span>
+          </a>
+        ))}
+      </div>
+      <a href="/#how-it-works" class="menu-foot">See an example chat <span aria-hidden="true">&rarr;</span></a>
+    </div>
+
+    <div class="nav-menu" id="menu-services" hidden>
+      <div class="menu-grid menu-grid--services">
+        {services.map((sv) => (
+          <a class="menu-service" href={`${WA}?text=${encodeURIComponent(sv.ask)}`} target="_blank" rel="noopener">
+            <span class="menu-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={sv.icon} />
+            </span>
+            <span>
+              <strong>{sv.name}</strong>
+              <span>{sv.text}</span>
+            </span>
+          </a>
+        ))}
+      </div>
+      <a href={WA} class="menu-foot" target="_blank" rel="noopener">Something else? Describe any job in the chat <span aria-hidden="true">&rarr;</span></a>
+    </div>
+
+    <div class="nav-menu" id="menu-providers" hidden>
+      <div class="menu-grid menu-grid--providers">
+        <div class="menu-pro-card">
+          <span class="mono mono--yellow">For providers</span>
+          <strong>Grow your business on WhatsApp</strong>
+          <span>Booking requests from people nearby, straight to your chat.</span>
+          <a href={WA_PROVIDER} class="btn btn--yellow btn--sm" target="_blank" rel="noopener"><Fragment set:html={waIcon} />Join as a provider</a>
+        </div>
+        <ul class="menu-pro-list">
+          {proBenefits.slice(0, 3).map((b) => (
+            <li>
+              <span class="menu-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={b.icon} />
+              </span>
+              <span>
+                <strong>{b.title}</strong>
+                <span>{b.text}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <a href="/#for-providers" class="menu-foot">How Hustlr works for providers <span aria-hidden="true">&rarr;</span></a>
+    </div>
+
+    <!-- Mobile menu -->
+    <div class="nav-panel" id="navPanel" hidden>
+      <a href="/#how-it-works">How it works</a>
+      <a href="/#services">Services</a>
+      <a href="/#for-providers">Providers</a>
+      <a href="/#questions">Questions</a>
+      <div class="nav-panel-actions">
+        <a href={WA_PROVIDER} class="nav-panel-secondary" target="_blank" rel="noopener">Join as a provider &rarr;</a>
+        <a href={WA} class="btn btn--yellow" target="_blank" rel="noopener"><Fragment set:html={waIcon} />Chat on WhatsApp</a>
+      </div>
+    </div>
+  </header>
+
+<script>
+    // ---- Nav: light/dark state, active section, dropdowns, mobile menu ----
+    const nav = document.getElementById('siteNav');
+    const heroEl = document.getElementById('top');
+    const triggers = [...document.querySelectorAll<HTMLElement>('.nav-trigger')];
+    const toggle = document.querySelector<HTMLButtonElement>('.nav-toggle');
+    const panel = document.getElementById('navPanel');
+
+    // Over the dark hero the bar is see-through; after it, it turns light.
+    const onScroll = () => {
+      const y = window.scrollY;
+      nav?.classList.toggle('is-scrolled', y > 20);
+      const heroEnd = (heroEl?.offsetHeight ?? 700) - 90;
+      nav?.classList.toggle('is-light', y > heroEnd);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // Active section = the last one whose top has passed 40% of the viewport
+    const sections = triggers
+      .map((t) => document.getElementById(t.dataset.section || ''))
+      .filter((el): el is HTMLElement => !!el);
+    let current = '';
+    const pickActive = () => {
+      const line = window.innerHeight * 0.4;
+      let id = '';
+      sections.forEach((el) => {
+        if (el.getBoundingClientRect().top <= line) id = el.id;
+      });
+      if (id !== current) {
+        current = id;
+        triggers.forEach((t) => t.classList.toggle('is-active', t.dataset.section === id));
+      }
+    };
+    window.addEventListener('scroll', () => requestAnimationFrame(pickActive), { passive: true });
+    pickActive();
+
+    // Dropdown panels: open on hover (mouse) or click (touch/keyboard)
+    const menuTriggers = triggers.filter((t) => t.dataset.menu);
+    let closeTimer = 0;
+    const closeMenus = () => {
+      menuTriggers.forEach((t) => {
+        t.setAttribute('aria-expanded', 'false');
+        const m = document.getElementById(t.dataset.menu || '');
+        if (m) m.hidden = true;
+      });
+      nav?.classList.remove('has-menu');
+    };
+    const openMenu = (t: HTMLElement) => {
+      window.clearTimeout(closeTimer);
+      menuTriggers.forEach((o) => {
+        const isThis = o === t;
+        o.setAttribute('aria-expanded', String(isThis));
+        const m = document.getElementById(o.dataset.menu || '');
+        if (m) m.hidden = !isThis;
+      });
+      nav?.classList.add('has-menu');
+    };
+    const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    menuTriggers.forEach((t) => {
+      t.addEventListener('click', () => (t.getAttribute('aria-expanded') === 'true' ? closeMenus() : openMenu(t)));
+      if (canHover) t.addEventListener('pointerenter', () => openMenu(t));
+    });
+    if (canHover) {
+      nav?.addEventListener('pointerleave', () => {
+        closeTimer = window.setTimeout(closeMenus, 180);
+      });
+      nav?.addEventListener('pointerenter', () => window.clearTimeout(closeTimer));
+      document.querySelector('.nav-trigger[href]')?.addEventListener('pointerenter', closeMenus);
+    }
+    document.querySelectorAll('.nav-menu a').forEach((a) => a.addEventListener('click', closeMenus));
+    document.addEventListener('click', (e) => {
+      if (nav && !nav.contains(e.target as Node)) closeMenus();
+    });
+
+    // Mobile menu
+    const closeMobile = () => {
+      if (!toggle || !panel) return;
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Open menu');
+      panel.hidden = true;
+      nav?.classList.remove('is-open');
+    };
+    toggle?.addEventListener('click', () => {
+      if (!panel) return;
+      const open = panel.hidden;
+      panel.hidden = !open;
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      nav?.classList.toggle('is-open', open);
+    });
+    panel?.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeMobile));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeMenus();
+        closeMobile();
+      }
+    });
+</script>

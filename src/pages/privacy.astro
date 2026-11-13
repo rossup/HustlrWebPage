@@ -1,27 +1,26 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import HomeLayout from '../layouts/HomeLayout.astro';
+import SiteNav from '../components/SiteNav.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 ---
 
-<Layout
-  title="Privacy Policy — hustlr.chat"
-  description="How hustlr.chat handles information when you visit our website or contact us."
-  bodyClass="privacy-page"
+<HomeLayout
+  title="Privacy Policy — Hustlr"
+  description="How Hustlr handles information when you visit our website or contact us."
 >
-  <header class="nav-wrap">
-    <nav class="nav container" aria-label="Main navigation">
-      <a href="/" class="brand-logo" aria-label="hustlr.chat home">
-        <img src="/assets/logo-reverse.svg" alt="hustlr" class="brand-logo-img" />
-      </a>
-      <a href="/#contact" class="btn-glass-pill">Contact us</a>
-    </nav>
+  <SiteNav />
+
+  <header class="legal-hero" id="top">
+    <div class="wrap-wide">
+      <span class="mono mono--yellow">Legal</span>
+      <h1>Privacy policy</h1>
+      <p>Last updated: <time datetime="2026-10-26">26 October 2026</time></p>
+    </div>
   </header>
 
-  <main>
-    <article class="container policy">
-      <a href="/" class="eyebrow-light">&larr; Back to home</a>
-      <h1>Privacy Policy</h1>
-      <p>Last updated: <time datetime="2026-10-26">26 October 2026</time></p>
-      <p>
+  <main class="wrap-wide legal">
+    <article class="legal-body">
+      <p class="legal-intro">
         This policy explains how hustlr.chat handles personal information through this website and enquiries you send to us. It covers the website and initial contact; individual services, pilots, or payment providers may have additional privacy notices presented when you use them.
       </p>
 
@@ -43,17 +42,74 @@ import Layout from '../layouts/Layout.astro';
     </article>
   </main>
 
-  <footer class="footer">
-    <div class="container foot">
-      <a class="brand-logo" href="/">
-        <img src="/assets/logo-primary.svg" alt="hustlr" class="brand-logo-img" />
-      </a>
-      <div class="foot-links">
-        <a href="/#product">Product</a>
-        <a href="/#contact">Contact</a>
-        <a href="/privacy" aria-current="page">Privacy Policy</a>
-      </div>
-      <div>&copy; 2026 hustlr.chat</div>
-    </div>
-  </footer>
-</Layout>
+  <SiteFooter />
+</HomeLayout>
+
+<style>
+  .legal-hero {
+    padding: 168px 0 72px;
+    background:
+      radial-gradient(900px 420px at 85% 0%, rgba(61, 204, 141, 0.1), transparent 70%),
+      var(--ink);
+    color: var(--on-dark);
+  }
+  .legal-hero h1 {
+    margin-top: 16px;
+    font-family: var(--display);
+    font-size: 56px;
+    line-height: 1.05;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+  .legal-hero p {
+    margin-top: 14px;
+    font-size: 16px;
+    color: var(--on-dark-muted);
+  }
+
+  .legal {
+    padding-top: 72px;
+  }
+  .legal-body {
+    max-width: 720px;
+  }
+  .legal-intro {
+    font-size: 19px;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  .legal-body section {
+    margin-top: 56px;
+    padding-top: 40px;
+    border-top: 1px solid var(--line);
+  }
+  .legal-body h2 {
+    font-family: var(--display);
+    font-size: 28px;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .legal-body section p,
+  .legal-body li {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+  .legal-body section p { margin-top: 16px; }
+  .legal-body ul {
+    display: grid;
+    gap: 14px;
+    margin: 20px 0 0;
+    padding-left: 20px;
+  }
+  .legal-body li::marker { color: var(--green); }
+  .legal-body strong { color: var(--ink); }
+
+  @media (max-width: 760px) {
+    .legal-hero { padding: 128px 0 48px; }
+    .legal-hero h1 { font-size: 40px; }
+    .legal { padding-top: 48px; }
+    .legal-intro { font-size: 17.5px; }
+  }
+</style>

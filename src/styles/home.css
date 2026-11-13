@@ -16,6 +16,9 @@
   /* Brand type: Sora for the wordmark and headings, Manrope for UI, chat cards and body copy */
   --font: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --display: 'Sora', 'Manrope', system-ui, sans-serif;
+  /* Spacing rhythm: one gap between every section, one from each heading to its content */
+  --section-gap: 144px;
+  --head-gap: 72px;
   --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
 }
 
@@ -1342,13 +1345,7 @@ ol {
 .categories a:hover { color: var(--green); }
 
 .section {
-  padding-top: 108px;
-}
-.section + .section {
-  padding-top: 154px;
-}
-.section.faq {
-  padding-top: 166px;
+  padding-top: var(--section-gap);
 }
 
 .section-head {
@@ -1381,7 +1378,7 @@ ol {
   display: grid;
   grid-template-columns: 551px 1fr;
   gap: 78px;
-  margin-top: 79px;
+  margin-top: var(--head-gap);
 }
 
 .how-card {
@@ -1454,7 +1451,7 @@ ol {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
-  margin-top: 72px;
+  margin-top: var(--head-gap);
 }
 .service-card {
   display: flex;
@@ -1526,7 +1523,7 @@ ol {
   display: grid;
   grid-template-columns: 1.15fr 1fr;
   gap: 20px;
-  margin-top: 72px;
+  margin-top: var(--head-gap);
 }
 .pro-join {
   display: flex;
@@ -1720,7 +1717,7 @@ ol {
 .why-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  margin: 64px 0 0;
+  margin: var(--head-gap) 0 0;
   padding: 0;
   list-style: none;
   border-top: 1px solid rgba(232, 240, 235, 0.14);
@@ -1764,7 +1761,7 @@ ol {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 32px;
-  margin-top: 80px;
+  margin-top: var(--head-gap);
 }
 .side {
   display: flex;
@@ -1886,7 +1883,7 @@ details[open] .faq-plus::after { transform: rotate(0deg); }
   align-items: start;
   gap: 40px;
   min-height: 337px;
-  margin-top: 172px;
+  margin-top: var(--section-gap);
   padding: 46px 56px 48px;
   border-radius: 24px;
   background: var(--ink);
@@ -1916,7 +1913,7 @@ details[open] .faq-plus::after { transform: rotate(0deg); }
    FOOTER — Architectural multi-column directory + quick prompts + legal
    ===================================================================== */
 .footer {
-  margin-top: 84px;
+  margin-top: var(--section-gap);
   padding: 64px 0 56px;
   border-top: 1px solid var(--line);
   color: var(--ink);
@@ -2228,8 +2225,7 @@ details[open] .faq-plus::after { transform: rotate(0deg); }
   }
   .categories .mono { grid-column: 1 / -1; }
   .categories a { text-align: left; }
-  .section { padding-top: 80px; }
-  .section + .section { padding-top: 96px; }
+  :root { --section-gap: 96px; --head-gap: 48px; }
   .section h2, .faq h2 { font-size: 40px; }
   .services-grid { grid-template-columns: 1fr; }
   .pro-join { padding: 30px 24px 32px; }
@@ -2237,7 +2233,7 @@ details[open] .faq-plus::after { transform: rotate(0deg); }
   .pro-benefits { grid-template-columns: 1fr; }
   .service-card { min-height: 0; }
   .why { padding: 40px 24px 32px; }
-  .why-grid { grid-template-columns: 1fr; margin-top: 40px; }
+  .why-grid { grid-template-columns: 1fr; }
   .why-grid li,
   .why-grid li:nth-child(2n),
   .why-grid li:not(:nth-child(3n + 1)) { padding: 24px 0; border-left: 0; border-bottom: 1px solid rgba(232, 240, 235, 0.14); }
@@ -2248,9 +2244,9 @@ details[open] .faq-plus::after { transform: rotate(0deg); }
   .side { padding: 30px 26px 40px; min-height: 0; }
   .side h3 { font-size: 64px; }
   .side .btn { margin-top: 32px; }
-  .hello { margin-top: 110px; padding: 36px 26px; min-height: 0; }
+  .hello { padding: 36px 26px; min-height: 0; }
   .hello h2 { font-size: 64px; }
-  .footer { margin-top: 64px; padding: 48px 0 40px; }
+  .footer { padding: 48px 0 40px; }
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 28px 20px; }
   .footer-prompts { padding: 18px; margin-top: 36px; }
   .footer-bottom { flex-direction: column; align-items: flex-start; gap: 16px; }
