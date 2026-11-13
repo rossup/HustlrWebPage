@@ -1,0 +1,179 @@
+---
+import HomeLayout from '../layouts/HomeLayout.astro';
+import SiteNav from '../components/SiteNav.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+
+// Sections drive both the table of contents and the numbered headings.
+const sections = [
+  { id: 'about', title: 'About these terms' },
+  { id: 'service', title: 'What Hustlr does' },
+  { id: 'using', title: 'Using Hustlr' },
+  { id: 'bookings', title: 'Bookings' },
+  { id: 'payments', title: 'Prices and payment' },
+  { id: 'providers', title: 'If you are a provider' },
+  { id: 'conduct', title: 'Acceptable use' },
+  { id: 'liability', title: 'Our responsibility' },
+  { id: 'suspension', title: 'Suspending or ending access' },
+  { id: 'privacy', title: 'Your information' },
+  { id: 'changes', title: 'Changes to these terms' },
+  { id: 'law', title: 'Governing law' },
+  { id: 'contact', title: 'Contact us' },
+];
+const n = (id: string) => String(sections.findIndex((s) => s.id === id) + 1).padStart(2, '0');
+---
+
+<HomeLayout
+  title="Terms & Conditions — Hustlr"
+  description="The terms for using Hustlr to find, book and offer services over WhatsApp."
+>
+  <SiteNav />
+
+  <header class="legal-hero" id="top">
+    <div class="wrap-wide">
+      <span class="mono mono--yellow">Legal</span>
+      <h1>Terms &amp; conditions</h1>
+      <p>Last updated: <span class="legal-ph">[add date]</span></p>
+    </div>
+  </header>
+
+  <main class="wrap-wide legal">
+    <div class="legal-layout">
+      <nav class="legal-toc" aria-label="On this page">
+        <span class="mono">On this page</span>
+        {sections.map((s) => <a href={`#${s.id}`}>{s.title}</a>)}
+      </nav>
+
+      <article class="legal-body">
+        <div class="legal-summary">
+          <h2>The short version</h2>
+          <ul>
+            <li>Hustlr connects you with independent providers over WhatsApp. The provider, not Hustlr, does the work.</li>
+            <li>Nothing is booked until you confirm. You agree the price and details directly with the provider.</li>
+            <li>Providers must give accurate details and honour the jobs they accept.</li>
+            <li>Be respectful in the chat. We can suspend anyone who misuses Hustlr.</li>
+          </ul>
+        </div>
+
+        <section aria-labelledby="about">
+          <h2 id="about"><span class="legal-num">{n('about')}</span>About these terms</h2>
+          <p>
+            These terms apply when you use Hustlr, including the website at hustlr.chat and the Hustlr service on WhatsApp. Hustlr is operated by <span class="legal-ph">[legal company name]</span>, <span class="legal-ph">[registered address]</span> ("Hustlr", "we", "us").
+          </p>
+          <p>By messaging Hustlr or using the website, you agree to these terms. If you do not agree, please do not use Hustlr.</p>
+        </section>
+
+        <section aria-labelledby="service">
+          <h2 id="service"><span class="legal-num">{n('service')}</span>What Hustlr does</h2>
+          <p>
+            Hustlr helps customers find service providers, such as plumbers, electricians, cleaners and tutors, and send them booking requests through a WhatsApp chat. Providers use Hustlr to receive those requests.
+          </p>
+          <p>
+            Providers are independent businesses and individuals. They are not employees or agents of Hustlr. Any agreement to carry out a job is between the customer and the provider.
+          </p>
+        </section>
+
+        <section aria-labelledby="using">
+          <h2 id="using"><span class="legal-num">{n('using')}</span>Using Hustlr</h2>
+          <ul>
+            <li>You must be at least <span class="legal-ph">[18]</span> years old, or have permission from a parent or guardian.</li>
+            <li>Give accurate information, including the job you need and where you are.</li>
+            <li>You need a WhatsApp account to use Hustlr. WhatsApp's own terms and privacy policy also apply to your use of WhatsApp.</li>
+            <li>Normal mobile data or messaging charges from your network may apply.</li>
+          </ul>
+        </section>
+
+        <section aria-labelledby="bookings">
+          <h2 id="bookings"><span class="legal-num">{n('bookings')}</span>Bookings</h2>
+          <p>
+            Before anything is booked, Hustlr shows you the booking details. A booking request is only sent to a provider when you confirm it, for example by replying <strong>YES</strong> or <strong>CONFIRM</strong>. You can reply <strong>NO</strong> or <strong>CANCEL</strong> to stop it.
+          </p>
+          <p>
+            A booking request is not a guaranteed appointment. The provider will contact you to confirm the time and details, and may decline a request. If you need to change or cancel after the provider has confirmed, let them know as early as you can.
+          </p>
+        </section>
+
+        <section aria-labelledby="payments">
+          <h2 id="payments"><span class="legal-num">{n('payments')}</span>Prices and payment</h2>
+          <p>
+            Prices, call-out fees and payment terms for a job are agreed directly between you and the provider. Ask for a quote before work starts. Hustlr does not set providers' prices.
+          </p>
+          <p><span class="legal-ph">[If Hustlr charges customers or providers any fee, or takes payments, describe it here.]</span></p>
+        </section>
+
+        <section aria-labelledby="providers">
+          <h2 id="providers"><span class="legal-num">{n('providers')}</span>If you are a provider</h2>
+          <ul>
+            <li>Keep your profile accurate, including your name, business name, trade and the areas you cover.</li>
+            <li>Hold any licences, registrations or qualifications that the law requires for your work.</li>
+            <li>Only accept jobs you can do, and turn up or let the customer know in good time if plans change.</li>
+            <li>Do the work safely and to a reasonable standard, and treat customers and their property with respect.</li>
+          </ul>
+          <p>
+            A "Verified" label means <span class="legal-ph">[describe the checks Hustlr carries out]</span>. It is not a guarantee of the quality of any individual job.
+          </p>
+        </section>
+
+        <section aria-labelledby="conduct">
+          <h2 id="conduct"><span class="legal-num">{n('conduct')}</span>Acceptable use</h2>
+          <p>Do not use Hustlr to:</p>
+          <ul>
+            <li>harass, threaten or abuse anyone, including providers, customers or our team;</li>
+            <li>send false bookings, spam, or misleading information;</li>
+            <li>offer or request anything illegal; or</li>
+            <li>interfere with the service or try to access it in ways we have not allowed.</li>
+          </ul>
+        </section>
+
+        <section aria-labelledby="liability">
+          <h2 id="liability"><span class="legal-num">{n('liability')}</span>Our responsibility</h2>
+          <p>
+            We work to keep Hustlr running smoothly and to connect you with suitable providers, but we cannot promise the service will always be available or error-free.
+          </p>
+          <p>
+            Because providers are independent, Hustlr is not responsible for the work they carry out, the prices they charge, or any loss or damage arising from a job. Any claim about a job should be raised with the provider.
+          </p>
+          <p>Nothing in these terms limits any rights you have under consumer law that cannot be excluded.</p>
+        </section>
+
+        <section aria-labelledby="suspension">
+          <h2 id="suspension"><span class="legal-num">{n('suspension')}</span>Suspending or ending access</h2>
+          <p>
+            We may suspend or remove a customer or provider who breaks these terms, gives false information, or puts others at risk. You can stop using Hustlr at any time. Providers can ask us to remove their profile.
+          </p>
+        </section>
+
+        <section aria-labelledby="privacy">
+          <h2 id="privacy"><span class="legal-num">{n('privacy')}</span>Your information</h2>
+          <p>
+            We share the details of your booking with the provider you choose so they can respond. Our <a href="/privacy">privacy policy</a> explains what information we receive and how we use it.
+          </p>
+        </section>
+
+        <section aria-labelledby="changes">
+          <h2 id="changes"><span class="legal-num">{n('changes')}</span>Changes to these terms</h2>
+          <p>
+            We may update these terms as Hustlr changes. The date at the top of this page shows when they were last updated. If you keep using Hustlr after a change, the updated terms apply.
+          </p>
+        </section>
+
+        <section aria-labelledby="law">
+          <h2 id="law"><span class="legal-num">{n('law')}</span>Governing law</h2>
+          <p>These terms are governed by the laws of <span class="legal-ph">[Zimbabwe]</span>.</p>
+        </section>
+
+        <section aria-labelledby="contact">
+          <h2 id="contact"><span class="legal-num">{n('contact')}</span>Contact us</h2>
+          <p>
+            Questions about these terms? Message us on WhatsApp at <a href="https://wa.me/263719351207" target="_blank" rel="noopener">+263 71 935 1207</a> or email <span class="legal-ph">[add email]</span>.
+          </p>
+        </section>
+
+        <p class="legal-note">
+          This page is a plain-language starting point, not legal advice. Have it reviewed by a lawyer in Zimbabwe before you rely on it, and fill in the highlighted details.
+        </p>
+      </article>
+    </div>
+  </main>
+
+  <SiteFooter />
+</HomeLayout>

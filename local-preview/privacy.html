@@ -2152,6 +2152,182 @@ details[open] .faq-plus::after { transform: rotate(0deg); }
 }
 
 /* =====================================================================
+   LEGAL PAGES (privacy, terms)
+   ===================================================================== */
+.legal-hero {
+  padding: 168px 0 72px;
+  background:
+    radial-gradient(900px 420px at 85% 0%, rgba(61, 204, 141, 0.1), transparent 70%),
+    var(--ink);
+  color: var(--on-dark);
+}
+.legal-hero h1 {
+  margin-top: 16px;
+  font-family: var(--display);
+  font-size: 56px;
+  line-height: 1.05;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+.legal-hero p {
+  margin-top: 14px;
+  font-size: 16px;
+  color: var(--on-dark-muted);
+}
+
+.legal {
+  padding-top: 72px;
+}
+.legal-body {
+  max-width: 720px;
+}
+.legal-intro {
+  font-size: 19px;
+  line-height: 1.65;
+  color: var(--ink);
+}
+.legal-body section {
+  margin-top: 56px;
+  padding-top: 40px;
+  border-top: 1px solid var(--line);
+}
+.legal-body h2 {
+  font-family: var(--display);
+  font-size: 28px;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.legal-body section p,
+.legal-body li {
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+.legal-body section p { margin-top: 16px; }
+.legal-body ul {
+  display: grid;
+  gap: 14px;
+  margin: 20px 0 0;
+  padding-left: 20px;
+}
+.legal-body li::marker { color: var(--green); }
+.legal-body strong { color: var(--ink); }
+
+@media (max-width: 760px) {
+  .legal-hero { padding: 128px 0 48px; }
+  .legal-hero h1 { font-size: 40px; }
+  .legal { padding-top: 48px; }
+  .legal-intro { font-size: 17.5px; }
+}
+
+/* Table of contents + summary (terms page) */
+.legal-layout {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 720px);
+  gap: 88px;
+  align-items: start;
+}
+.legal-toc {
+  position: sticky;
+  top: 104px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 4px;
+}
+.legal-toc .mono {
+  margin-bottom: 12px;
+  font-size: 10.5px;
+}
+.legal-toc a {
+  padding: 7px 0 7px 14px;
+  border-left: 2px solid var(--line);
+  font-size: 14.5px;
+  line-height: 1.35;
+  color: var(--muted);
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.legal-toc a:hover {
+  color: var(--ink);
+  border-color: var(--green);
+}
+.legal-summary {
+  padding: 28px 30px 30px;
+  border-radius: 20px;
+  background: var(--panel);
+}
+.legal-summary h2 {
+  font-family: var(--display);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.legal-summary ul {
+  display: grid;
+  gap: 10px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.legal-summary li {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 10px;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink);
+}
+.legal-summary li::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  margin: 8px 0 0 6px;
+  border-radius: 50%;
+  background: var(--green);
+}
+.legal-body section h2 .legal-num {
+  margin-right: 12px;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--green);
+  vertical-align: 0.25em;
+}
+.legal-body a {
+  color: var(--green);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.legal-body section > p + p { margin-top: 14px; }
+.legal-note {
+  margin-top: 56px;
+  padding: 18px 20px;
+  border-radius: 14px;
+  border: 1px dashed var(--line);
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.legal-ph {
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: rgba(244, 194, 13, 0.25);
+  color: var(--ink);
+  font-weight: 600;
+}
+.legal-hero .legal-ph {
+  background: rgba(244, 194, 13, 0.16);
+  color: var(--yellow);
+}
+@media (max-width: 1024px) {
+  .legal-layout { grid-template-columns: 1fr; gap: 0; }
+  .legal-toc { display: none; }
+}
+
+/* =====================================================================
    RESPONSIVE (not specified in Figma — sensible fallbacks)
    ===================================================================== */
 @media (max-width: 1240px) {
@@ -2252,73 +2428,6 @@ details[open] .faq-plus::after { transform: rotate(0deg); }
   .footer-bottom { flex-direction: column; align-items: flex-start; gap: 16px; }
   .footer-bottom-right { gap: 18px; }
 }
-
-  .legal-hero {
-    padding: 168px 0 72px;
-    background:
-      radial-gradient(900px 420px at 85% 0%, rgba(61, 204, 141, 0.1), transparent 70%),
-      var(--ink);
-    color: var(--on-dark);
-  }
-  .legal-hero h1 {
-    margin-top: 16px;
-    font-family: var(--display);
-    font-size: 56px;
-    line-height: 1.05;
-    font-weight: 700;
-    letter-spacing: -0.03em;
-  }
-  .legal-hero p {
-    margin-top: 14px;
-    font-size: 16px;
-    color: var(--on-dark-muted);
-  }
-
-  .legal {
-    padding-top: 72px;
-  }
-  .legal-body {
-    max-width: 720px;
-  }
-  .legal-intro {
-    font-size: 19px;
-    line-height: 1.65;
-    color: var(--ink);
-  }
-  .legal-body section {
-    margin-top: 56px;
-    padding-top: 40px;
-    border-top: 1px solid var(--line);
-  }
-  .legal-body h2 {
-    font-family: var(--display);
-    font-size: 28px;
-    line-height: 1.2;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
-  .legal-body section p,
-  .legal-body li {
-    font-size: 17px;
-    line-height: 1.7;
-    color: var(--muted);
-  }
-  .legal-body section p { margin-top: 16px; }
-  .legal-body ul {
-    display: grid;
-    gap: 14px;
-    margin: 20px 0 0;
-    padding-left: 20px;
-  }
-  .legal-body li::marker { color: var(--green); }
-  .legal-body strong { color: var(--ink); }
-
-  @media (max-width: 760px) {
-    .legal-hero { padding: 128px 0 48px; }
-    .legal-hero h1 { font-size: 40px; }
-    .legal { padding-top: 48px; }
-    .legal-intro { font-size: 17.5px; }
-  }
 </style></head><body><div style="position:fixed;left:12px;bottom:12px;z-index:99;padding:6px 10px;border-radius:8px;background:#0b1f16;color:#f4c20d;font:600 12px/1.2 system-ui">Local preview · snapshot, not live</div>
 
 
@@ -2711,7 +2820,7 @@ details[open] .faq-plus::after { transform: rotate(0deg); }
       </div>
       <div class="footer-bottom-right">
         <a href="privacy.html">Privacy policy</a>
-        <a href="privacy.html">Terms &amp; data use</a>
+        <a href="terms.html">Terms &amp; conditions</a>
         <a href="https://wa.me/263719351207" target="_blank" rel="noopener">WhatsApp</a>
         <a href="#top" class="footer-top-btn" aria-label="Back to top">
           <span>Back to top</span>
@@ -2720,7 +2829,6 @@ details[open] .faq-plus::after { transform: rotate(0deg); }
       </div>
     </div>
   </footer>
-
 
 
 </body></html>
