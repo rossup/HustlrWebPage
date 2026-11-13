@@ -2,6 +2,7 @@
 import HomeLayout from '../layouts/HomeLayout.astro';
 import SiteNav from '../components/SiteNav.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import ChatSteps from '../components/ChatSteps.astro';
 import { WA, WA_PROVIDER, waIcon, steps, services, proBenefits } from '../data/site';
 
 // WhatsApp conversation shown on the hero phones (copied from a real Hustlr chat).
@@ -43,64 +44,106 @@ const howSteps = [
     n: '01',
     title: 'Say what you need',
     text: 'Type it the way you would tell a friend. “My geyser is leaking” works.',
-    ask: 'I need a plumber',
-    reply: 'Sure. Which area are you in, and when do you need someone?',
+    messages: [
+      { from: 'me', html: 'I need a plumber' },
+      { from: 'bot', html: 'Sure. Which area are you in, and when do you need someone?' },
+    ],
   },
   {
     n: '02',
     title: 'Meet your match',
     text: 'Hustlr asks a question or two, then suggests providers who fit the job and your area.',
-    ask: 'Avondale, today if possible',
-    reply: 'I found plumbers who work around Avondale. Want me to book the first one for this afternoon?',
+    messages: [
+      { from: 'me', html: 'Avondale, today if possible' },
+      { from: 'bot', html: 'I found plumbers who work around Avondale. Want me to book the first one for this afternoon?' },
+    ],
   },
   {
     n: '03',
     title: 'Book it',
     text: 'Pick one and Hustlr sets it up. The provider messages you to confirm the details.',
-    ask: 'Yes please',
-    reply: "Done. They'll message you to confirm the time.",
+    messages: [
+      { from: 'me', html: 'Yes please' },
+      { from: 'bot', html: "Done. They'll message you to confirm the time." },
+    ],
   },
-];
+] satisfies { n: string; title: string; text: string; messages: { from: 'me' | 'bot'; html: string }[] }[];
 
 
 const reasons = [
   {
     title: 'No app to install',
+    caption: 'Hustlr is a WhatsApp contact',
+    proof: `<div class="wm-head"><span class="wm-avatar">H</span><span>Hustlr<small>online</small></span></div><div class="wm-body"><div class="wm-contact"><span class="wm-avatar wm-avatar--lg">H</span><b>Hustlr</b><span>+263 71 935 1207</span></div></div>`,
     text: 'If WhatsApp is on your phone, Hustlr is too. Nothing to download, no account to create.',
     icon: '<rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 18.5h3"/>',
   },
   {
     title: 'Just type it',
+    caption: 'Plain words are all it takes',
+    proof: `<div class="wm-head"><span class="wm-avatar">H</span><span>Hustlr<small>online</small></span></div><div class="wm-body"><div class="wm wm--out">My geyser is leaking in Avondale</div><div class="wm wm--in wm-typing" aria-label="Hustlr is typing"><i></i><i></i><i></i></div></div>`,
     text: 'No menus or forms. Describe the job the way you would tell a friend.',
     icon: '<path d="M4 5.5h16v10H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/>',
   },
   {
     title: 'Light on data',
+    caption: 'Text messages, not an app',
+    proof: `<div class="wm-head"><span class="wm-avatar">H</span><span>Hustlr<small>online</small></span></div><div class="wm-body"><div class="wm wm--out">Home cleaning services</div><div class="wm wm--in">Got it. Which area are you in?</div><div class="wm wm--out">Harare</div></div>`,
     text: 'Everything happens in text messages, so a small data bundle goes a long way.',
     icon: '<path d="M2.5 9a14 14 0 0 1 19 0"/><path d="M5.5 12.5a9.5 9.5 0 0 1 13 0"/><path d="M8.7 16a5 5 0 0 1 6.6 0"/><circle cx="12" cy="19.2" r="1"/>',
   },
   {
     title: 'See who you are booking',
+    caption: 'A provider profile in the chat',
+    proof: `<div class="wm-head"><span class="wm-avatar">H</span><span>Hustlr<small>online</small></span></div><div class="wm-body"><div class="wm wm--in"><b>Bright Cleaning Services</b><br>Verified<br><br><b>Category:</b> Cleaning Services<br><b>Areas:</b> Harare, Zimbabwe<br><br><i>Comprehensive cleaning services for buildings, offices, homes, schools, hospitals and more.</i></div></div>`,
     text: 'Each provider comes with their category, the areas they cover and what they do.',
     icon: '<circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/>',
   },
   {
     title: 'Nothing happens until you say yes',
+    caption: 'The confirmation step',
+    proof: `<div class="wm-head"><span class="wm-avatar">H</span><span>Hustlr<small>online</small></span></div><div class="wm-body"><div class="wm wm--in"><b>Please confirm your booking:</b><br><br><b>Provider:</b> Bright Cleaning Services<br><b>Service:</b> Cleaning<br><b>Location:</b> Harare<br><br><b>Reply:</b><br>• <b>CONFIRM</b> or <b>YES</b> to book<br>• <b>CANCEL</b> or <b>NO</b> to cancel</div><div class="wm wm--out">Yes</div></div>`,
     text: 'Hustlr shows you the booking details first. Reply YES to book, or NO to cancel.',
     icon: '<circle cx="12" cy="12" r="9"/><path d="m8 12.3 2.7 2.7L16.2 9.5"/>',
   },
   {
     title: 'Rebook in one reply',
+    caption: 'Saving a favourite',
+    proof: `<div class="wm-head"><span class="wm-avatar">H</span><span>Hustlr<small>online</small></span></div><div class="wm-body"><div class="wm wm--in">Would you like to save <b>Bright Cleaning Services</b> to your favorites for easy rebooking? Reply <b>SAVE</b> to add them.</div><div class="wm wm--out">SAVE</div></div>`,
     text: 'Liked the work? Reply SAVE to keep that provider in your favourites for next time.',
     icon: '<path d="M12 20s-7.5-4.4-7.5-10A4.3 4.3 0 0 1 12 7.4 4.3 4.3 0 0 1 19.5 10c0 5.6-7.5 10-7.5 10z"/>',
   },
 ];
 
 const proSteps = [
-  { n: '1', title: 'Say hello', text: 'Send “I want to register as a service provider” to Hustlr on WhatsApp.' },
-  { n: '2', title: 'Answer a few questions', text: 'Your name, business name, trade and the areas you cover, in 7 short steps.' },
-  { n: '3', title: 'Start getting jobs', text: 'Booking requests from customers in your areas arrive in the same chat.' },
-];
+  {
+    n: '01',
+    title: 'Say hello',
+    text: 'Send “I want to register as a service provider” to Hustlr on WhatsApp.',
+    messages: [
+      { from: 'me', html: 'I want to register as a service provider' },
+      { from: 'bot', html: "Great! Let's register you as a service provider on Hustlr.<br><br><b>(Step 1/7)</b> What is your full legal name?" },
+    ],
+  },
+  {
+    n: '02',
+    title: 'Answer a few questions',
+    text: 'Your name, business name, trade and the areas you cover, in 7 short steps.',
+    messages: [
+      { from: 'bot', html: '<b>(Step 2/7)</b> What is your business name?<br><i>(Reply <b>SKIP</b> if you operate under your personal name)</i>' },
+      { from: 'me', html: 'Bright Cleaning Services' },
+    ],
+  },
+  {
+    n: '03',
+    title: 'Start getting jobs',
+    text: 'Booking requests from customers in your areas arrive in the same chat. Reply YES to take the job.',
+    messages: [
+      { from: 'bot', html: '<span class="ex-card-title">New booking request</span><span class="ex-row"><span>Service</span><span>Cleaning</span></span><span class="ex-row"><span>Where</span><span>Harare</span></span><span class="ex-row"><span>Job</span><span>Home cleaning services</span></span><span class="ex-note">Reply <b>YES</b> to accept this job.</span>' },
+      { from: 'me', html: 'YES' },
+    ],
+  },
+] satisfies { n: string; title: string; text: string; messages: { from: 'me' | 'bot'; html: string }[] }[];
 
 
 const faqs = [
@@ -305,41 +348,9 @@ const faqs = [
       </div>
 
       <!-- The example chat and the steps share rows: each step sits beside the messages it describes -->
-      <div class="how-flow">
-        <div class="how-flow-top">
-          <div class="how-chat-head">
-            <span class="how-chat-avatar" aria-hidden="true">H</span>
-            <span>Hustlr<small>online · example chat</small></span>
-          </div>
-          <span class="mono">What's happening</span>
-        </div>
-
-        {howSteps.map((s) => (
-          <div class="how-row">
-            <div class="how-row-chat" aria-label={`Example messages for step ${s.n}`}>
-              <div class="ex ex--out">{s.ask}</div>
-              <div class="ex ex--in">{s.reply}</div>
-            </div>
-            <div class="how-row-step">
-              <span class="how-num" aria-hidden="true">{s.n}</span>
-              <div>
-                <h3><span class="sr-only">Step {s.n}: </span>{s.title}</h3>
-                <p>{s.text}</p>
-              </div>
-            </div>
-          </div>
-        ))}
-
-        <div class="how-flow-foot">
-          <div class="how-composer" aria-hidden="true">
-            <span>Message</span>
-            <span class="how-composer-send">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </span>
-          </div>
-          <a href={WA} class="how-try" target="_blank" rel="noopener">Try it on WhatsApp <span aria-hidden="true">&rarr;</span></a>
-        </div>
-      </div>
+      <ChatSteps rows={howSteps}>
+        <a href={WA} class="how-try" target="_blank" rel="noopener">Try it on WhatsApp <span aria-hidden="true">&rarr;</span></a>
+      </ChatSteps>
     </section>
 
     <!-- ============================== SERVICES ============================== -->
@@ -423,44 +434,9 @@ const faqs = [
         <p>Hustlr brings booking requests from people nearby straight to your WhatsApp. You decide which jobs to take.</p>
       </div>
 
-      <div class="pro-layout">
-        <div class="pro-join">
-          <h3>Get set up in one chat</h3>
-          <ol class="pro-steps">
-            {proSteps.map((st) => (
-              <li>
-                <span class="pro-step-num">{st.n}</span>
-                <div>
-                  <strong>{st.title}</strong>
-                  <p>{st.text}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-          <a href={WA_PROVIDER} class="btn btn--dark" target="_blank" rel="noopener"><Fragment set:html={waIcon} />Join as a provider</a>
-        </div>
-
-        <div class="pro-preview" aria-label="Example of a booking request a provider receives on WhatsApp">
-          <div class="pro-chat">
-            <div class="pro-chat-head">
-              <span class="pro-chat-avatar">H</span>
-              <span>Hustlr<small>online</small></span>
-            </div>
-            <div class="pro-chat-body">
-              <div class="pro-bubble pro-bubble--in">You have a new job near you.</div>
-              <div class="pro-bubble pro-bubble--in pro-request">
-                <span class="mono">New booking request</span>
-                <div class="pro-row"><span>Service</span><span>Plumber</span></div>
-                <div class="pro-row"><span>When</span><span>Today, 3:00 pm</span></div>
-                <div class="pro-row"><span>Where</span><span>Avondale</span></div>
-                <p>Reply <b>YES</b> to accept this job.</p>
-              </div>
-              <div class="pro-bubble pro-bubble--out">YES</div>
-            </div>
-          </div>
-          <p class="pro-preview-caption">What a booking request looks like when it arrives.</p>
-        </div>
-      </div>
+      <ChatSteps rows={proSteps} status="online · provider sign-up">
+        <a href={WA_PROVIDER} class="btn btn--dark" target="_blank" rel="noopener"><Fragment set:html={waIcon} />Join as a provider</a>
+      </ChatSteps>
 
       <ul class="pro-benefits">
         {proBenefits.map((b) => (
@@ -485,17 +461,26 @@ const faqs = [
           </div>
           <p>The way people already find help: ask someone. Hustlr just makes sure the right person answers.</p>
         </div>
-        <ul class="why-grid">
-          {reasons.map((r) => (
-            <li>
-              <span class="why-icon" aria-hidden="true">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={r.icon} />
-              </span>
-              <h3>{r.title}</h3>
-              <p>{r.text}</p>
+        <!-- Pick a reason on the left; the right shows the chat that proves it.
+             On phones each proof opens under its reason. -->
+        <ol class="why-list" data-why>
+          {reasons.map((r, i) => (
+            <li class={`why-item${i === 0 ? ' is-active' : ''}`}>
+              <button class="why-trigger" type="button" aria-expanded={i === 0 ? 'true' : 'false'} aria-controls={`why-proof-${i}`}>
+                <span class="why-index mono">{String(i + 1).padStart(2, '0')}</span>
+                <span class="why-title">{r.title}</span>
+                <span class="why-icon" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={r.icon} />
+                </span>
+              </button>
+              <p class="why-text">{r.text}</p>
+              <figure class="why-proof" id={`why-proof-${i}`}>
+                <div class="wm-phone" set:html={r.proof} />
+                <figcaption class="mono">{r.caption}</figcaption>
+              </figure>
             </li>
           ))}
-        </ul>
+        </ol>
       </div>
     </section>
 
@@ -558,6 +543,41 @@ const faqs = [
         const chat = r.querySelector('.how-row-chat');
         if (chat) io.observe(chat);
       });
+    }
+
+    // ---- Why it works: pick a reason, show its proof; rotates until someone picks ----
+    const whyList = document.querySelector<HTMLElement>('[data-why]');
+    if (whyList) {
+      const items = [...whyList.querySelectorAll<HTMLElement>('.why-item')];
+      let active = 0;
+      let timer = 0;
+      const show = (i: number) => {
+        active = i;
+        items.forEach((it, j) => {
+          it.classList.toggle('is-active', j === i);
+          it.querySelector('.why-trigger')?.setAttribute('aria-expanded', String(j === i));
+        });
+      };
+      const stop = () => window.clearInterval(timer);
+      items.forEach((it, i) => {
+        const btn = it.querySelector<HTMLButtonElement>('.why-trigger');
+        btn?.addEventListener('click', () => { stop(); show(i); });
+        btn?.addEventListener('keydown', (e) => {
+          if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+          e.preventDefault();
+          const next = (i + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length;
+          items[next].querySelector<HTMLButtonElement>('.why-trigger')?.focus();
+        });
+      });
+      const wide = window.matchMedia('(min-width: 1025px)');
+      const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if (wide.matches && !calm.matches && 'IntersectionObserver' in window) {
+        new IntersectionObserver((entries) => entries.forEach((e) => {
+          stop();
+          if (e.isIntersecting) timer = window.setInterval(() => show((active + 1) % items.length), 6000);
+        }), { threshold: 0.4 }).observe(whyList);
+        whyList.addEventListener('pointerenter', stop);
+      }
     }
 
     // ---- Tilt the 3D phones toward the pointer ----

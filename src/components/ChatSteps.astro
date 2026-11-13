@@ -1,0 +1,56 @@
+---
+// Example WhatsApp chat on the left, numbered steps on the right.
+// Each step shares a row with the messages it describes.
+// Used by "How it works" and "For providers" on the homepage.
+interface Msg {
+  from: 'me' | 'bot';
+  html: string;
+}
+interface Row {
+  n: string;
+  title: string;
+  text: string;
+  messages: Msg[];
+}
+interface Props {
+  rows: Row[];
+  status?: string;
+  label?: string;
+}
+const { rows, status = 'online · example chat', label = "What's happening" } = Astro.props;
+---
+
+<div class="how-flow">
+  <div class="how-flow-top">
+    <div class="how-chat-head">
+      <span class="how-chat-avatar" aria-hidden="true">H</span>
+      <span>Hustlr<small>{status}</small></span>
+    </div>
+    <span class="mono">{label}</span>
+  </div>
+
+  {rows.map((r) => (
+    <div class="how-row">
+      <div class="how-row-chat" aria-label={`Example messages for step ${r.n}`}>
+        {r.messages.map((m) => <div class={`ex ${m.from === 'me' ? 'ex--out' : 'ex--in'}`} set:html={m.html} />)}
+      </div>
+      <div class="how-row-step">
+        <span class="how-num" aria-hidden="true">{r.n}</span>
+        <div>
+          <h3><span class="sr-only">Step {r.n}: </span>{r.title}</h3>
+          <p>{r.text}</p>
+        </div>
+      </div>
+    </div>
+  ))}
+
+  <div class="how-flow-foot">
+    <div class="how-composer" aria-hidden="true">
+      <span>Message</span>
+      <span class="how-composer-send">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </span>
+    </div>
+    <div class="how-flow-cta"><slot /></div>
+  </div>
+</div>

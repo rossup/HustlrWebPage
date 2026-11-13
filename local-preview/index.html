@@ -1558,11 +1558,14 @@ ol {
   background: var(--green);
   color: #fff;
 }
-.how-try {
+.how-flow-cta {
   position: relative;
   z-index: 1;
   justify-self: start;
+  align-self: center;
   margin: 14px 56px 28px calc(56px + 44px + 24px);
+}
+.how-try {
   font-size: 15px;
   font-weight: 700;
   color: var(--green);
@@ -1590,15 +1593,42 @@ ol {
   opacity: 1;
   transform: none;
 }
-.how-animate .how-row.is-in .ex--in { transition-delay: 0.35s; }
-.how-animate .how-row.is-in .how-row-step > div { transition-delay: 0.5s; }
+.how-animate .how-row.is-in .ex:nth-child(2) { transition-delay: 0.35s; }
+.how-animate .how-row.is-in .how-row-step > div { transition-delay: 0.55s; }
 .how-animate .how-row.is-in .how-num,
 html:not(.how-animate) .how-num {
   background: var(--yellow);
   border-color: var(--yellow);
   color: var(--ink);
 }
-.how-animate .how-row.is-in .how-num { transition-delay: 0.5s; }
+.how-animate .how-row.is-in .how-num { transition-delay: 0.55s; }
+
+/* A structured message inside a bubble (e.g. a booking request) */
+.ex-card-title {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--green);
+}
+.ex-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 6px 0;
+  border-top: 1px solid rgba(11, 31, 22, 0.08);
+}
+.ex-row span:first-child { color: var(--muted); }
+.ex-row span:last-child { text-align: right; }
+.ex-note {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+}
+.ex--in:has(.ex-card-title) { min-width: min(300px, 100%); }
 
 /* Services */
 .services-grid {
@@ -1673,154 +1703,7 @@ html:not(.how-animate) .how-num {
 .service-card:hover .service-link span { transform: translateX(3px); }
 
 /* For providers */
-.pro-layout {
-  display: grid;
-  grid-template-columns: 1.15fr 1fr;
-  gap: 20px;
-  margin-top: var(--head-gap);
-}
-.pro-join {
-  display: flex;
-  flex-direction: column;
-  padding: 44px 48px 48px;
-  border-radius: 24px;
-  background: var(--panel);
-}
-.pro-join h3 {
-  font-family: var(--display);
-  font-size: 30px;
-  line-height: 1.15;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-}
-.pro-steps {
-  display: grid;
-  gap: 0;
-  margin: 28px 0 36px;
-}
-.pro-steps li {
-  display: grid;
-  grid-template-columns: 44px 1fr;
-  gap: 14px;
-  padding: 18px 0;
-  border-top: 1px solid var(--line);
-}
-.pro-steps li:last-child { border-bottom: 1px solid var(--line); }
-.pro-step-num {
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--yellow);
-  font-weight: 700;
-  font-size: 15px;
-}
-.pro-steps strong {
-  display: block;
-  font-family: var(--display);
-  font-size: 19px;
-  letter-spacing: -0.02em;
-}
-.pro-steps p {
-  margin-top: 4px;
-  font-size: 16px;
-  line-height: 1.55;
-  color: var(--muted);
-}
-.pro-join .btn { align-self: flex-start; margin-top: auto; }
-
-.pro-preview {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 48px 40px 36px;
-  border-radius: 24px;
-  background:
-    radial-gradient(120% 80% at 80% 0%, rgba(61, 204, 141, 0.16), transparent 60%),
-    var(--ink);
-}
-.pro-chat {
-  width: 100%;
-  max-width: 380px;
-  overflow: hidden;
-  border-radius: 20px;
-  background: #0b1014;
-  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(232, 240, 235, 0.08);
-  color: #e9edef;
-  font-size: 15px;
-}
-.pro-chat-head {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  padding: 14px 16px;
-  background: #134d37;
-  font-weight: 600;
-}
-.pro-chat-head small {
-  display: block;
-  font-size: 11.5px;
-  font-weight: 400;
-  opacity: 0.75;
-}
-.pro-chat-avatar {
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: var(--yellow);
-  color: var(--ink);
-  font-weight: 700;
-}
-.pro-chat-body {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 18px 16px 20px;
-}
-.pro-bubble {
-  max-width: 86%;
-  padding: 10px 13px;
-  border-radius: 12px;
-  line-height: 1.45;
-}
-.pro-bubble--in {
-  align-self: flex-start;
-  background: #1f272a;
-  border-top-left-radius: 4px;
-}
-.pro-bubble--out {
-  align-self: flex-end;
-  background: #134d37;
-  border-top-right-radius: 4px;
-  font-weight: 700;
-}
-.pro-request { width: 86%; }
-.pro-request .mono {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 10.5px;
-  color: var(--mint);
-}
-.pro-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 7px 0;
-  border-top: 1px solid rgba(232, 240, 235, 0.1);
-}
-.pro-row span:first-child { color: #8696a0; }
-.pro-request p {
-  margin-top: 8px;
-  color: #c9d3cf;
-}
-.pro-preview-caption {
-  margin-top: 22px;
-  font-size: 14px;
-  color: var(--on-dark-muted);
-}
+#for-providers .how-flow + .pro-benefits { margin-top: 20px; }
 
 .pro-benefits {
   display: grid;
@@ -2490,7 +2373,7 @@ details[open] .faq-plus::after { transform: rotate(0deg); }
   .how-row-step { padding-left: 40px; padding-right: 32px; }
   .how-row-step::after { left: calc(40px + 21px); }
   .how-flow-top > .mono { padding-left: calc(40px + 44px + 24px); }
-  .how-try { margin-left: calc(40px + 44px + 24px); }
+  .how-flow-cta { margin-left: calc(40px + 44px + 24px); }
   .how-row-step h3 { font-size: 28px; }
   .categories { grid-template-columns: 220px repeat(4, 1fr); padding-right: 28px; }
   .faq { grid-template-columns: 1fr 1.4fr; gap: 40px; }
@@ -2526,7 +2409,6 @@ details[open] .faq-plus::after { transform: rotate(0deg); }
   .hello { grid-template-columns: 1fr; }
   .faq { gap: 32px; }
   .services-grid { grid-template-columns: 1fr 1fr; }
-  .pro-layout { grid-template-columns: 1fr; }
   .pro-benefits { grid-template-columns: 1fr 1fr; }
   .why-grid { grid-template-columns: 1fr 1fr; }
   .why-grid li,
@@ -2546,7 +2428,7 @@ details[open] .faq-plus::after { transform: rotate(0deg); }
   .how-row + .how-row { border-top: 1px solid rgba(11, 31, 22, 0.08); margin-top: 18px; }
   .how-flow-foot { display: block; }
   .how-composer { display: none; }
-  .how-try { display: inline-block; margin: 22px 24px 26px; }
+  .how-flow-cta { margin: 22px 24px 26px; }
   .hello h2 { font-size: 88px; margin-top: 24px; }
   .hello-side { padding-top: 0; }
   .hello-side .btn { margin-top: 24px; }
@@ -2573,8 +2455,6 @@ details[open] .faq-plus::after { transform: rotate(0deg); }
   :root { --section-gap: 96px; --head-gap: 48px; }
   .section h2, .faq h2 { font-size: 40px; }
   .services-grid { grid-template-columns: 1fr; }
-  .pro-join { padding: 30px 24px 32px; }
-  .pro-preview { padding: 32px 18px 24px; }
   .pro-benefits { grid-template-columns: 1fr; }
   .service-card { min-height: 0; }
   .why { padding: 40px 24px 32px; }
@@ -3272,69 +3152,71 @@ details[open] .faq-plus::after { transform: rotate(0deg); }
       </div>
 
       <!-- The example chat and the steps share rows: each step sits beside the messages it describes -->
-      <div class="how-flow">
-        <div class="how-flow-top">
-          <div class="how-chat-head">
-            <span class="how-chat-avatar" aria-hidden="true">H</span>
-            <span>Hustlr<small>online · example chat</small></span>
-          </div>
-          <span class="mono">What's happening</span>
-        </div>
+      
 
-        
-          <div class="how-row">
-            <div class="how-row-chat" aria-label="Example messages for step 01">
-              <div class="ex ex--out">I need a plumber</div>
-              <div class="ex ex--in">Sure. Which area are you in, and when do you need someone?</div>
-            </div>
-            <div class="how-row-step">
-              <span class="how-num" aria-hidden="true">01</span>
-              <div>
-                <h3><span class="sr-only">Step 01: </span>Say what you need</h3>
-                <p>Type it the way you would tell a friend. “My geyser is leaking” works.</p>
-              </div>
-            </div>
-          </div>
-        
-          <div class="how-row">
-            <div class="how-row-chat" aria-label="Example messages for step 02">
-              <div class="ex ex--out">Avondale, today if possible</div>
-              <div class="ex ex--in">I found plumbers who work around Avondale. Want me to book the first one for this afternoon?</div>
-            </div>
-            <div class="how-row-step">
-              <span class="how-num" aria-hidden="true">02</span>
-              <div>
-                <h3><span class="sr-only">Step 02: </span>Meet your match</h3>
-                <p>Hustlr asks a question or two, then suggests providers who fit the job and your area.</p>
-              </div>
-            </div>
-          </div>
-        
-          <div class="how-row">
-            <div class="how-row-chat" aria-label="Example messages for step 03">
-              <div class="ex ex--out">Yes please</div>
-              <div class="ex ex--in">Done. They'll message you to confirm the time.</div>
-            </div>
-            <div class="how-row-step">
-              <span class="how-num" aria-hidden="true">03</span>
-              <div>
-                <h3><span class="sr-only">Step 03: </span>Book it</h3>
-                <p>Pick one and Hustlr sets it up. The provider messages you to confirm the details.</p>
-              </div>
-            </div>
-          </div>
-        
+<div class="how-flow">
+  <div class="how-flow-top">
+    <div class="how-chat-head">
+      <span class="how-chat-avatar" aria-hidden="true">H</span>
+      <span>Hustlr<small>online · example chat</small></span>
+    </div>
+    <span class="mono">What's happening</span>
+  </div>
 
-        <div class="how-flow-foot">
-          <div class="how-composer" aria-hidden="true">
-            <span>Message</span>
-            <span class="how-composer-send">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </span>
-          </div>
-          <a href="https://wa.me/263719351207" class="how-try" target="_blank" rel="noopener">Try it on WhatsApp <span aria-hidden="true">&rarr;</span></a>
+  
+    <div class="how-row">
+      <div class="how-row-chat" aria-label="Example messages for step 01">
+        <div class="ex ex--out">I need a plumber</div><div class="ex ex--in">Sure. Which area are you in, and when do you need someone?</div>
+      </div>
+      <div class="how-row-step">
+        <span class="how-num" aria-hidden="true">01</span>
+        <div>
+          <h3><span class="sr-only">Step 01: </span>Say what you need</h3>
+          <p>Type it the way you would tell a friend. “My geyser is leaking” works.</p>
         </div>
       </div>
+    </div>
+  
+    <div class="how-row">
+      <div class="how-row-chat" aria-label="Example messages for step 02">
+        <div class="ex ex--out">Avondale, today if possible</div><div class="ex ex--in">I found plumbers who work around Avondale. Want me to book the first one for this afternoon?</div>
+      </div>
+      <div class="how-row-step">
+        <span class="how-num" aria-hidden="true">02</span>
+        <div>
+          <h3><span class="sr-only">Step 02: </span>Meet your match</h3>
+          <p>Hustlr asks a question or two, then suggests providers who fit the job and your area.</p>
+        </div>
+      </div>
+    </div>
+  
+    <div class="how-row">
+      <div class="how-row-chat" aria-label="Example messages for step 03">
+        <div class="ex ex--out">Yes please</div><div class="ex ex--in">Done. They'll message you to confirm the time.</div>
+      </div>
+      <div class="how-row-step">
+        <span class="how-num" aria-hidden="true">03</span>
+        <div>
+          <h3><span class="sr-only">Step 03: </span>Book it</h3>
+          <p>Pick one and Hustlr sets it up. The provider messages you to confirm the details.</p>
+        </div>
+      </div>
+    </div>
+  
+
+  <div class="how-flow-foot">
+    <div class="how-composer" aria-hidden="true">
+      <span>Message</span>
+      <span class="how-composer-send">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </span>
+    </div>
+    <div class="how-flow-cta">
+        <a href="https://wa.me/263719351207" class="how-try" target="_blank" rel="noopener">Try it on WhatsApp <span aria-hidden="true">&rarr;</span></a>
+      </div>
+  </div>
+</div>
+
     </section>
 
     <!-- ============================== SERVICES ============================== -->
@@ -3475,60 +3357,71 @@ details[open] .faq-plus::after { transform: rotate(0deg); }
         <p>Hustlr brings booking requests from people nearby straight to your WhatsApp. You decide which jobs to take.</p>
       </div>
 
-      <div class="pro-layout">
-        <div class="pro-join">
-          <h3>Get set up in one chat</h3>
-          <ol class="pro-steps">
-            
-              <li>
-                <span class="pro-step-num">1</span>
-                <div>
-                  <strong>Say hello</strong>
-                  <p>Send “I want to register as a service provider” to Hustlr on WhatsApp.</p>
-                </div>
-              </li>
-            
-              <li>
-                <span class="pro-step-num">2</span>
-                <div>
-                  <strong>Answer a few questions</strong>
-                  <p>Your name, business name, trade and the areas you cover, in 7 short steps.</p>
-                </div>
-              </li>
-            
-              <li>
-                <span class="pro-step-num">3</span>
-                <div>
-                  <strong>Start getting jobs</strong>
-                  <p>Booking requests from customers in your areas arrive in the same chat.</p>
-                </div>
-              </li>
-            
-          </ol>
-          <a href="https://wa.me/263719351207?text=Hi%20Hustlr%2C%20I%20want%20to%20register%20as%20a%20service%20provider" class="btn btn--dark" target="_blank" rel="noopener"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg>Join as a provider</a>
-        </div>
+      
 
-        <div class="pro-preview" aria-label="Example of a booking request a provider receives on WhatsApp">
-          <div class="pro-chat">
-            <div class="pro-chat-head">
-              <span class="pro-chat-avatar">H</span>
-              <span>Hustlr<small>online</small></span>
-            </div>
-            <div class="pro-chat-body">
-              <div class="pro-bubble pro-bubble--in">You have a new job near you.</div>
-              <div class="pro-bubble pro-bubble--in pro-request">
-                <span class="mono">New booking request</span>
-                <div class="pro-row"><span>Service</span><span>Plumber</span></div>
-                <div class="pro-row"><span>When</span><span>Today, 3:00 pm</span></div>
-                <div class="pro-row"><span>Where</span><span>Avondale</span></div>
-                <p>Reply <b>YES</b> to accept this job.</p>
-              </div>
-              <div class="pro-bubble pro-bubble--out">YES</div>
-            </div>
-          </div>
-          <p class="pro-preview-caption">What a booking request looks like when it arrives.</p>
+<div class="how-flow">
+  <div class="how-flow-top">
+    <div class="how-chat-head">
+      <span class="how-chat-avatar" aria-hidden="true">H</span>
+      <span>Hustlr<small>online · provider sign-up</small></span>
+    </div>
+    <span class="mono">What's happening</span>
+  </div>
+
+  
+    <div class="how-row">
+      <div class="how-row-chat" aria-label="Example messages for step 01">
+        <div class="ex ex--out">I want to register as a service provider</div><div class="ex ex--in">Great! Let's register you as a service provider on Hustlr.<br><br><b>(Step 1/7)</b> What is your full legal name?</div>
+      </div>
+      <div class="how-row-step">
+        <span class="how-num" aria-hidden="true">01</span>
+        <div>
+          <h3><span class="sr-only">Step 01: </span>Say hello</h3>
+          <p>Send “I want to register as a service provider” to Hustlr on WhatsApp.</p>
         </div>
       </div>
+    </div>
+  
+    <div class="how-row">
+      <div class="how-row-chat" aria-label="Example messages for step 02">
+        <div class="ex ex--in"><b>(Step 2/7)</b> What is your business name?<br><i>(Reply <b>SKIP</b> if you operate under your personal name)</i></div><div class="ex ex--out">Bright Cleaning Services</div>
+      </div>
+      <div class="how-row-step">
+        <span class="how-num" aria-hidden="true">02</span>
+        <div>
+          <h3><span class="sr-only">Step 02: </span>Answer a few questions</h3>
+          <p>Your name, business name, trade and the areas you cover, in 7 short steps.</p>
+        </div>
+      </div>
+    </div>
+  
+    <div class="how-row">
+      <div class="how-row-chat" aria-label="Example messages for step 03">
+        <div class="ex ex--in"><span class="ex-card-title">New booking request</span><span class="ex-row"><span>Service</span><span>Cleaning</span></span><span class="ex-row"><span>Where</span><span>Harare</span></span><span class="ex-row"><span>Job</span><span>Home cleaning services</span></span><span class="ex-note">Reply <b>YES</b> to accept this job.</span></div><div class="ex ex--out">YES</div>
+      </div>
+      <div class="how-row-step">
+        <span class="how-num" aria-hidden="true">03</span>
+        <div>
+          <h3><span class="sr-only">Step 03: </span>Start getting jobs</h3>
+          <p>Booking requests from customers in your areas arrive in the same chat. Reply YES to take the job.</p>
+        </div>
+      </div>
+    </div>
+  
+
+  <div class="how-flow-foot">
+    <div class="how-composer" aria-hidden="true">
+      <span>Message</span>
+      <span class="how-composer-send">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </span>
+    </div>
+    <div class="how-flow-cta">
+        <a href="https://wa.me/263719351207?text=Hi%20Hustlr%2C%20I%20want%20to%20register%20as%20a%20service%20provider" class="btn btn--dark" target="_blank" rel="noopener"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg>Join as a provider</a>
+      </div>
+  </div>
+</div>
+
 
       <ul class="pro-benefits">
         
