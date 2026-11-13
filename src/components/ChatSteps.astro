@@ -35,7 +35,7 @@ const { rows, status = 'online · example chat', label = "What's happening" } = 
         {r.messages.map((m) => <div class={`ex ${m.from === 'me' ? 'ex--out' : 'ex--in'}`} set:html={m.html} />)}
       </div>
       <div class="how-row-step">
-        <span class="how-num" aria-hidden="true">{r.n}</span>
+        <span class="how-num" aria-hidden="true"></span>
         <div>
           <h3><span class="sr-only">Step {r.n}: </span>{r.title}</h3>
           <p>{r.text}</p>

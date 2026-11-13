@@ -1,13 +1,15 @@
 ---
 // Site-wide footer: used on every page.
+// Compact: logo + contact, four link columns, a cropped logo band, then the bottom bar.
 import { WA, WA_PROVIDER, waIcon } from '../data/site';
 ---
 
-  <footer class="footer wrap-wide" aria-label="Site footer">
-    <div class="footer-grid">
-      <div class="footer-brand">
+<footer class="footer" aria-label="Site footer">
+  <div class="wrap-wide">
+    <div class="footer-top">
+      <div class="footer-lead">
         <a href="/" class="footer-logo" aria-label="Hustlr home">
-          <img src="/assets/logo-primary.svg" alt="Hustlr" width="122" height="44" />
+          <img src="/assets/logo-reverse.svg" alt="Hustlr" width="106" height="38" />
         </a>
         <p class="footer-tagline">
           Trusted plumbers, electricians, cleaners and tutors across Zimbabwe—found and booked inside a single WhatsApp chat.
@@ -24,80 +26,77 @@ import { WA, WA_PROVIDER, waIcon } from '../data/site';
         </div>
       </div>
 
-      <div class="footer-col">
-        <span class="mono footer-heading">01 / Services</span>
-        <ul>
-          <li><a href="/#plumbers">Plumbers &amp; Pipework</a></li>
-          <li><a href="/#electricians">Electricians &amp; Solar</a></li>
-          <li><a href="/#cleaners">Home &amp; Office Cleaners</a></li>
-          <li><a href="/#tutors">Private Tutors</a></li>
-          <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I need geyser or appliance repair')}`} target="_blank" rel="noopener">Geyser &amp; Appliance Repair</a></li>
-          <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I am looking for a service provider')}`} target="_blank" rel="noopener" class="footer-accent-link">Ask for another trade →</a></li>
-        </ul>
-      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <span class="mono footer-heading">Services</span>
+          <ul>
+            <li><a href="/#plumbers">Plumbers &amp; Pipework</a></li>
+            <li><a href="/#electricians">Electricians &amp; Solar</a></li>
+            <li><a href="/#cleaners">Home &amp; Office Cleaners</a></li>
+            <li><a href="/#tutors">Private Tutors</a></li>
+            <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I need geyser or appliance repair')}`} target="_blank" rel="noopener">Geyser &amp; Appliance Repair</a></li>
+            <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I am looking for a service provider')}`} target="_blank" rel="noopener" class="footer-accent-link">Ask for another trade →</a></li>
+          </ul>
+        </div>
 
-      <div class="footer-col">
-        <span class="mono footer-heading">02 / Product</span>
-        <ul>
-          <li><a href="/#top">Home overview</a></li>
-          <li><a href="/#how-it-works">How Hustlr works</a></li>
-          <li><a href="/#services">Browse categories</a></li>
-          <li><a href="/#providers">Customers vs Providers</a></li>
-          <li><a href="/#why">Built for WhatsApp</a></li>
-          <li><a href="/#questions">Common questions</a></li>
-        </ul>
-      </div>
+        <div class="footer-col">
+          <span class="mono footer-heading">Product</span>
+          <ul>
+            <li><a href="/#top">Home overview</a></li>
+            <li><a href="/#how-it-works">How Hustlr works</a></li>
+            <li><a href="/#services">Browse categories</a></li>
+            <li><a href="/#providers">Customers vs Providers</a></li>
+            <li><a href="/#why">Built for WhatsApp</a></li>
+            <li><a href="/#questions">Common questions</a></li>
+          </ul>
+        </div>
 
-      <div class="footer-col">
-        <span class="mono footer-heading">03 / For Providers</span>
-        <ul>
-          <li><a href="/#for-providers">Provider overview</a></li>
-          <li><a href={WA_PROVIDER} target="_blank" rel="noopener">Register your business</a></li>
-          <li><a href="/#for-providers">Verified business profiles</a></li>
-          <li><a href="/#for-providers">Instant job alerts</a></li>
-          <li><a href="/#for-providers">Customer favourites &amp; rebooking</a></li>
-          <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I need help updating my provider profile')}`} target="_blank" rel="noopener">Provider support</a></li>
-        </ul>
-      </div>
+        <div class="footer-col">
+          <span class="mono footer-heading">For Providers</span>
+          <ul>
+            <li><a href="/#for-providers">Provider overview</a></li>
+            <li><a href={WA_PROVIDER} target="_blank" rel="noopener">Register your business</a></li>
+            <li><a href="/#for-providers">Verified business profiles</a></li>
+            <li><a href="/#for-providers">Instant job alerts</a></li>
+            <li><a href="/#for-providers">Customer favourites &amp; rebooking</a></li>
+            <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I need help updating my provider profile')}`} target="_blank" rel="noopener">Provider support</a></li>
+          </ul>
+        </div>
 
-      <div class="footer-col">
-        <span class="mono footer-heading">04 / Areas Covered</span>
-        <ul>
-          <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I need a service provider in Harare')}`} target="_blank" rel="noopener">Harare &amp; Chitungwiza</a></li>
-          <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I need a service provider in Bulawayo')}`} target="_blank" rel="noopener">Bulawayo</a></li>
-          <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I need a service provider in Mutare')}`} target="_blank" rel="noopener">Mutare</a></li>
-          <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I need a service provider in Gweru')}`} target="_blank" rel="noopener">Gweru &amp; Kwekwe</a></li>
-          <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I need a service provider in Masvingo')}`} target="_blank" rel="noopener">Masvingo &amp; Vic Falls</a></li>
-          <li><span class="footer-pill-tag">Expanding nationwide</span></li>
-        </ul>
+        <div class="footer-col">
+          <span class="mono footer-heading">Areas Covered</span>
+          <ul>
+            <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I need a service provider in Harare')}`} target="_blank" rel="noopener">Harare &amp; Chitungwiza</a></li>
+            <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I need a service provider in Bulawayo')}`} target="_blank" rel="noopener">Bulawayo</a></li>
+            <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I need a service provider in Mutare')}`} target="_blank" rel="noopener">Mutare</a></li>
+            <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I need a service provider in Gweru')}`} target="_blank" rel="noopener">Gweru &amp; Kwekwe</a></li>
+            <li><a href={`${WA}?text=${encodeURIComponent('Hi Hustlr, I need a service provider in Masvingo')}`} target="_blank" rel="noopener">Masvingo &amp; Vic Falls</a></li>
+            <li><span class="footer-pill-tag">Expanding nationwide</span></li>
+          </ul>
+        </div>
       </div>
     </div>
 
-    <div class="footer-prompts" aria-label="Quick WhatsApp starter prompts">
-      <span class="mono footer-prompts-label">Try one tap on WhatsApp:</span>
-      <div class="footer-prompts-list">
-        <a href={`${WA}?text=${encodeURIComponent('My geyser is leaking in Avondale')}`} target="_blank" rel="noopener">“My geyser is leaking in Avondale”</a>
-        <a href={`${WA}?text=${encodeURIComponent('I need home cleaning on Saturday')}`} target="_blank" rel="noopener">“I need home cleaning on Saturday”</a>
-        <a href={`${WA}?text=${encodeURIComponent('Looking for a maths tutor for Form 4')}`} target="_blank" rel="noopener">“Looking for a Form 4 Maths tutor”</a>
-        <a href={`${WA}?text=${encodeURIComponent('My solar inverter is beeping')}`} target="_blank" rel="noopener">“My solar inverter is beeping”</a>
-        <a href={WA_PROVIDER} target="_blank" rel="noopener">“Register my business as a provider”</a>
-      </div>
+    <!-- Closing band: the logo set wide and cropped, fading into the page -->
+    <div class="footer-wordmark" aria-hidden="true">
+      <span class="footer-wordmark-art"></span>
     </div>
 
-    <div class="footer-bottom">
-      <div class="footer-bottom-left">
-        <span>© {new Date().getFullYear()} Hustlr. All rights reserved.</span>
-        <span class="footer-dot" aria-hidden="true">·</span>
-        <span>Built by <strong>Zimnovate</strong> in Zimbabwe</span>
+      <div class="footer-bottom">
+        <div class="footer-bottom-left">
+          <span>© {new Date().getFullYear()} Hustlr. All rights reserved.</span>
+          <span class="footer-dot" aria-hidden="true">·</span>
+          <span>Built by <strong>Zimnovate</strong> in Zimbabwe</span>
+        </div>
+        <div class="footer-bottom-right">
+          <a href="/privacy">Privacy policy</a>
+          <a href="/terms">Terms &amp; conditions</a>
+          <a href={WA} target="_blank" rel="noopener">WhatsApp</a>
+          <a href="#top" class="footer-top-btn" aria-label="Back to top">
+            <span>Back to top</span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+          </a>
+        </div>
       </div>
-      <div class="footer-bottom-right">
-        <a href="/privacy">Privacy policy</a>
-        <a href="/terms">Terms &amp; conditions</a>
-        <a href={WA} target="_blank" rel="noopener">WhatsApp</a>
-        <a href="#top" class="footer-top-btn" aria-label="Back to top">
-          <span>Back to top</span>
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
-        </a>
-      </div>
-    </div>
-  </footer>
+  </div>
+</footer>
