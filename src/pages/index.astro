@@ -425,7 +425,10 @@ const faqs = [
     <!-- Services -->
     <section class="rd-section rd-wrap" id="services">
       <div class="rd-head">
-        <h2 class="rd-h2">What you can book</h2>
+        <div>
+          <span class="rd-pill">Services</span>
+          <h2 class="rd-h2">What you can book</h2>
+        </div>
         <p class="rd-lead">Four trades today, with more on the way. Not sure who you need? Describe the job and ask.</p>
       </div>
       <div class="rd-services">
@@ -474,7 +477,10 @@ const faqs = [
     <!-- Built for WhatsApp -->
     <section class="rd-section rd-wrap" id="why">
       <div class="rd-head">
-        <h2 class="rd-h2">Built for WhatsApp</h2>
+        <div>
+          <span class="rd-pill">Why WhatsApp</span>
+          <h2 class="rd-h2">Built for WhatsApp</h2>
+        </div>
         <p class="rd-lead">The way people already find help: ask someone. Hustlr just makes sure the right person answers.</p>
       </div>
       <div class="rd-why">
@@ -527,8 +533,10 @@ const faqs = [
     <!-- Questions -->
     <section class="rd-section rd-wrap rd-faq" id="questions">
       <div class="rd-faq-intro">
+        <span class="rd-pill">FAQ</span>
         <h2 class="rd-h2">Good to know</h2>
         <p class="rd-lead">Anything else? Just ask in the chat.</p>
+        <a href={WA} class="rd-arrow-btn rd-faq-ask" target="_blank" rel="noopener">Ask on WhatsApp<span class="rd-arrow-btn-icon" aria-hidden="true"><Fragment set:html={ic.arrow} /></span></a>
       </div>
       <div class="rd-faq-list">
         {faqs.map((f, i) => (
