@@ -2,7 +2,7 @@
 import HomeLayout from '../layouts/HomeLayout.astro';
 import SiteNav from '../components/SiteNav.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import { WA, WA_PROVIDER, waIcon, steps, services, proBenefits } from '../data/site';
+import { WA, WA_PROVIDER, waIcon, steps, services, proBenefits, testimonials, draftTestimonials } from '../data/site';
 import '../styles/redesign.css';
 
 // WhatsApp conversation shown on the hero phones (copied from a real Hustlr chat).
@@ -92,11 +92,49 @@ const cats = [
   { label: 'Tutors', text: 'I need a tutor' },
 ];
 
-// How it works: one card per message in the chat.
-const how = [
-  { word: 'Ask.', bubble: 'I need a plumber', from: 'me', title: 'Say what you need', text: 'Type it the way you would tell a friend. “My geyser is leaking” works.' },
-  { word: 'Match.', bubble: 'Which area are you in, and when do you need someone?', from: 'bot', title: 'Meet your match', text: 'Hustlr asks a question or two, then suggests providers who fit the job and your area.' },
-  { word: 'Book.', bubble: 'YES', from: 'yes', title: 'Book it', text: 'Pick one and Hustlr sets it up. The provider messages you to confirm the details.' },
+// Icons for the sections below (react-icons, Lucide set), saved as plain SVG.
+const ic = {
+  userCheck: '<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" height="18" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><polyline points="16 11 18 13 22 9"></polyline></svg>',
+  mic: '<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" height="18" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" x2="12" y1="19" y2="22"></line></svg>',
+  circleCheck: '<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" height="18" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg>',
+  users: '<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" height="18" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>',
+  house: '<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" height="18" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>',
+  landmark: '<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" height="18" width="18" xmlns="http://www.w3.org/2000/svg"><line x1="3" x2="21" y1="22" y2="22"></line><line x1="6" x2="6" y1="18" y2="11"></line><line x1="10" x2="10" y1="18" y2="11"></line><line x1="14" x2="14" y1="18" y2="11"></line><line x1="18" x2="18" y1="18" y2="11"></line><polygon points="12 2 20 7 4 7"></polygon></svg>',
+  arrow: '<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" height="18" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>',
+  check: '<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" height="18" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M20 6 9 17l-5-5"></path></svg>',
+};
+
+// How it works: step 01 sits under the photo, steps 02 and 03 beside the heading.
+const howSteps = [
+  { n: '01', icon: ic.userCheck, title: 'Pick a Verified Provider', text: 'Browse verified local providers by category and area (e.g. Harare, Zimbabwe) and reply with their number to inspect their profile.' },
+  { n: '02', icon: ic.mic, title: 'Describe Your Job', text: 'Type or voice-note your job details (e.g. “Home cleaning services”). Hustlr structures your provider, service, location, and job summary automatically.' },
+  { n: '03', icon: ic.circleCheck, title: 'Reply YES to Book & Save', text: 'Reply CONFIRM or YES to send your booking request directly to the provider, track live status updates, and reply SAVE to favorite them for easy rebooking.' },
+];
+
+// Testimonials: the live site shows only approved quotes (`testimonials` in src/data/site.ts).
+// While that list is empty, `astro dev` previews the drafts, marked as drafts; visitors see nothing.
+const usingDrafts = testimonials.length === 0 && import.meta.env.DEV;
+const quotes = testimonials.length > 0 ? testimonials : usingDrafts ? draftTestimonials : [];
+const quoteIcon = '<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" height="22" width="22" xmlns="http://www.w3.org/2000/svg"><path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"></path><path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"></path></svg>';
+
+// Photos load from Pexels and Unsplash (both free for commercial use, no credit required).
+// Pexels: Andrea Piacquadio (texting), Tima Miroshnichenko (workshop), Speak Media Uganda (community meeting).
+// Unsplash: Ali Mkumbwa (shop owner, Dar es Salaam).
+const photo = (small: string, large: string) => ({ src: small, srcset: `${small} 800w, ${large} 1600w` });
+const howPhoto = photo('https://images.pexels.com/photos/3869370/pexels-photo-3869370.jpeg?auto=compress&cs=tinysrgb&w=800', 'https://images.pexels.com/photos/3869370/pexels-photo-3869370.jpeg?auto=compress&cs=tinysrgb&w=1600');
+
+// Who we serve: one photo card per audience.
+const serve = [
+  { ...photo('https://images.pexels.com/photos/6790066/pexels-photo-6790066.jpeg?auto=compress&cs=tinysrgb&w=800', 'https://images.pexels.com/photos/6790066/pexels-photo-6790066.jpeg?auto=compress&cs=tinysrgb&w=1600'), pos: '50% 30%', alt: 'A craftsman at work in a woodworking workshop', icon: ic.users, title: 'Local Artisans & Workers', text: 'Receive steady, verified job bookings and guaranteed payouts without expensive smartphones or data plans.' },
+  { ...photo('https://images.unsplash.com/photo-1687422808311-a776f467a468?auto=format&fit=crop&w=800&q=75', 'https://images.unsplash.com/photo-1687422808311-a776f467a468?auto=format&fit=crop&w=1600&q=75'), pos: '50% 72%', alt: 'A shop owner smiling behind the counter of her small grocery shop', icon: ic.house, title: 'Households & Small Businesses', text: 'Book trusted local pros in seconds with escrow protection and transparent ratings.' },
+  { ...photo('https://images.pexels.com/photos/27471164/pexels-photo-27471164.jpeg?auto=compress&cs=tinysrgb&w=800', 'https://images.pexels.com/photos/27471164/pexels-photo-27471164.jpeg?auto=compress&cs=tinysrgb&w=1600'), pos: '50% 60%', alt: 'A community meeting held outdoors under a tree', icon: ic.landmark, title: 'NGOs & Municipalities', text: 'Run employment pilots, track disbursements, and verify field work with real-time dashboards.' },
+];
+
+// Figures under "Who we serve".
+const metrics = [
+  { value: '0 MB', mark: '+', title: '0 MB App Install Required', text: '100% WhatsApp & USSD native' },
+  { value: '3', mark: '+', title: '3 Languages Supported', text: 'English, Shona & Ndebele voice/text NLP' },
+  { value: '100%', mark: '✓', title: '100% Escrow Protected', text: 'Automated release & instant digital receipts' },
 ];
 
 // Provider sign-up, in three plain steps.
@@ -299,23 +337,89 @@ const faqs = [
     </div>
 
     <!-- How it works -->
-    <section class="rd-section rd-wrap" id="how-it-works">
-      <div class="rd-head">
-        <h2 class="rd-h2">Three messages.<br />One booking.</h2>
-        <p class="rd-lead">If you can send a WhatsApp message, you can use Hustlr. There are no menus to learn.</p>
+    <section class="rd-section rd-wrap rd-hiw" id="how-it-works">
+      <div class="rd-hiw-left">
+        <figure class="rd-hiw-photo">
+          <img src={howPhoto.src} srcset={howPhoto.srcset} sizes="(max-width: 960px) 92vw, 600px" alt="A young woman typing a message on her phone" width="1600" height="1067" loading="lazy" />
+          <figcaption class="rd-hiw-badge">
+            <span class="rd-hiw-badge-voice"><Fragment set:html={ic.mic} />0:07 Voice Note</span>
+            <span aria-hidden="true">•</span> Instant Shona, Ndebele &amp; English NLP
+          </figcaption>
+        </figure>
+        <article class="rd-step">
+          <div class="rd-step-head">
+            <div class="rd-step-tags">
+              <span class="rd-step-icon" aria-hidden="true"><Fragment set:html={howSteps[0].icon} /></span>
+              <span class="rd-step-num">Step {howSteps[0].n}</span>
+            </div>
+            <h3>{howSteps[0].title}</h3>
+          </div>
+          <p>{howSteps[0].text}</p>
+        </article>
       </div>
-      <div class="rd-how">
-        {how.map((h) => (
-          <article class={`rd-how-card${h.from === 'yes' ? ' rd-how-card--dark' : ''}`}>
-            <p class="rd-how-word">{h.word}</p>
-            <div class={`rd-bubble rd-bubble--${h.from}`}>{h.bubble}</div>
-            <div class="rd-how-copy">
-              <h3>{h.title}</h3>
-              <p>{h.text}</p>
+
+      <div class="rd-hiw-right">
+        <span class="rd-pill">How It Works</span>
+        <h2 class="rd-h2 rd-h2--sm">From WhatsApp Message to Booked Job in 3 Steps</h2>
+        <div class="rd-hiw-steps">
+          {howSteps.slice(1).map((st) => (
+            <article class="rd-step">
+              <div class="rd-step-head">
+                <div class="rd-step-tags">
+                  <span class="rd-step-icon" aria-hidden="true"><Fragment set:html={st.icon} /></span>
+                  <span class="rd-step-num">Step {st.n}</span>
+                </div>
+                <h3>{st.title}</h3>
+              </div>
+              <p>{st.text}</p>
+            </article>
+          ))}
+        </div>
+        <div class="rd-pillbar">
+          <span class="rd-pillbar-check" aria-hidden="true"><Fragment set:html={ic.check} /></span>
+          <p>Turn offline chaos into bookable jobs, trackable payments, and real reviews.</p>
+          <a href={WA} class="rd-arrow-btn" target="_blank" rel="noopener">Try live demo<span class="rd-arrow-btn-icon" aria-hidden="true"><Fragment set:html={ic.arrow} /></span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Who we serve -->
+    <section class="rd-section rd-wrap" id="who-we-serve">
+      <div class="rd-serve-top">
+        <div>
+          <span class="rd-pill">Who We Serve</span>
+          <h2 class="rd-h2 rd-h2--sm">Built for the Next Billion Workers</h2>
+        </div>
+        <div class="rd-serve-intro">
+          <p>Lightweight chat-native workflows engineered for artisans, households, and municipal employment programs operating across low-bandwidth regions.</p>
+          <a href="#how-it-works" class="rd-arrow-btn">See how it works<span class="rd-arrow-btn-icon" aria-hidden="true"><Fragment set:html={ic.arrow} /></span></a>
+        </div>
+      </div>
+      <div class="rd-serve">
+        {serve.map((c) => (
+          <article class="rd-serve-card">
+            <div class="rd-serve-media"><img src={c.src} srcset={c.srcset} sizes="(max-width: 900px) 92vw, 420px" alt={c.alt} width="1600" height="1067" loading="lazy" style={`object-position:${c.pos}`} /></div>
+            <div class="rd-serve-panel">
+              <div class="rd-serve-head">
+                <span class="rd-step-icon" aria-hidden="true"><Fragment set:html={c.icon} /></span>
+                <h3>{c.title}</h3>
+              </div>
+              <p>{c.text}</p>
             </div>
           </article>
         ))}
       </div>
+    </section>
+
+    <!-- Figures -->
+    <section class="rd-wrap rd-metrics" aria-label="Hustlr in numbers">
+      {metrics.map((m) => (
+        <div class="rd-metric">
+          <p class="rd-metric-value">{m.value}<span aria-hidden="true">{m.mark}</span></p>
+          <h3>{m.title}</h3>
+          <p class="rd-metric-text">{m.text}</p>
+        </div>
+      ))}
     </section>
 
     <!-- Services -->
@@ -385,6 +489,40 @@ const faqs = [
         ))}
       </div>
     </section>
+
+    <!-- Testimonials -->
+    {quotes.length > 0 && (
+      <section class="rd-section rd-wrap" id="testimonials">
+        <div class="rd-serve-top">
+          <div>
+            <span class="rd-pill">Testimonials</span>
+            <h2 class="rd-h2 rd-h2--sm">What people say about Hustlr</h2>
+          </div>
+          <p class="rd-serve-intro">Customers and providers on finding and booking work through a WhatsApp chat.</p>
+        </div>
+        {usingDrafts && (
+          <p class="rd-quote-slot">
+            <strong>Draft quotes, local preview only.</strong> These aren't on the live site. Once each person approves their words,
+            move them into <code>testimonials</code> in <code>src/data/site.ts</code>.
+          </p>
+        )}
+        <div class="rd-quotes">
+            {quotes.map((t) => (
+              <figure class="rd-quote">
+                <span class="rd-quote-mark" aria-hidden="true"><Fragment set:html={quoteIcon} /></span>
+                <blockquote>{t.quote}</blockquote>
+                <figcaption>
+                  <span class="rd-quote-avatar" aria-hidden="true">{t.name.charAt(0)}</span>
+                  <span>
+                    <strong>{t.name}</strong>
+                    <span>{t.role}{t.detail ? ` · ${t.detail}` : ''}</span>
+                  </span>
+                </figcaption>
+              </figure>
+            ))}
+        </div>
+      </section>
+    )}
 
     <!-- Questions -->
     <section class="rd-section rd-wrap rd-faq" id="questions">

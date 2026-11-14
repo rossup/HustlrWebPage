@@ -76,3 +76,47 @@ export const proBenefits = [
     icon: '<rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 18.5h3"/>',
   },
 ];
+
+// ---------- Testimonials ----------
+// Real quotes only, from customers and providers who agreed to be quoted.
+// The homepage section stays hidden on the live site until this list has at least one entry.
+// Example of the shape (replace with a real one):
+//   { quote: 'What they said, in their words.', name: 'First name + initial', role: 'Customer', detail: 'Plumber booked in Avondale, Harare' },
+export interface Testimonial {
+  quote: string;
+  name: string;
+  role: 'Customer' | 'Provider' | 'Partner';
+  /** Short context: the job or trade and the area, e.g. "Cleaner booked in Hillside, Bulawayo". */
+  detail?: string;
+}
+
+export const testimonials: Testimonial[] = [];
+
+// DRAFTS: suggested wording, not real quotes yet.
+// Shown only when you run the site locally (astro dev), never on the live site.
+// To publish one: send it to the person, use the words they approve, and move it into `testimonials` above.
+export const draftTestimonials: Testimonial[] = [
+  {
+    quote: 'Booking requests come straight to my WhatsApp with the job, the time and the place. I reply YES and the customer knows I am coming.',
+    name: 'Jona Mugondora',
+    role: 'Provider',
+    detail: 'Plumber',
+  },
+  {
+    quote: 'I told Hustlr the suburbs I cover, and now the jobs I get are in the areas where I already work. There was no app to learn.',
+    name: 'Shepherd Mubaiwa',
+    role: 'Provider',
+    detail: 'Electrician',
+  },
+  {
+    quote: 'We described the job in one WhatsApp chat and saw the provider’s profile before we said yes. Booking took a few messages.',
+    name: 'uncommon.org',
+    role: 'Customer',
+  },
+  {
+    quote: 'Our graduates can list their trade and the areas they cover, then take bookings on the phones they already have.',
+    name: 'Nyamuroro VTC',
+    role: 'Partner',
+    detail: 'Vocational training centre',
+  },
+];
