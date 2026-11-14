@@ -1182,8 +1182,9 @@ ol {
 
 .chip-notified {
   position: absolute;
-  left: 56px;
-  top: 112px;
+  /* Sits just after the end of the headline's first line */
+  left: 14px;
+  top: 88px;
   z-index: 3;
   display: inline-flex;
   align-items: center;
