@@ -31,7 +31,7 @@ const sideLinks: { id: Props['active']; href: string; label: string; icon: Admin
 ];
 ---
 
-<HomeLayout title={`${title} — Hustlr admin`} description="Hustlr admin dashboard." noindex>
+<HomeLayout title={`${title} — Hustlr admin`} description="Hustlr admin dashboard." noindex scale={false}>
   <!-- Set the sidebar state before the page paints, so it does not jump.
        Small screens always start with the icon rail; large screens remember the last choice. -->
   <script is:inline>

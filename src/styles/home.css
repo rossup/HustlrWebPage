@@ -2547,3 +2547,13 @@ details[open] .faq-plus::after { transform: rotate(0deg); }
   .footer-bottom-right { flex-wrap: wrap; gap: 14px 20px; }
   .footer-bottom-right a { white-space: nowrap; }
 }
+
+/* ---------- Whole-site scale ----------
+   Everything on the website (type, spacing, images) is drawn at 90% on tablets and
+   desktops, so pages feel lighter and show more at once. Phones keep the sizes
+   above, which are already set for small screens.
+   Change the number to resize the whole site; 1 turns it off.
+   The admin pages opt out (scale={false} on HomeLayout). */
+@media (min-width: 761px) {
+  body.site-scale { zoom: 0.9; }
+}

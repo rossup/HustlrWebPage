@@ -117,8 +117,9 @@ import { WA, WA_PROVIDER, waIcon, steps, services, proBenefits } from '../data/s
     const onScroll = () => {
       const y = window.scrollY;
       nav?.classList.toggle('is-scrolled', y > 20);
-      const heroEnd = (heroEl?.offsetHeight ?? 700) - 90;
-      nav?.classList.toggle('is-light', y > heroEnd);
+      // Measured on screen, so it stays right when the page is scaled (see "Whole-site scale" in home.css)
+      const heroBottom = heroEl ? heroEl.getBoundingClientRect().bottom : 700 - y;
+      nav?.classList.toggle('is-light', heroBottom < 90);
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
