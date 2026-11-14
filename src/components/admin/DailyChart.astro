@@ -1,0 +1,55 @@
+---
+// Column chart: WhatsApp chats started per day, split into customers and providers.
+import { daily, fmt } from '../../data/admin';
+
+// Round the axis up to a clean number
+const dailyMax = Math.max(...daily.map((d) => d.customer + d.provider));
+const axisStep = dailyMax <= 20 ? 5 : dailyMax <= 40 ? 10 : dailyMax <= 100 ? 20 : 50;
+const axisMax = Math.ceil(dailyMax / axisStep) * axisStep;
+const ticks = Array.from({ length: axisMax / axisStep + 1 }, (_, i) => axisMax - i * axisStep);
+const customerTotal = daily.reduce((sum, d) => sum + d.customer, 0);
+const providerTotal = daily.reduce((sum, d) => sum + d.provider, 0);
+---
+
+<article class="ad-card">
+  <div class="ad-card-head">
+    <div>
+      <h2>WhatsApp chats started</h2>
+      <p>Per day, by who started the chat</p>
+    </div>
+    <ul class="ad-legend" aria-label="Legend">
+      <li><span class="ad-swatch ad-swatch--customer" aria-hidden="true"></span>Customers <strong>{fmt(customerTotal)}</strong></li>
+      <li><span class="ad-swatch ad-swatch--provider" aria-hidden="true"></span>Providers <strong>{fmt(providerTotal)}</strong></li>
+    </ul>
+  </div>
+
+  <div class="ad-chart" role="img" aria-label={`WhatsApp chats started per day. ${daily.map((d) => `${d.day} ${d.date}: ${d.customer} customers, ${d.provider} providers`).join('. ')}.`}>
+    <div class="ad-chart-axis" aria-hidden="true">
+      {ticks.map((t) => <span>{t}</span>)}
+    </div>
+    <div class="ad-chart-plot">
+      <div class="ad-chart-grid" aria-hidden="true">
+        {ticks.map(() => <span></span>)}
+      </div>
+      <div class="ad-chart-cols">
+        {daily.map((d) => (
+          <div class="ad-col" tabindex="0">
+            <div class="ad-col-tip" role="tooltip">
+              <strong>{d.day} {d.date}</strong>
+              <span><i class="ad-swatch ad-swatch--customer"></i>Customers <b>{d.customer}</b></span>
+              <span><i class="ad-swatch ad-swatch--provider"></i>Providers <b>{d.provider}</b></span>
+              <span class="ad-col-tip-total">Total <b>{d.customer + d.provider}</b></span>
+            </div>
+            <div class="ad-col-stack">
+              <span class="ad-seg ad-seg--provider" style={`height:${(d.provider / axisMax) * 100}%`}></span>
+              <span class="ad-seg ad-seg--customer" style={`height:${(d.customer / axisMax) * 100}%`}></span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+    <div class="ad-chart-x" aria-hidden="true">
+      {daily.map((d) => <span><strong>{d.day}</strong>{d.date}</span>)}
+    </div>
+  </div>
+</article>

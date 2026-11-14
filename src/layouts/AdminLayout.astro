@@ -1,0 +1,165 @@
+---
+// Shared frame for every admin page: collapsible sidebar, dark page header, content area.
+// Each page under src/pages/admin/ wraps its content in this layout.
+import HomeLayout from './HomeLayout.astro';
+import '../styles/redesign.css';
+import '../styles/admin.css';
+import { isSampleData, period, bookings, applications } from '../data/admin';
+import { adminIcons, type AdminIconName } from '../data/adminIcons';
+import { WA } from '../data/site';
+
+interface Props {
+  /** Page heading, also used in the browser tab. */
+  title: string;
+  /** One line under the heading saying what the page is for. */
+  lead?: string;
+  /** Which sidebar link is the current page. */
+  active: 'overview' | 'chats' | 'breakdowns' | 'bookings' | 'providers';
+}
+
+const { title, lead, active } = Astro.props;
+
+const pendingBookings = bookings.filter((b) => b.status === 'Pending').length;
+
+// One sidebar link per admin page
+const sideLinks: { id: Props['active']; href: string; label: string; icon: AdminIconName; badge?: number; badgeLabel?: string }[] = [
+  { id: 'overview', href: '/admin', label: 'Overview', icon: 'overview' },
+  { id: 'chats', href: '/admin/chats', label: 'Chats', icon: 'chats' },
+  { id: 'breakdowns', href: '/admin/breakdowns', label: 'Breakdowns', icon: 'breakdowns' },
+  { id: 'bookings', href: '/admin/bookings', label: 'Bookings', icon: 'bookings', badge: pendingBookings, badgeLabel: 'pending' },
+  { id: 'providers', href: '/admin/providers', label: 'Providers', icon: 'providers', badge: applications.length, badgeLabel: 'waiting for review' },
+];
+---
+
+<HomeLayout title={`${title} — Hustlr admin`} description="Hustlr admin dashboard." noindex>
+  <!-- Set the sidebar state before the page paints, so it does not jump.
+       Small screens always start with the icon rail; large screens remember the last choice. -->
+  <script is:inline>
+    (function () {
+      var collapsed = window.matchMedia('(max-width: 960px)').matches;
+      try {
+        if (!collapsed) collapsed = localStorage.getItem('hustlr.admin.side') === 'collapsed';
+      } catch (e) {}
+      if (collapsed) document.documentElement.dataset.adSide = 'collapsed';
+    })();
+  </script>
+
+  <div class="ad-shell">
+    <aside class="ad-side" id="adSide" aria-label="Admin navigation">
+      <div class="ad-side-brand">
+        <a href="/admin" aria-label="Hustlr admin">
+          <img class="ad-side-logo" src="/assets/logo-reverse.svg" alt="Hustlr" width="106" height="38" />
+          <img class="ad-side-symbol" src="/assets/logo-symbol.svg" alt="" width="38" height="38" aria-hidden="true" />
+        </a>
+        <span class="ad-side-tag">Admin</span>
+      </div>
+
+      <button class="ad-side-toggle" type="button" id="adSideToggle" aria-controls="adSide" aria-expanded="true" aria-label="Collapse sidebar">
+        <Fragment set:html={adminIcons.collapse} />
+      </button>
+
+      <nav class="ad-side-nav" aria-label="Admin pages">
+        <p class="ad-side-label"><span>Dashboard</span></p>
+        {sideLinks.map((l) => (
+          <a class:list={['ad-side-link', { 'is-active': l.id === active }]} href={l.href} aria-current={l.id === active ? 'page' : undefined}>
+            <span class="ad-side-icon"><Fragment set:html={adminIcons[l.icon]} /></span>
+            <span class="ad-side-text">{l.label}</span>
+            {l.badge ? <span class="ad-side-badge" aria-label={`${l.badge} ${l.badgeLabel}`}>{l.badge}</span> : null}
+            <span class="ad-side-tip" aria-hidden="true">{l.label}</span>
+          </a>
+        ))}
+      </nav>
+
+      <div class="ad-side-foot">
+        <p class="ad-side-label"><span>Website</span></p>
+        <a class="ad-side-link" href="/">
+          <span class="ad-side-icon"><Fragment set:html={adminIcons.website} /></span>
+          <span class="ad-side-text">Back to website</span>
+          <span class="ad-side-tip" aria-hidden="true">Back to website</span>
+        </a>
+        <a class="ad-side-link" href={WA} target="_blank" rel="noopener">
+          <span class="ad-side-icon"><Fragment set:html={adminIcons.whatsapp} /></span>
+          <span class="ad-side-text">Hustlr on WhatsApp</span>
+          <span class="ad-side-tip" aria-hidden="true">Hustlr on WhatsApp</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Small screens: dims the page while the sidebar is expanded over it -->
+    <div class="ad-scrim" id="adScrim"></div>
+
+    <div class="ad-body">
+      <header class="ad-head">
+        <div class="rd-wrap">
+          <div class="ad-head-row">
+            <div>
+              <p class="ad-crumb">Hustlr admin</p>
+              <h1>{title}</h1>
+              {lead && <p class="ad-head-lead">{lead}</p>}
+            </div>
+            <p class="ad-period">
+              <strong>{period.label}</strong>
+              <span>{period.range} · compared with the {period.compare}</span>
+            </p>
+          </div>
+          <!-- Headline numbers for the page -->
+          <slot name="head" />
+        </div>
+      </header>
+
+      <main class="rd-wrap ad-main">
+        {isSampleData && (
+          <p class="rd-legal-note ad-sample">
+            <strong>Sample data.</strong> These numbers are placeholders so the dashboard can be reviewed.
+            Connect the analytics endpoint and the bookings backend in <code>src/data/admin.ts</code> to show real figures.
+          </p>
+        )}
+        <slot />
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // ----- Sidebar: icon rail <-> full sidebar -----
+    // Large screens: the page makes room and the choice is remembered.
+    // Small screens: the full sidebar opens over the page and closes again after use.
+    const root = document.documentElement;
+    const toggle = document.getElementById('adSideToggle');
+    const scrim = document.getElementById('adScrim');
+    const SIDE_KEY = 'hustlr.admin.side';
+    const small = window.matchMedia('(max-width: 960px)');
+
+    const isCollapsed = () => root.dataset.adSide === 'collapsed';
+    const setCollapsed = (collapsed: boolean, remember = true) => {
+      if (collapsed) root.dataset.adSide = 'collapsed';
+      else delete root.dataset.adSide;
+      toggle?.setAttribute('aria-expanded', String(!collapsed));
+      toggle?.setAttribute('aria-label', collapsed ? 'Expand sidebar' : 'Collapse sidebar');
+      if (remember && !small.matches) {
+        try {
+          localStorage.setItem(SIDE_KEY, collapsed ? 'collapsed' : 'open');
+        } catch {
+          /* storage blocked: the choice just won't be remembered */
+        }
+      }
+    };
+    setCollapsed(isCollapsed(), false);
+
+    toggle?.addEventListener('click', () => setCollapsed(!isCollapsed()));
+    scrim?.addEventListener('click', () => setCollapsed(true));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && small.matches && !isCollapsed()) setCollapsed(true);
+    });
+    // Crossing between small and large screens: rail on small, the remembered choice on large
+    small.addEventListener('change', (e) => {
+      if (e.matches) return setCollapsed(true, false);
+      let stored: string | null = null;
+      try {
+        stored = localStorage.getItem(SIDE_KEY);
+      } catch {
+        /* storage blocked */
+      }
+      setCollapsed(stored === 'collapsed', false);
+    });
+  </script>
+</HomeLayout>

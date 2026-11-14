@@ -1,0 +1,86 @@
+---
+// Bookings table. With `filters` it gets status buttons; with `moreHref` a link to the full list.
+import { bookingStatuses, statusClass, type Booking } from '../../data/admin';
+
+interface Props {
+  title: string;
+  rows: Booking[];
+  filters?: boolean;
+  moreHref?: string;
+}
+
+const { title, rows, filters = false, moreHref } = Astro.props;
+---
+
+<section class="ad-card ad-bookings" aria-labelledby="ad-bookings-title">
+  <div class="ad-card-head">
+    <div>
+      <h2 id="ad-bookings-title">{title}</h2>
+      <p><span id="adBookingCount">{rows.length}</span> shown</p>
+    </div>
+    {filters && (
+      <div class="ad-filters" role="group" aria-label="Filter bookings by status">
+        <button type="button" class="ad-chip" data-filter="all" aria-pressed="true">All</button>
+        {bookingStatuses.map((s) => (
+          <button type="button" class="ad-chip" data-filter={s} aria-pressed="false">{s}</button>
+        ))}
+      </div>
+    )}
+    {moreHref && <a class="ad-more" href={moreHref}>All bookings <span aria-hidden="true">&rarr;</span></a>}
+  </div>
+
+  <div class="ad-table-wrap">
+    <table class="ad-table">
+      <thead>
+        <tr>
+          <th scope="col">Ref</th>
+          <th scope="col">Customer</th>
+          <th scope="col">Service</th>
+          <th scope="col">Area</th>
+          <th scope="col">Provider</th>
+          <th scope="col">Booked</th>
+          <th scope="col">Source</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody id="adBookingRows">
+        {rows.map((b) => (
+          <tr data-status={b.status}>
+            <td><span class="ad-ref">{b.ref}</span></td>
+            <td><strong>{b.customer}</strong></td>
+            <td>{b.service}</td>
+            <td>{b.area}</td>
+            <td>{b.provider}</td>
+            <td class="ad-nowrap">{b.when}</td>
+            <td>{b.source}</td>
+            <td><span class={statusClass(b.status)}>{b.status}</span></td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <p class="ad-empty" id="adBookingEmpty" hidden>No bookings with this status in the period.</p>
+  </div>
+</section>
+
+<script>
+  // Filter the bookings table by status
+  const chips = document.querySelectorAll<HTMLButtonElement>('.ad-chip');
+  const rows = document.querySelectorAll<HTMLTableRowElement>('#adBookingRows tr');
+  const count = document.getElementById('adBookingCount');
+  const empty = document.getElementById('adBookingEmpty');
+
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      const filter = chip.dataset.filter;
+      let shown = 0;
+      rows.forEach((row) => {
+        const show = filter === 'all' || row.dataset.status === filter;
+        row.hidden = !show;
+        if (show) shown += 1;
+      });
+      chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+      if (count) count.textContent = String(shown);
+      if (empty) empty.hidden = shown > 0;
+    });
+  });
+</script>

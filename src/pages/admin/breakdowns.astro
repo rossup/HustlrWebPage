@@ -1,0 +1,27 @@
+---
+// /admin/breakdowns — bookings split by service and by area.
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import StatTiles from '../../components/admin/StatTiles.astro';
+import BarList from '../../components/admin/BarList.astro';
+import { bookingsByService, bookingsByArea, fmt, pct } from '../../data/admin';
+
+const top = (rows: { name: string; value: number }[]) => [...rows].sort((a, b) => b.value - a.value)[0];
+const total = bookingsByService.reduce((sum, r) => sum + r.value, 0);
+const topService = top(bookingsByService);
+const topArea = top(bookingsByArea);
+
+const tiles = [
+  { label: 'Top service', value: topService.name, note: `${fmt(topService.value)} bookings · ${pct(topService.value, total)}% of all` },
+  { label: 'Top area', value: topArea.name, note: `${fmt(topArea.value)} bookings · ${pct(topArea.value, total)}% of all` },
+  { label: 'Bookings', value: fmt(total), note: 'Confirmed in WhatsApp' },
+];
+---
+
+<AdminLayout title="Breakdowns" lead="Which services and areas the bookings come from." active="breakdowns">
+  <StatTiles slot="head" tiles={tiles} />
+
+  <section class="ad-grid ad-grid--two" aria-label="Breakdowns">
+    <BarList title="Bookings by service" unit="bookings" rows={bookingsByService} />
+    <BarList title="Bookings by area" unit="bookings" rows={bookingsByArea} />
+  </section>
+</AdminLayout>

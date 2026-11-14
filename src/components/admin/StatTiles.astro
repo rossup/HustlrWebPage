@@ -1,0 +1,39 @@
+---
+// Strip of headline numbers shown under the heading of an admin page.
+import { period } from '../../data/admin';
+
+export interface Tile {
+  label: string;
+  value: string;
+  note?: string;
+  /** Change against the previous period (see `change` in data/admin.ts). */
+  change?: { text: string; dir: 'up' | 'down' | 'flat' };
+}
+
+interface Props {
+  tiles: Tile[];
+}
+
+const { tiles } = Astro.props;
+const arrow = { up: '↑', down: '↓', flat: '→' };
+// Values that are words ("Plumbers", "Fri 13 Nov") are set smaller than plain numbers
+const isNumber = (v: string) => /^[\d,.%]+$/.test(v);
+---
+
+<dl class="ad-kpis">
+  {tiles.map((t) => (
+    <div class="ad-kpi">
+      <dt>{t.label}</dt>
+      <dd class="ad-kpi-main">
+        <span class:list={['ad-kpi-value', { 'ad-kpi-value--text': !isNumber(t.value) }]}>{t.value}</span>
+        {t.change && (
+          <span class="ad-kpi-delta" data-dir={t.change.dir} title={`Compared with the ${period.compare}`}>
+            <span aria-hidden="true">{arrow[t.change.dir]}</span>{t.change.text}
+            <span class="ad-sr"> compared with the {period.compare}</span>
+          </span>
+        )}
+      </dd>
+      {t.note && <dd class="ad-kpi-note">{t.note}</dd>}
+    </div>
+  ))}
+</dl>

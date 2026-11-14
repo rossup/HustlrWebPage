@@ -1,0 +1,48 @@
+---
+// /admin — Overview: the headline numbers, the funnel, and what needs attention.
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import StatTiles from '../../components/admin/StatTiles.astro';
+import Funnel from '../../components/admin/Funnel.astro';
+import BookingsTable from '../../components/admin/BookingsTable.astro';
+import { kpis, bookings, applications, chatsByPlacement, fmt, change } from '../../data/admin';
+
+const tiles = kpis.map((k) => ({ label: k.label, value: fmt(k.value), note: k.note, change: change(k.value, k.previous) }));
+
+const pending = bookings.filter((b) => b.status === 'Pending').length;
+const topButton = [...chatsByPlacement].sort((a, b) => b.value - a.value)[0];
+
+// Things an admin should look at next, each linking to its page
+const todo = [
+  { value: fmt(pending), text: pending === 1 ? 'booking waiting for a provider to confirm' : 'bookings waiting for a provider to confirm', link: 'Open bookings', href: '/admin/bookings' },
+  { value: fmt(applications.length), text: applications.length === 1 ? 'provider waiting for review' : 'providers waiting for review', link: 'Review providers', href: '/admin/providers' },
+  { value: fmt(topButton.value), text: `chats started from the ${topButton.name.toLowerCase()} button, the most of any`, link: 'See chats', href: '/admin/chats' },
+];
+---
+
+<AdminLayout title="Overview" lead="How the website, WhatsApp chats and bookings did this week." active="overview">
+  <StatTiles slot="head" tiles={tiles} />
+
+  <section class="ad-grid ad-grid--lead" aria-label="Summary">
+    <article class="ad-card">
+      <div class="ad-card-head">
+        <div>
+          <h2>Needs attention</h2>
+          <p>Where to look next</p>
+        </div>
+      </div>
+      <ul class="ad-todo">
+        {todo.map((t) => (
+          <li>
+            <strong>{t.value}</strong>
+            <span>{t.text}</span>
+            <a class="ad-more" href={t.href}>{t.link} <span aria-hidden="true">&rarr;</span></a>
+          </li>
+        ))}
+      </ul>
+    </article>
+
+    <Funnel />
+  </section>
+
+  <BookingsTable title="Latest bookings" rows={bookings.slice(0, 5)} moreHref="/admin/bookings" />
+</AdminLayout>

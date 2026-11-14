@@ -1,0 +1,35 @@
+---
+// Card with a ranked list of horizontal bars (e.g. bookings by service).
+import { fmt, pct } from '../../data/admin';
+
+interface Props {
+  title: string;
+  /** What is being counted, e.g. "bookings". */
+  unit: string;
+  rows: { name: string; value: number }[];
+}
+
+const { title, unit, rows } = Astro.props;
+const max = Math.max(...rows.map((r) => r.value));
+const total = rows.reduce((sum, r) => sum + r.value, 0);
+---
+
+<article class="ad-card ad-card--line">
+  <div class="ad-card-head">
+    <div>
+      <h2>{title}</h2>
+      <p>{fmt(total)} {unit}</p>
+    </div>
+  </div>
+  <ul class="ad-bars">
+    {rows.map((r) => (
+      <li title={`${r.name}: ${fmt(r.value)} ${unit} (${pct(r.value, total)}%)`}>
+        <span class="ad-bars-name">{r.name} <small>{pct(r.value, total)}%</small></span>
+        <span class="ad-bars-row">
+          <span class="ad-bars-bar" style={`width:${(r.value / max) * 100}%`}></span>
+          <span class="ad-bars-value">{fmt(r.value)}</span>
+        </span>
+      </li>
+    ))}
+  </ul>
+</article>

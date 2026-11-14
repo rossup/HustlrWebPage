@@ -1,0 +1,26 @@
+---
+// Card listing providers who asked to join and are waiting for review.
+import { applications, statusClass } from '../../data/admin';
+---
+
+<section class="ad-card" aria-labelledby="ad-apps-title">
+  <div class="ad-card-head">
+    <div>
+      <h2 id="ad-apps-title">Waiting for review</h2>
+      <p>Providers who asked to join on WhatsApp. Check their trade and areas, then approve them in the chat.</p>
+    </div>
+  </div>
+  <ul class="ad-apps">
+    {applications.map((a) => (
+      <li>
+        <span class="ad-apps-avatar" aria-hidden="true">{a.business.charAt(0)}</span>
+        <span class="ad-apps-main">
+          <strong>{a.business}</strong>
+          <span>{a.trade} · {a.areas}</span>
+        </span>
+        <span class="ad-apps-date">Applied {a.applied}</span>
+        <span class={statusClass(a.status)}>{a.status}</span>
+      </li>
+    ))}
+  </ul>
+</section>

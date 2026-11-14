@@ -1,0 +1,25 @@
+---
+// Dark card: how many website visitors become chats, bookings and finished jobs.
+import { funnel, period, fmt, pct } from '../../data/admin';
+---
+
+<article class="ad-card ad-card--dark">
+  <div class="ad-card-head">
+    <div>
+      <h2>From visit to finished job</h2>
+      <p>{period.label}</p>
+    </div>
+  </div>
+  <ol class="ad-funnel">
+    {funnel.map((f, i) => (
+      <li>
+        <div class="ad-funnel-top">
+          <span>{f.step}</span>
+          <strong>{fmt(f.value)}</strong>
+        </div>
+        <div class="ad-funnel-track"><span style={`width:${Math.max(pct(f.value, funnel[0].value), 1.5)}%`}></span></div>
+        {i > 0 && <p>{pct(f.value, funnel[i - 1].value)}% of the step before</p>}
+      </li>
+    ))}
+  </ol>
+</article>

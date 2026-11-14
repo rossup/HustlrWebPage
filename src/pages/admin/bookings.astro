@@ -1,0 +1,23 @@
+---
+// /admin/bookings — every booking in the period, with a status filter.
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import StatTiles from '../../components/admin/StatTiles.astro';
+import BookingsTable from '../../components/admin/BookingsTable.astro';
+import { bookings, bookingStatuses, fmt } from '../../data/admin';
+
+const notes: Record<string, string> = {
+  Pending: 'Waiting for the provider',
+  Confirmed: 'Provider said yes',
+  Completed: 'Job finished',
+  Cancelled: 'Did not go ahead',
+};
+// Tiles follow the booking's journey
+const order = ['Pending', 'Confirmed', 'Completed', 'Cancelled'].filter((s) => (bookingStatuses as string[]).includes(s));
+const tiles = order.map((s) => ({ label: s, value: fmt(bookings.filter((b) => b.status === s).length), note: notes[s] }));
+---
+
+<AdminLayout title="Bookings" lead="Recent bookings made through WhatsApp." active="bookings">
+  <StatTiles slot="head" tiles={tiles} />
+
+  <BookingsTable title="Recent bookings" rows={bookings} filters />
+</AdminLayout>

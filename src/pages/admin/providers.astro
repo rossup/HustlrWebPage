@@ -1,0 +1,23 @@
+---
+// /admin/providers — providers who asked to join and are waiting for review.
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import StatTiles from '../../components/admin/StatTiles.astro';
+import ProviderList from '../../components/admin/ProviderList.astro';
+import { applications, fmt } from '../../data/admin';
+
+const count = (status: string) => applications.filter((a) => a.status === status).length;
+const trades = new Set(applications.map((a) => a.trade)).size;
+
+const tiles = [
+  { label: 'New', value: fmt(count('New')), note: 'Not looked at yet' },
+  { label: 'Details requested', value: fmt(count('Details requested')), note: 'Waiting for the provider to reply' },
+  { label: 'Trades', value: fmt(trades), note: 'Different trades applying' },
+  { label: 'Waiting for review', value: fmt(applications.length), note: 'All open applications' },
+];
+---
+
+<AdminLayout title="Providers" lead="Providers who asked to join Hustlr." active="providers">
+  <StatTiles slot="head" tiles={tiles} />
+
+  <ProviderList />
+</AdminLayout>
