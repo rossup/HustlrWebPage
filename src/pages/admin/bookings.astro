@@ -3,7 +3,13 @@
 import AdminLayout from '../../layouts/AdminLayout.astro';
 import StatTiles from '../../components/admin/StatTiles.astro';
 import BookingsTable from '../../components/admin/BookingsTable.astro';
-import { bookings, bookingStatuses, fmt } from '../../data/admin';
+import { bookingStatuses, fmt } from '../../data/admin';
+import { loadAdminData } from '../../lib/admin-data';
+
+export const prerender = false;
+
+const data = await loadAdminData();
+const { bookings } = data;
 
 const notes: Record<string, string> = {
   Pending: 'Waiting for the provider',
@@ -13,11 +19,15 @@ const notes: Record<string, string> = {
 };
 // Tiles follow the booking's journey
 const order = ['Pending', 'Confirmed', 'Completed', 'Cancelled'].filter((s) => (bookingStatuses as string[]).includes(s));
-const tiles = order.map((s) => ({ label: s, value: fmt(bookings.filter((b) => b.status === s).length), note: notes[s] }));
+const tiles = order.map((s) => ({
+  label: s,
+  value: bookings === null ? '—' : fmt(bookings.filter((b) => b.status === s).length),
+  note: bookings === null ? 'Bot backend not connected' : notes[s],
+}));
 ---
 
-<AdminLayout title="Bookings" lead="Recent bookings made through WhatsApp." active="bookings">
-  <StatTiles slot="head" tiles={tiles} />
+<AdminLayout title="Bookings" lead="Recent bookings made through WhatsApp." active="bookings" data={data}>
+  <StatTiles slot="head" tiles={tiles} period={data.period} />
 
   <BookingsTable title="Recent bookings" rows={bookings} filters />
 </AdminLayout>

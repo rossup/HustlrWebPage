@@ -3,25 +3,36 @@
 import AdminLayout from '../../layouts/AdminLayout.astro';
 import StatTiles from '../../components/admin/StatTiles.astro';
 import BarList from '../../components/admin/BarList.astro';
-import { bookingsByService, bookingsByArea, fmt, pct } from '../../data/admin';
+import { fmt, pct, type Row } from '../../data/admin';
+import { loadAdminData } from '../../lib/admin-data';
 
-const top = (rows: { name: string; value: number }[]) => [...rows].sort((a, b) => b.value - a.value)[0];
-const total = bookingsByService.reduce((sum, r) => sum + r.value, 0);
+export const prerender = false;
+
+const data = await loadAdminData();
+const { bookingsByService, bookingsByArea } = data;
+
+const top = (rows: Row[] | null) => (rows ? [...rows].sort((a, b) => b.value - a.value)[0] : undefined);
+const total = bookingsByService?.reduce((sum, r) => sum + r.value, 0) ?? null;
 const topService = top(bookingsByService);
 const topArea = top(bookingsByArea);
+const notConnected = 'Bot backend not connected';
 
 const tiles = [
-  { label: 'Top service', value: topService.name, note: `${fmt(topService.value)} bookings · ${pct(topService.value, total)}% of all` },
-  { label: 'Top area', value: topArea.name, note: `${fmt(topArea.value)} bookings · ${pct(topArea.value, total)}% of all` },
-  { label: 'Bookings', value: fmt(total), note: 'Confirmed in WhatsApp' },
+  topService
+    ? { label: 'Top service', value: topService.name, note: `${fmt(topService.value)} bookings · ${pct(topService.value, total ?? 0)}% of all` }
+    : { label: 'Top service', value: '—', note: total === null ? notConnected : 'No bookings yet' },
+  topArea
+    ? { label: 'Top area', value: topArea.name, note: `${fmt(topArea.value)} bookings · ${pct(topArea.value, total ?? 0)}% of all` }
+    : { label: 'Top area', value: '—', note: total === null ? notConnected : 'No bookings yet' },
+  { label: 'Bookings', value: total === null ? '—' : fmt(total), note: total === null ? notConnected : 'Made in WhatsApp' },
 ];
 ---
 
-<AdminLayout title="Breakdowns" lead="Which services and areas the bookings come from." active="breakdowns">
-  <StatTiles slot="head" tiles={tiles} />
+<AdminLayout title="Breakdowns" lead="Which services and areas the bookings come from." active="breakdowns" data={data}>
+  <StatTiles slot="head" tiles={tiles} period={data.period} />
 
   <section class="ad-grid ad-grid--two" aria-label="Breakdowns">
-    <BarList title="Bookings by service" unit="bookings" rows={bookingsByService} />
-    <BarList title="Bookings by area" unit="bookings" rows={bookingsByArea} />
+    <BarList title="Bookings by service" unit="bookings" rows={bookingsByService} empty="No bookings in this period yet." />
+    <BarList title="Bookings by area" unit="bookings" rows={bookingsByArea} empty="No bookings in this period yet." />
   </section>
 </AdminLayout>

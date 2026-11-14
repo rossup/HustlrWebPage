@@ -4,12 +4,14 @@ import { bookingStatuses, statusClass, type Booking } from '../../data/admin';
 
 interface Props {
   title: string;
-  rows: Booking[];
+  /** null = the bot backend isn't connected yet */
+  rows: Booking[] | null;
   filters?: boolean;
   moreHref?: string;
 }
 
-const { title, rows, filters = false, moreHref } = Astro.props;
+const { title, rows: given, filters = false, moreHref } = Astro.props;
+const rows = given ?? [];
 ---
 
 <section class="ad-card ad-bookings" aria-labelledby="ad-bookings-title">
@@ -58,7 +60,9 @@ const { title, rows, filters = false, moreHref } = Astro.props;
         ))}
       </tbody>
     </table>
-    <p class="ad-empty" id="adBookingEmpty" hidden>No bookings with this status in the period.</p>
+    <p class="ad-empty" id="adBookingEmpty" hidden={rows.length > 0}>
+      {given === null ? 'Not connected yet: bookings come from the bot backend.' : rows.length === 0 ? 'No bookings in this period yet.' : 'No bookings with this status in the period.'}
+    </p>
   </div>
 </section>
 

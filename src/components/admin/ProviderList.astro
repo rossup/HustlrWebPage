@@ -1,6 +1,13 @@
 ---
 // Card listing providers who asked to join and are waiting for review.
-import { applications, statusClass } from '../../data/admin';
+import { statusClass, type Application } from '../../data/admin';
+
+interface Props {
+  /** null = the bot backend isn't connected yet */
+  applications: Application[] | null;
+}
+
+const { applications } = Astro.props;
 ---
 
 <section class="ad-card" aria-labelledby="ad-apps-title">
@@ -10,6 +17,11 @@ import { applications, statusClass } from '../../data/admin';
       <p>Providers who asked to join on WhatsApp. Check their trade and areas, then approve them in the chat.</p>
     </div>
   </div>
+  {!applications || applications.length === 0 ? (
+    <p class="ad-empty">
+      {applications === null ? 'Not connected yet: provider applications come from the bot backend.' : 'No providers waiting for review.'}
+    </p>
+  ) : (
   <ul class="ad-apps">
     {applications.map((a) => (
       <li>
@@ -23,4 +35,5 @@ import { applications, statusClass } from '../../data/admin';
       </li>
     ))}
   </ul>
+  )}
 </section>

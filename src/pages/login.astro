@@ -1,0 +1,186 @@
+---
+// /login: admin sign-in with Netlify Identity.
+// Also finishes the links Netlify Identity emails: accepting an invite and resetting a password.
+import HomeLayout from '../layouts/HomeLayout.astro';
+import '../styles/redesign.css';
+import '../styles/admin.css';
+---
+
+<HomeLayout title="Admin login — Hustlr" description="Hustlr admin login." noindex scale={false}>
+  <main class="ad-login">
+    <div class="ad-login-card">
+      <a href="/" class="ad-login-logo" aria-label="Hustlr home">
+        <img src="/assets/logo-reverse.svg" alt="Hustlr" width="106" height="38" />
+        <span class="ad-side-tag">Admin</span>
+      </a>
+
+      <!-- Sign in -->
+      <form class="ad-login-form" id="loginForm" hidden>
+        <h1>Sign in</h1>
+        <p class="ad-login-lead">Use the email you were invited with.</p>
+        <label>Email <input type="email" name="email" autocomplete="username" required /></label>
+        <label>Password <input type="password" name="password" autocomplete="current-password" required /></label>
+        <button type="submit" class="rd-btn rd-btn--yellow">Sign in</button>
+        <button type="button" class="ad-login-link" id="forgotBtn">Forgot your password?</button>
+      </form>
+
+      <!-- Set a password: accepting an invite, or after a reset link -->
+      <form class="ad-login-form" id="passwordForm" hidden>
+        <h1 id="passwordTitle">Choose a password</h1>
+        <p class="ad-login-lead" id="passwordLead">Set the password you'll use to sign in.</p>
+        <label>New password <input type="password" name="password" autocomplete="new-password" minlength="8" required /></label>
+        <button type="submit" class="rd-btn rd-btn--yellow">Save password</button>
+      </form>
+
+      <!-- Signed in but not an admin -->
+      <div class="ad-login-form" id="noAccess" hidden>
+        <h1>No admin access</h1>
+        <p class="ad-login-lead">
+          You're signed in as <strong id="noAccessEmail"></strong>, but this account doesn't have the admin role.
+          Ask an owner to add it in Netlify, then sign in again.
+        </p>
+        <button type="button" class="rd-btn rd-btn--yellow" id="switchBtn">Sign in with another account</button>
+      </div>
+
+      <p class="ad-login-msg" id="loginMsg" role="status" aria-live="polite"></p>
+    </div>
+  </main>
+
+  <script>
+    import {
+      AuthError,
+      acceptInvite,
+      getUser,
+      handleAuthCallback,
+      login,
+      logout,
+      requestPasswordRecovery,
+      updateUser,
+    } from '@netlify/identity';
+
+    type MaybeUser = { email?: string; roles?: string[] } | null;
+
+    const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+    const loginForm = $<HTMLFormElement>('loginForm');
+    const passwordForm = $<HTMLFormElement>('passwordForm');
+    const noAccess = $<HTMLDivElement>('noAccess');
+    const msg = $<HTMLParagraphElement>('loginMsg');
+
+    // Only send people back to admin pages after signing in
+    const requested = new URLSearchParams(location.search).get('next') ?? '';
+    const nextPath = /^\/admin(\/[\w-]*)*\/?$/.test(requested) ? requested : '/admin';
+
+    const say = (text: string, isError = false) => {
+      msg.textContent = text;
+      msg.classList.toggle('is-error', isError);
+    };
+    const show = (el: HTMLElement) => {
+      [loginForm, passwordForm, noAccess].forEach((x) => (x.hidden = x !== el));
+      el.querySelector<HTMLInputElement>('input')?.focus();
+    };
+    const errorText = (error: unknown) =>
+      error instanceof AuthError && error.status === 401
+        ? 'That email and password don’t match.'
+        : error instanceof Error
+          ? error.message
+          : 'Something went wrong. Try again.';
+
+    const isAdmin = (user: MaybeUser) => !!user && (user.roles ?? []).includes('admin');
+    const goIn = (user: MaybeUser) => {
+      if (isAdmin(user)) {
+        location.replace(nextPath);
+        return;
+      }
+      $<HTMLElement>('noAccessEmail').textContent = user?.email ?? 'this account';
+      show(noAccess);
+    };
+
+    // What to do when the password form is submitted: accept an invite, or set a new password
+    let savePassword: (password: string) => Promise<MaybeUser> = async () => null;
+
+    async function start() {
+      try {
+        const result = await handleAuthCallback();
+        if (result?.type === 'invite' && result.token) {
+          const token = result.token;
+          $<HTMLElement>('passwordTitle').textContent = 'Welcome to Hustlr admin';
+          savePassword = (password) => acceptInvite(token, password);
+          show(passwordForm);
+          return;
+        }
+        if (result?.type === 'recovery') {
+          $<HTMLElement>('passwordTitle').textContent = 'Choose a new password';
+          savePassword = async (password) => {
+            await updateUser({ password });
+            return getUser();
+          };
+          show(passwordForm);
+          return;
+        }
+        if (result?.user) return goIn(result.user);
+      } catch (error) {
+        say(errorText(error), true);
+      }
+
+      try {
+        const user = await getUser();
+        if (user) return goIn(user);
+      } catch {
+        /* not signed in */
+      }
+      show(loginForm);
+    }
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = new FormData(loginForm);
+      say('Signing in…');
+      try {
+        const user = await login(String(data.get('email')), String(data.get('password')));
+        say('');
+        goIn(user);
+      } catch (error) {
+        say(errorText(error), true);
+      }
+    });
+
+    passwordForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const password = String(new FormData(passwordForm).get('password'));
+      say('Saving…');
+      try {
+        const user = await savePassword(password);
+        say('');
+        goIn(user ?? (await getUser()));
+      } catch (error) {
+        say(errorText(error), true);
+      }
+    });
+
+    $<HTMLButtonElement>('forgotBtn').addEventListener('click', async () => {
+      const email = String(new FormData(loginForm).get('email') ?? '').trim();
+      if (!email) {
+        say('Type your email above first.', true);
+        return;
+      }
+      try {
+        await requestPasswordRecovery(email);
+        say('If that email has an account, a reset link is on its way.');
+      } catch (error) {
+        say(errorText(error), true);
+      }
+    });
+
+    $<HTMLButtonElement>('switchBtn').addEventListener('click', async () => {
+      try {
+        await logout();
+      } catch {
+        /* already signed out */
+      }
+      say('');
+      show(loginForm);
+    });
+
+    start();
+  </script>
+</HomeLayout>

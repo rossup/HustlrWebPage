@@ -4,23 +4,35 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
 import StatTiles from '../../components/admin/StatTiles.astro';
 import Funnel from '../../components/admin/Funnel.astro';
 import BookingsTable from '../../components/admin/BookingsTable.astro';
-import { kpis, bookings, applications, chatsByPlacement, fmt, change } from '../../data/admin';
+import { fmt, change } from '../../data/admin';
+import { loadAdminData } from '../../lib/admin-data';
 
-const tiles = kpis.map((k) => ({ label: k.label, value: fmt(k.value), note: k.note, change: change(k.value, k.previous) }));
+// Rendered on each request with live data (login checked in src/middleware.ts)
+export const prerender = false;
 
-const pending = bookings.filter((b) => b.status === 'Pending').length;
-const topButton = [...chatsByPlacement].sort((a, b) => b.value - a.value)[0];
+const data = await loadAdminData();
+const { kpis, bookings, applications, chatsByPlacement } = data;
+
+const tiles = kpis.map((k) => ({
+  label: k.label,
+  value: k.value === null ? '—' : fmt(k.value),
+  note: k.note,
+  change: change(k.value, k.previous),
+}));
+
+const pending = bookings?.filter((b) => b.status === 'Pending').length ?? null;
+const topButton = [...(chatsByPlacement ?? [])].sort((a, b) => b.value - a.value)[0];
 
 // Things an admin should look at next, each linking to its page
 const todo = [
-  { value: fmt(pending), text: pending === 1 ? 'booking waiting for a provider to confirm' : 'bookings waiting for a provider to confirm', link: 'Open bookings', href: '/admin/bookings' },
-  { value: fmt(applications.length), text: applications.length === 1 ? 'provider waiting for review' : 'providers waiting for review', link: 'Review providers', href: '/admin/providers' },
-  { value: fmt(topButton.value), text: `chats started from the ${topButton.name.toLowerCase()} button, the most of any`, link: 'See chats', href: '/admin/chats' },
-];
+  pending !== null && { value: fmt(pending), text: pending === 1 ? 'booking waiting for a provider to confirm' : 'bookings waiting for a provider to confirm', link: 'Open bookings', href: '/admin/bookings' },
+  applications !== null && { value: fmt(applications.length), text: applications.length === 1 ? 'provider waiting for review' : 'providers waiting for review', link: 'Review providers', href: '/admin/providers' },
+  topButton && { value: fmt(topButton.value), text: `chats started from the ${topButton.name.toLowerCase()} button, the most of any`, link: 'See chats', href: '/admin/chats' },
+].filter((t): t is { value: string; text: string; link: string; href: string } => Boolean(t));
 ---
 
-<AdminLayout title="Overview" lead="How the website, WhatsApp chats and bookings did this week." active="overview">
-  <StatTiles slot="head" tiles={tiles} />
+<AdminLayout title="Overview" lead="How the website, WhatsApp chats and bookings did this week." active="overview" data={data}>
+  <StatTiles slot="head" tiles={tiles} period={data.period} />
 
   <section class="ad-grid ad-grid--lead" aria-label="Summary">
     <article class="ad-card">
@@ -30,19 +42,23 @@ const todo = [
           <p>Where to look next</p>
         </div>
       </div>
-      <ul class="ad-todo">
-        {todo.map((t) => (
-          <li>
-            <strong>{t.value}</strong>
-            <span>{t.text}</span>
-            <a class="ad-more" href={t.href}>{t.link} <span aria-hidden="true">&rarr;</span></a>
-          </li>
-        ))}
-      </ul>
+      {todo.length === 0 ? (
+        <p class="ad-empty">Nothing yet. This fills in as visits and bookings come in.</p>
+      ) : (
+        <ul class="ad-todo">
+          {todo.map((t) => (
+            <li>
+              <strong>{t.value}</strong>
+              <span>{t.text}</span>
+              <a class="ad-more" href={t.href}>{t.link} <span aria-hidden="true">&rarr;</span></a>
+            </li>
+          ))}
+        </ul>
+      )}
     </article>
 
-    <Funnel />
+    <Funnel funnel={data.funnel} period={data.period} />
   </section>
 
-  <BookingsTable title="Latest bookings" rows={bookings.slice(0, 5)} moreHref="/admin/bookings" />
+  <BookingsTable title="Latest bookings" rows={bookings?.slice(0, 5) ?? null} moreHref="/admin/bookings" />
 </AdminLayout>

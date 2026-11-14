@@ -1,6 +1,14 @@
 ---
 // Dark card: how many website visitors become chats, bookings and finished jobs.
-import { funnel, period, fmt, pct } from '../../data/admin';
+import { fmt, pct, type FunnelStep, type Period } from '../../data/admin';
+
+interface Props {
+  funnel: FunnelStep[];
+  period: Period;
+}
+
+const { funnel, period } = Astro.props;
+const first = funnel[0]?.value ?? 0;
 ---
 
 <article class="ad-card ad-card--dark">
@@ -15,10 +23,14 @@ import { funnel, period, fmt, pct } from '../../data/admin';
       <li>
         <div class="ad-funnel-top">
           <span>{f.step}</span>
-          <strong>{fmt(f.value)}</strong>
+          <strong>{f.value === null ? '—' : fmt(f.value)}</strong>
         </div>
-        <div class="ad-funnel-track"><span style={`width:${Math.max(pct(f.value, funnel[0].value), 1.5)}%`}></span></div>
-        {i > 0 && <p>{pct(f.value, funnel[i - 1].value)}% of the step before</p>}
+        <div class="ad-funnel-track">{f.value !== null && <span style={`width:${Math.max(pct(f.value, first), 1.5)}%`}></span>}</div>
+        {f.value === null ? (
+          <p>Not connected yet</p>
+        ) : (
+          i > 0 && funnel[i - 1].value !== null && <p>{pct(f.value, funnel[i - 1].value ?? 0)}% of the step before</p>
+        )}
       </li>
     ))}
   </ol>

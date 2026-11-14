@@ -4,7 +4,7 @@
 import HomeLayout from './HomeLayout.astro';
 import '../styles/redesign.css';
 import '../styles/admin.css';
-import { isSampleData, period, bookings, applications } from '../data/admin';
+import type { AdminData } from '../data/admin';
 import { adminIcons, type AdminIconName } from '../data/adminIcons';
 import { WA } from '../data/site';
 
@@ -15,11 +15,16 @@ interface Props {
   lead?: string;
   /** Which sidebar link is the current page. */
   active: 'overview' | 'chats' | 'breakdowns' | 'bookings' | 'providers';
+  /** Everything the dashboard shows (from src/lib/admin-data.ts) */
+  data: AdminData;
 }
 
-const { title, lead, active } = Astro.props;
+const { title, lead, active, data } = Astro.props;
+const { period } = data;
+const adminEmail = Astro.locals.adminEmail;
 
-const pendingBookings = bookings.filter((b) => b.status === 'Pending').length;
+const pendingBookings = data.bookings?.filter((b) => b.status === 'Pending').length ?? 0;
+const waitingProviders = data.applications?.length ?? 0;
 
 // One sidebar link per admin page
 const sideLinks: { id: Props['active']; href: string; label: string; icon: AdminIconName; badge?: number; badgeLabel?: string }[] = [
@@ -27,7 +32,7 @@ const sideLinks: { id: Props['active']; href: string; label: string; icon: Admin
   { id: 'chats', href: '/admin/chats', label: 'Chats', icon: 'chats' },
   { id: 'breakdowns', href: '/admin/breakdowns', label: 'Breakdowns', icon: 'breakdowns' },
   { id: 'bookings', href: '/admin/bookings', label: 'Bookings', icon: 'bookings', badge: pendingBookings, badgeLabel: 'pending' },
-  { id: 'providers', href: '/admin/providers', label: 'Providers', icon: 'providers', badge: applications.length, badgeLabel: 'waiting for review' },
+  { id: 'providers', href: '/admin/providers', label: 'Providers', icon: 'providers', badge: waitingProviders, badgeLabel: 'waiting for review' },
 ];
 ---
 
@@ -82,6 +87,13 @@ const sideLinks: { id: Props['active']; href: string; label: string; icon: Admin
           <span class="ad-side-text">Hustlr on WhatsApp</span>
           <span class="ad-side-tip" aria-hidden="true">Hustlr on WhatsApp</span>
         </a>
+        {!data.sample && (
+          <button class="ad-side-link ad-side-logout" type="button" id="adLogout">
+            <span class="ad-side-icon"><Fragment set:html={adminIcons.logout} /></span>
+            <span class="ad-side-text">Sign out{adminEmail ? <small>{adminEmail}</small> : null}</span>
+            <span class="ad-side-tip" aria-hidden="true">Sign out</span>
+          </button>
+        )}
       </div>
     </aside>
 
@@ -108,12 +120,23 @@ const sideLinks: { id: Props['active']; href: string; label: string; icon: Admin
       </header>
 
       <main class="rd-wrap ad-main">
-        {isSampleData && (
+        {data.sample ? (
           <p class="rd-legal-note ad-sample">
-            <strong>Sample data.</strong> These numbers are placeholders so the dashboard can be reviewed.
-            Connect the analytics endpoint and the bookings backend in <code>src/data/admin.ts</code> to show real figures.
+            <strong>Sample data, local preview only.</strong> No database is reachable here, so these numbers are made up.
+            The live site shows real visits from Netlify Database and never shows this sample.
           </p>
-        )}
+        ) : !data.connected.visits || !data.connected.bookings ? (
+          <p class="rd-legal-note ad-sample">
+            <strong>
+              {!data.connected.visits && !data.connected.bookings
+                ? 'The bot backend isn’t connected yet.'
+                : !data.connected.visits
+                  ? 'Website visits aren’t connected yet.'
+                  : 'Bookings and providers aren’t connected yet.'}
+            </strong>
+            Numbers appear here once the bot backend serves the admin API and <code>BOT_API_URL</code> and <code>BOT_API_KEY</code> are set in Netlify (see ANALYTICS.md).
+          </p>
+        ) : null}
         <slot />
       </main>
     </div>
@@ -160,6 +183,17 @@ const sideLinks: { id: Props['active']; href: string; label: string; icon: Admin
         /* storage blocked */
       }
       setCollapsed(stored === 'collapsed', false);
+    });
+
+    // ----- Sign out -----
+    document.getElementById('adLogout')?.addEventListener('click', async () => {
+      try {
+        const { logout } = await import('@netlify/identity');
+        await logout();
+      } catch {
+        /* already signed out */
+      }
+      location.href = '/login';
     });
   </script>
 </HomeLayout>

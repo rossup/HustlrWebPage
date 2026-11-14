@@ -37,6 +37,13 @@ const {
     />
   </head>
   <body class={scale ? 'site-scale' : undefined}>
+    <!-- Netlify Identity emails (admin invites, password resets) link to the homepage:
+         hand those links to the login page, which finishes them. -->
+    <script is:inline>
+      if (/(invite|recovery|confirmation|email_change)_token=|access_token=/.test(location.hash) && !/^\/login\/?$/.test(location.pathname)) {
+        location.replace('/login' + location.hash);
+      }
+    </script>
     <slot />
     <script>
       import '../scripts/analytics';

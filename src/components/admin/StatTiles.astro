@@ -1,6 +1,6 @@
 ---
 // Strip of headline numbers shown under the heading of an admin page.
-import { period } from '../../data/admin';
+import type { Period } from '../../data/admin';
 
 export interface Tile {
   label: string;
@@ -12,9 +12,10 @@ export interface Tile {
 
 interface Props {
   tiles: Tile[];
+  period: Period;
 }
 
-const { tiles } = Astro.props;
+const { tiles, period } = Astro.props;
 const arrow = { up: '↑', down: '↓', flat: '→' };
 // Values that are words ("Plumbers", "Fri 13 Nov") are set smaller than plain numbers
 const isNumber = (v: string) => /^[\d,.%]+$/.test(v);

@@ -12,3 +12,5 @@
 [build.environment]
   # Astro 7 needs Node 22.23.4 or newer
   NODE_VERSION = "24"
+  # Website analytics go to this site's own endpoint (src/pages/api/track.ts)
+  PUBLIC_ANALYTICS_ENDPOINT = "/api/track"

@@ -6,21 +6,29 @@ interface Props {
   title: string;
   /** What is being counted, e.g. "bookings". */
   unit: string;
-  rows: { name: string; value: number }[];
+  /** null = this source isn't connected yet */
+  rows: { name: string; value: number }[] | null;
+  /** Shown when there is nothing to list */
+  empty?: string;
 }
 
-const { title, unit, rows } = Astro.props;
-const max = Math.max(...rows.map((r) => r.value));
+const { title, unit, rows: given, empty = 'Nothing recorded in this period yet.' } = Astro.props;
+const rows = given ?? [];
+const max = Math.max(1, ...rows.map((r) => r.value));
 const total = rows.reduce((sum, r) => sum + r.value, 0);
+const emptyText = given === null ? 'Not connected yet: this comes from the bot backend.' : empty;
 ---
 
 <article class="ad-card ad-card--line">
   <div class="ad-card-head">
     <div>
       <h2>{title}</h2>
-      <p>{fmt(total)} {unit}</p>
+      <p>{given === null ? '—' : `${fmt(total)} ${unit}`}</p>
     </div>
   </div>
+  {rows.length === 0 ? (
+    <p class="ad-empty">{emptyText}</p>
+  ) : (
   <ul class="ad-bars">
     {rows.map((r) => (
       <li title={`${r.name}: ${fmt(r.value)} ${unit} (${pct(r.value, total)}%)`}>
@@ -32,4 +40,5 @@ const total = rows.reduce((sum, r) => sum + r.value, 0);
       </li>
     ))}
   </ul>
+  )}
 </article>

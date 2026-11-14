@@ -1,15 +1,33 @@
 ---
 // Column chart: WhatsApp chats started per day, split into customers and providers.
-import { daily, fmt } from '../../data/admin';
+import { fmt, type DailyChats } from '../../data/admin';
 
-// Round the axis up to a clean number
-const dailyMax = Math.max(...daily.map((d) => d.customer + d.provider));
+interface Props {
+  daily: DailyChats[];
+}
+
+const { daily } = Astro.props;
+
+// Round the axis up to a clean number (at least 5, so an empty week still has an axis)
+const dailyMax = Math.max(5, ...daily.map((d) => d.customer + d.provider));
 const axisStep = dailyMax <= 20 ? 5 : dailyMax <= 40 ? 10 : dailyMax <= 100 ? 20 : 50;
 const axisMax = Math.ceil(dailyMax / axisStep) * axisStep;
 const ticks = Array.from({ length: axisMax / axisStep + 1 }, (_, i) => axisMax - i * axisStep);
 const customerTotal = daily.reduce((sum, d) => sum + d.customer, 0);
 const providerTotal = daily.reduce((sum, d) => sum + d.provider, 0);
 ---
+
+{daily.length === 0 ? (
+  <article class="ad-card">
+    <div class="ad-card-head">
+      <div>
+        <h2>WhatsApp chats started</h2>
+        <p>Per day, by who started the chat</p>
+      </div>
+    </div>
+    <p class="ad-empty">Not connected yet: website visits come from the bot backend.</p>
+  </article>
+) : (
 
 <article class="ad-card">
   <div class="ad-card-head">
@@ -53,3 +71,4 @@ const providerTotal = daily.reduce((sum, d) => sum + d.provider, 0);
     </div>
   </div>
 </article>
+)}

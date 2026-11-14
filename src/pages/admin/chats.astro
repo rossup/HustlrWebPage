@@ -4,27 +4,36 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
 import StatTiles from '../../components/admin/StatTiles.astro';
 import DailyChart from '../../components/admin/DailyChart.astro';
 import BarList from '../../components/admin/BarList.astro';
-import { daily, kpis, chatsByPlacement, fmt, pct } from '../../data/admin';
+import { fmt, pct } from '../../data/admin';
+import { loadAdminData } from '../../lib/admin-data';
+
+export const prerender = false;
+
+const data = await loadAdminData();
+const { daily, kpis, chatsByPlacement } = data;
 
 const customers = daily.reduce((sum, d) => sum + d.customer, 0);
 const providers = daily.reduce((sum, d) => sum + d.provider, 0);
 const total = customers + providers;
-const visitors = kpis[0].value;
+const visitors = kpis[0].value ?? 0;
 const best = [...daily].sort((a, b) => b.customer + b.provider - (a.customer + a.provider))[0];
+const hasChats = total > 0 && best;
 
 const tiles = [
   { label: 'Chats started', value: fmt(total), note: 'Taps on a WhatsApp button' },
   { label: 'From customers', value: fmt(customers), note: `${pct(customers, total)}% of all chats` },
   { label: 'From providers', value: fmt(providers), note: `${pct(providers, total)}% of all chats` },
-  { label: 'Busiest day', value: `${best.day} ${best.date}`, note: `${best.customer + best.provider} chats · ${pct(total, visitors)}% of visitors start a chat` },
+  hasChats
+    ? { label: 'Busiest day', value: `${best.day} ${best.date}`, note: `${best.customer + best.provider} chats · ${pct(total, visitors)}% of visitors start a chat` }
+    : { label: 'Busiest day', value: '—', note: 'No chats in this period yet' },
 ];
 ---
 
-<AdminLayout title="Chats" lead="WhatsApp chats people started from the website." active="chats">
-  <StatTiles slot="head" tiles={tiles} />
+<AdminLayout title="Chats" lead="WhatsApp chats people started from the website." active="chats" data={data}>
+  <StatTiles slot="head" tiles={tiles} period={data.period} />
 
   <section class="ad-grid ad-grid--lead" aria-label="Chats">
-    <DailyChart />
-    <BarList title="Where chats start" unit="chats" rows={chatsByPlacement} />
+    <DailyChart daily={daily} />
+    <BarList title="Where chats start" unit="chats" rows={chatsByPlacement} empty="No WhatsApp buttons tapped in this period yet." />
   </section>
 </AdminLayout>
