@@ -37,6 +37,21 @@ Key facts:
 - [Services in Masvingo](https://hustlr.chat/areas/masvingo): Plumbers, electricians, cleaners and tutors who work in Masvingo.
 - [Services in Victoria Falls](https://hustlr.chat/areas/victoria-falls): Plumbers, electricians, cleaners and tutors who work in Victoria Falls.
 
+## Local Trade Pages
+
+- [Plumbers in Harare](https://hustlr.chat/hire/plumber-harare): plumbing, geyser and booster pump repairs in Harare, booked on WhatsApp; FAQ in English and ChiShona.
+- [Solar System Installers in Harare](https://hustlr.chat/hire/solar-installer-harare): inverter, battery and solar panel installation in Harare, booked on WhatsApp; FAQ in English and ChiShona.
+- [Electricians in Harare](https://hustlr.chat/hire/electrician-harare): DB boards, wiring, security lighting and fault finding in Harare, booked on WhatsApp; FAQ in English and ChiShona.
+- [Tilers in Harare](https://hustlr.chat/hire/tiler-harare): floor, wall, bathroom and outdoor tiling in Harare, booked on WhatsApp; FAQ in English and ChiShona.
+- [Painters in Harare](https://hustlr.chat/hire/painter-harare): interior, exterior and Durawall painting in Harare, booked on WhatsApp; FAQ in English and ChiShona.
+- [Mechanics in Harare](https://hustlr.chat/hire/mechanic-harare): mobile diagnostics, servicing and car repairs in Harare, booked on WhatsApp; FAQ in English and ChiShona.
+- [Plumbers in Bulawayo](https://hustlr.chat/hire/plumber-bulawayo): plumbing, geyser and booster pump repairs in Bulawayo, booked on WhatsApp; FAQ in English and IsiNdebele.
+- [Solar System Installers in Bulawayo](https://hustlr.chat/hire/solar-installer-bulawayo): inverter, battery and solar panel installation in Bulawayo, booked on WhatsApp; FAQ in English and IsiNdebele.
+- [Electricians in Bulawayo](https://hustlr.chat/hire/electrician-bulawayo): DB boards, wiring, security lighting and fault finding in Bulawayo, booked on WhatsApp; FAQ in English and IsiNdebele.
+- [Tilers in Bulawayo](https://hustlr.chat/hire/tiler-bulawayo): floor, wall, bathroom and outdoor tiling in Bulawayo, booked on WhatsApp; FAQ in English and IsiNdebele.
+- [Painters in Bulawayo](https://hustlr.chat/hire/painter-bulawayo): interior, exterior and Durawall painting in Bulawayo, booked on WhatsApp; FAQ in English and IsiNdebele.
+- [Mechanics in Bulawayo](https://hustlr.chat/hire/mechanic-bulawayo): mobile diagnostics, servicing and car repairs in Bulawayo, booked on WhatsApp; FAQ in English and IsiNdebele.
+
 ## Optional
 
 - [Plumbers in Harare](https://hustlr.chat/plumbers/harare): Book plumbers in Harare on WhatsApp.

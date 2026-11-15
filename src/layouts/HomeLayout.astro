@@ -14,6 +14,8 @@ interface Props {
   schema?: Record<string, unknown> | Record<string, unknown>[];
   /** Social share image (path or full URL, 1200x630) */
   ogImage?: string;
+  /** Point search engines at another page as the main version (e.g. "/plumbers/harare"). Defaults to this page. */
+  canonicalPath?: string;
 }
 
 const {
@@ -23,6 +25,7 @@ const {
   scale = true,
   schema = [],
   ogImage = '/og-image.png',
+  canonicalPath,
 } = Astro.props;
 
 // Flatten whatever the page passed into a list of schema.org nodes
@@ -32,7 +35,8 @@ const pageNodes = (Array.isArray(schema) ? schema : [schema]).flatMap((node) =>
 
 // One address per page for search engines: always https://hustlr.chat, no trailing slash.
 const path = Astro.url.pathname.replace(/\/$/, '').replace(/\.html$/, '') || '/';
-const canonical = `${SITE_URL}${path === '/' ? '/' : path}`;
+const canonicalTarget = canonicalPath ?? path;
+const canonical = `${SITE_URL}${canonicalTarget === '/' ? '/' : canonicalTarget}`;
 const imageUrl = new URL(ogImage, SITE_URL).href;
 
 // Who Hustlr is, for Google's knowledge panel and brand searches.

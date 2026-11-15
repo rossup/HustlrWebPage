@@ -1,0 +1,143 @@
+---
+// /hire/{trade}-{city}: one static page per launch trade and city (data in src/data/tradeCityData.ts).
+import HomeLayout from '../../layouts/HomeLayout.astro';
+import SiteNav from '../../components/SiteNav.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import { WA, waIcon } from '../../data/site';
+import { SITE_URL, PHONE } from '../../data/seo';
+import { ACTIVE_TRADES, CITIES, buildTradeCitySchema, buildTradeCityFaqs, hirePath, hireCanonicalPath, type TradeInfo, type CityInfo } from '../../data/tradeCityData';
+import '../../styles/redesign.css';
+import '../../styles/landing.css';
+
+export function getStaticPaths() {
+  // Only trades marked isActive get pages
+  return ACTIVE_TRADES.flatMap((trade) =>
+    CITIES.map((city) => ({ params: { slug: `${trade.slug}-${city.slug}` }, props: { trade, city } })),
+  );
+}
+
+interface Props {
+  trade: TradeInfo;
+  city: CityInfo;
+}
+
+const { trade, city } = Astro.props;
+const path = hirePath(trade, city);
+const pageUrl = `${SITE_URL}${path}`;
+const faqs = buildTradeCityFaqs(trade, city);
+const schema = buildTradeCitySchema(trade, city, pageUrl, faqs);
+const lower = trade.singular.toLowerCase();
+const article = /^[aeiou]/i.test(lower) ? 'an' : 'a';
+const waHref = `${WA}?text=${encodeURIComponent(`Hi Hustlr, I need ${article} ${lower} in ${city.name}.`)}`;
+const example = trade.example.replace('{area}', city.suburbs[0]);
+const rate = trade.typicalRateUsd;
+
+const sameTradeElsewhere = CITIES.filter((c) => c.slug !== city.slug).map((c) => ({ label: `${trade.plural} in ${c.name}`, href: hirePath(trade, c) }));
+const otherTradesHere = ACTIVE_TRADES.filter((t) => t.slug !== trade.slug).map((t) => ({ label: `${t.plural} in ${city.name}`, href: hirePath(t, city) }));
+const suburbList = `${city.suburbs.slice(0, -1).join(', ')} and ${city.suburbs[city.suburbs.length - 1]}`;
+---
+
+<HomeLayout
+  title={`${trade.plural} in ${city.name} | Hire on WhatsApp – Hustlr`}
+  description={`Hire vetted ${trade.plural.toLowerCase()} in ${city.name}, including ${city.suburbs.slice(0, 3).join(', ')}, directly on WhatsApp. Chat in English, ChiShona or IsiNdebele. No app needed, free to ask.`}
+  schema={schema}
+  canonicalPath={hireCanonicalPath(trade, city)}
+>
+  <SiteNav />
+
+  <header class="rd-page-head lp-head" id="top">
+    <div class="rd-wrap lp-head-inner">
+      <div class="lp-head-copy">
+        <nav class="lp-crumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Hustlr Zimbabwe</a></li>
+            <li><span aria-current="page">{trade.plural} in {city.name}</span></li>
+          </ol>
+        </nav>
+        <p class="rd-eyebrow">{trade.plural} · {city.name}</p>
+        <h1>Hire Vetted {trade.plural} in {city.name} Directly on WhatsApp.</h1>
+        <p class="lp-lead">
+          Find {trade.plural.toLowerCase()} who work in {suburbList}. No app download required: describe the job in English,
+          ChiShona or IsiNdebele and Hustlr matches you with someone nearby.
+        </p>
+        <div class="lp-actions">
+          <a href={waHref} class="rd-btn rd-btn--yellow" target="_blank" rel="noopener" data-placement="page"><Fragment set:html={waIcon} />Chat on WhatsApp</a>
+          <span>or save <strong>{PHONE}</strong></span>
+        </div>
+      </div>
+
+      <figure class="lp-chat" aria-label="Example messages">
+        <figcaption>Ask in your language</figcaption>
+        <p class="lp-bubble lp-bubble--out">{example}</p>
+        {city.primaryVernacular === 'sn' ? (
+          <p class="lp-bubble lp-bubble--out" lang="sn">{trade.shona}</p>
+        ) : (
+          <p class="lp-bubble lp-bubble--out" lang="nd">{trade.ndebele}</p>
+        )}
+        <p class="lp-bubble lp-bubble--in">Got it. Here are {trade.plural.toLowerCase()} who cover your area.</p>
+      </figure>
+    </div>
+  </header>
+
+  <main class="rd-wrap lp-main">
+    <section class="lp-split" aria-label={`${trade.plural} in ${city.name}`}>
+      <div class="lp-card">
+        <h2>What you can hire {article} {lower} for</h2>
+        <ul class="lp-jobs">
+          {trade.commonTasks.map((t) => <li>{t}</li>)}
+        </ul>
+        <p class="lp-small">Something else? Describe any job in the chat.</p>
+      </div>
+      <div class="lp-card">
+        <h2>{trade.plural} across {city.name}</h2>
+        <p class="lp-small lp-context">{city.localContext}</p>
+        <ul class="lp-areas">
+          {city.suburbs.map((s) => <li>{s}</li>)}
+        </ul>
+        <h3 class="lp-price-title">Price</h3>
+        {rate ? (
+          <p class="lp-small">
+            Typically <strong>{rate}</strong>. You agree the final price with the provider before work starts.
+          </p>
+        ) : (
+          <p class="lp-small">Asking Hustlr is free. You agree the price for the job with the provider before any work starts.</p>
+        )}
+      </div>
+    </section>
+
+    <section class="rd-section rd-faq" id="questions" aria-labelledby="local-faq-heading">
+      <div class="rd-faq-intro">
+        <span class="rd-pill">FAQ</span>
+        <h2 class="rd-h2 lp-h2" id="local-faq-heading">{trade.plural} in {city.name}: questions</h2>
+        <p class="rd-lead">Ask in English, ChiShona or IsiNdebele. Hustlr understands all three.</p>
+      </div>
+      <div class="rd-faq-list">
+        {faqs.map((f, i) => (
+          <details lang={f.lang === 'en' ? 'en-ZW' : f.lang} open={i === 0}>
+            <summary>{f.question}<span class="rd-faq-plus" aria-hidden="true"></span></summary>
+            <p>{f.answer}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <nav class="rd-section lp-more" aria-label="More trades and cities">
+      <h2>More on Hustlr</h2>
+      <ul>
+        {[...sameTradeElsewhere, ...otherTradesHere].map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <section class="rd-section">
+      <div class="rd-cta">
+        <h2>Need {article} {lower} in {city.name}?</h2>
+        <div class="rd-cta-side">
+          <a href={waHref} class="rd-btn rd-btn--dark" target="_blank" rel="noopener" data-placement="page"><Fragment set:html={waIcon} />Chat on WhatsApp</a>
+          <span>or save {PHONE}</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <SiteFooter />
+</HomeLayout>

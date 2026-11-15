@@ -92,6 +92,16 @@
 .lp-areas li { padding: 7px 14px; border-radius: 999px; background: var(--rd-mint); color: var(--rd-green-text); font-size: 14.5px; font-weight: 700; }
 .lp-small { margin-top: 20px; font-size: 14.5px; color: var(--rd-body); }
 
+/* /hire pages: local context and price */
+.lp-context { margin-top: 14px; line-height: 1.6; }
+.lp-price-title { margin-top: 26px; font-family: var(--display); font-weight: 800; font-size: 18px; letter-spacing: -0.01em; }
+.lp-price-title + .lp-small { margin-top: 8px; }
+
+/* Homepage: trades grouped by city */
+.lp-bycity-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px 48px; margin-top: 18px; }
+.lp-bycity h3 { font-family: var(--display); font-weight: 800; font-size: 20px; letter-spacing: -0.02em; }
+.lp-bycity ul { margin-top: 12px; }
+
 /* Steps */
 .lp-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin: 36px 0 0; padding: 0; list-style: none; }
 .lp-steps li { padding: 28px; border-radius: var(--rd-radius); background: var(--ink); color: var(--page); }
