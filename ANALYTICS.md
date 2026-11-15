@@ -13,21 +13,29 @@ collects visit events and shows the dashboard; it has no database of its own.
 | Receives events, forwards them to the bot | `src/pages/api/track.ts` → `POST {BOT_API_URL}/analytics/events` |
 | Admin pages (`/admin/*`) | rendered on each request; data from `src/lib/admin-data.ts` |
 | Calls the bot for the dashboard numbers | `src/lib/bot-api.ts` → `GET {BOT_API_URL}/admin/summary` |
-| Admin login | Netlify Identity: `src/pages/login.astro`, checked in `src/middleware.ts` |
+| Admin login | Supabase Auth: `src/pages/login.astro` → `src/pages/api/auth/[action].ts` → `src/lib/supabase-auth.ts`, checked in `src/middleware.ts` |
 
 ## First-time setup
 
-1. **Install the packages** (from the project folder): `npm install @astrojs/netlify @netlify/identity`
+1. **Install the packages** (from the project folder): `npm install @astrojs/netlify`
    Commit the updated `package.json` and `package-lock.json`.
 2. **Bot backend.** Add the two endpoints in "Bot backend API" below, then add `BOT_API_URL` and `BOT_API_KEY`
    under Netlify → Project configuration → Environment variables. Until then, events are dropped and the
    dashboard shows "not connected".
-3. **Login.** Netlify → Project configuration → Identity → **Enable Identity**, set Registration to **Invite only**,
-   then Identity → Users → **Invite users**. After the person accepts, open their user → Edit settings → add the role
-   **`admin`**. Only users with that role get into `/admin`.
-4. Deploy. Identity doesn't run in local `astro dev`, so test logins on a Deploy Preview.
+3. **Login.** Admins sign in with Supabase Auth, and only emails listed in `ADMIN_EMAILS` get into `/admin`.
+   - Supabase → Authentication → Sign In / Providers: turn **off** "Allow new users to sign up". Otherwise a
+     stranger could register an email from the admin list before its owner does.
+   - Supabase → Authentication → Users → **Add user** (or **Invite user**) for each admin.
+   - Supabase → Authentication → URL Configuration: set Site URL to `https://hustlr.chat` and add
+     `https://hustlr.chat/login` (and `http://localhost:4321/login` for local testing) to Redirect URLs, so invite
+     and password-reset emails land on the login page.
+   - Netlify → Project configuration → Environment variables: add `SUPABASE_URL`, `SUPABASE_ANON_KEY` (the
+     publishable key, never the secret one) and `ADMIN_EMAILS` (comma-separated).
+   The browser never talks to Supabase: the session lives in HttpOnly cookies set by `/api/auth/*`.
+4. Deploy.
 
-In local `astro dev` there is no login, and without `BOT_API_URL` the admin pages show labelled sample data.
+In local `astro dev` there is no login unless `SUPABASE_URL` and `SUPABASE_ANON_KEY` are in `.env`; with them set,
+sign-in works locally as on the live site. Without `BOT_API_URL` the admin pages show labelled sample data.
 The live site never shows sample data.
 
 ## Settings

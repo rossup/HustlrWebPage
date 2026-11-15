@@ -1,6 +1,7 @@
 ---
-// /login: admin sign-in with Netlify Identity.
-// Also finishes the links Netlify Identity emails: accepting an invite and resetting a password.
+// /login: admin sign-in with Supabase Auth, through this site's own /api/auth/* endpoints
+// (src/pages/api/auth/[action].ts), so the browser never holds the session tokens.
+// Also finishes the links Supabase emails: accepting an invite and resetting a password.
 import HomeLayout from '../layouts/HomeLayout.astro';
 import '../styles/redesign.css';
 import '../styles/admin.css';
@@ -36,8 +37,8 @@ import '../styles/admin.css';
       <div class="ad-login-form" id="noAccess" hidden>
         <h1>No admin access</h1>
         <p class="ad-login-lead">
-          You're signed in as <strong id="noAccessEmail"></strong>, but this account doesn't have the admin role.
-          Ask an owner to add it in Netlify, then sign in again.
+          You're signed in as <strong id="noAccessEmail"></strong>, but this account isn't on the admin list.
+          Ask an owner to add your email, then sign in again.
         </p>
         <button type="button" class="rd-btn rd-btn--yellow" id="switchBtn">Sign in with another account</button>
       </div>
@@ -47,18 +48,7 @@ import '../styles/admin.css';
   </main>
 
   <script>
-    import {
-      AuthError,
-      acceptInvite,
-      getUser,
-      handleAuthCallback,
-      login,
-      logout,
-      requestPasswordRecovery,
-      updateUser,
-    } from '@netlify/identity';
-
-    type MaybeUser = { email?: string; roles?: string[] } | null;
+    type Who = { email: string | null; admin: boolean };
 
     const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
     const loginForm = $<HTMLFormElement>('loginForm');
@@ -79,54 +69,56 @@ import '../styles/admin.css';
       el.querySelector<HTMLInputElement>('input')?.focus();
     };
     const errorText = (error: unknown) =>
-      error instanceof AuthError && error.status === 401
-        ? 'That email and password don’t match.'
-        : error instanceof Error
-          ? error.message
-          : 'Something went wrong. Try again.';
+      error instanceof Error && error.message ? error.message : 'Something went wrong. Try again.';
 
-    const isAdmin = (user: MaybeUser) => !!user && (user.roles ?? []).includes('admin');
-    const goIn = (user: MaybeUser) => {
-      if (isAdmin(user)) {
+    /** Calls one of this site's /api/auth endpoints. Throws the endpoint's message on failure. */
+    async function api<T>(action: string, body?: Record<string, string>): Promise<T> {
+      const response = await fetch(`/api/auth/${action}`, {
+        method: body ? 'POST' : 'GET',
+        headers: body ? { 'Content-Type': 'application/json' } : undefined,
+        body: body ? JSON.stringify(body) : undefined,
+        credentials: 'same-origin',
+      });
+      const data = await response.json().catch(() => null);
+      if (!response.ok) throw new Error(data?.error ?? 'Something went wrong. Try again.');
+      return data as T;
+    }
+
+    const goIn = (who: Who) => {
+      if (who.admin) {
         location.replace(nextPath);
         return;
       }
-      $<HTMLElement>('noAccessEmail').textContent = user?.email ?? 'this account';
+      $<HTMLElement>('noAccessEmail').textContent = who.email ?? 'this account';
       show(noAccess);
     };
 
-    // What to do when the password form is submitted: accept an invite, or set a new password
-    let savePassword: (password: string) => Promise<MaybeUser> = async () => null;
+    // The tokens an invite or reset link put in the address, used once to set the password
+    let linkTokens: { accessToken: string; refreshToken: string } | null = null;
 
     async function start() {
-      try {
-        const result = await handleAuthCallback();
-        if (result?.type === 'invite' && result.token) {
-          const token = result.token;
-          $<HTMLElement>('passwordTitle').textContent = 'Welcome to Hustlr admin';
-          savePassword = (password) => acceptInvite(token, password);
-          show(passwordForm);
-          return;
-        }
-        if (result?.type === 'recovery') {
-          $<HTMLElement>('passwordTitle').textContent = 'Choose a new password';
-          savePassword = async (password) => {
-            await updateUser({ password });
-            return getUser();
-          };
-          show(passwordForm);
-          return;
-        }
-        if (result?.user) return goIn(result.user);
-      } catch (error) {
-        say(errorText(error), true);
+      // Supabase's email links land here with their result after the #
+      const hash = new URLSearchParams(location.hash.slice(1));
+      if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+
+      const linkError = hash.get('error_description');
+      if (linkError) say(`${linkError}. Ask for a new link.`, true);
+
+      const accessToken = hash.get('access_token');
+      const refreshToken = hash.get('refresh_token');
+      if (accessToken && refreshToken) {
+        linkTokens = { accessToken, refreshToken };
+        $<HTMLElement>('passwordTitle').textContent =
+          hash.get('type') === 'invite' ? 'Welcome to Hustlr admin' : 'Choose a new password';
+        show(passwordForm);
+        return;
       }
 
       try {
-        const user = await getUser();
-        if (user) return goIn(user);
+        const who = await api<Who>('me');
+        if (who.email) return goIn(who);
       } catch {
-        /* not signed in */
+        /* not signed in, or sign-in not reachable: show the form */
       }
       show(loginForm);
     }
@@ -136,9 +128,12 @@ import '../styles/admin.css';
       const data = new FormData(loginForm);
       say('Signing in…');
       try {
-        const user = await login(String(data.get('email')), String(data.get('password')));
+        const who = await api<Who>('login', {
+          email: String(data.get('email')),
+          password: String(data.get('password')),
+        });
         say('');
-        goIn(user);
+        goIn(who);
       } catch (error) {
         say(errorText(error), true);
       }
@@ -147,11 +142,17 @@ import '../styles/admin.css';
     passwordForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const password = String(new FormData(passwordForm).get('password'));
+      if (!linkTokens) {
+        say('This link has expired. Ask for a new one.', true);
+        show(loginForm);
+        return;
+      }
       say('Saving…');
       try {
-        const user = await savePassword(password);
+        const who = await api<Who>('password', { ...linkTokens, password });
+        linkTokens = null;
         say('');
-        goIn(user ?? (await getUser()));
+        goIn(who);
       } catch (error) {
         say(errorText(error), true);
       }
@@ -164,7 +165,7 @@ import '../styles/admin.css';
         return;
       }
       try {
-        await requestPasswordRecovery(email);
+        await api('recover', { email });
         say('If that email has an account, a reset link is on its way.');
       } catch (error) {
         say(errorText(error), true);
@@ -173,7 +174,7 @@ import '../styles/admin.css';
 
     $<HTMLButtonElement>('switchBtn').addEventListener('click', async () => {
       try {
-        await logout();
+        await api('logout', {});
       } catch {
         /* already signed out */
       }

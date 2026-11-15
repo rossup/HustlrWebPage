@@ -194,8 +194,7 @@ const sideLinks: { id: Props['active']; href: string; label: string; icon: Admin
     // ----- Sign out -----
     document.getElementById('adLogout')?.addEventListener('click', async () => {
       try {
-        const { logout } = await import('@netlify/identity');
-        await logout();
+        await fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin' });
       } catch {
         /* already signed out */
       }

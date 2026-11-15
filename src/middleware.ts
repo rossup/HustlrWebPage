@@ -1,24 +1,25 @@
-// Protects the admin pages: only logged-in Netlify Identity users with the "admin" role get in.
+// Protects the admin pages: only signed-in Supabase users whose email is in ADMIN_EMAILS get in.
 // Everyone else is sent to /login. Runs on the server for every /admin request.
 import { defineMiddleware } from 'astro:middleware';
+import { authConfigured, currentUser, isAdmin } from './lib/supabase-auth';
 
 const isAdminPath = (path: string) => path === '/admin' || path.startsWith('/admin/');
 
 export const onRequest = defineMiddleware(async (context, next) => {
   if (!isAdminPath(context.url.pathname)) return next();
 
-  // Netlify Identity doesn't run in a local `astro dev` preview, so the check is skipped there.
-  if (import.meta.env.DEV) return next();
+  // Local `astro dev` without the Supabase settings in .env: no login, so the pages can be worked on.
+  // With them set, the login is checked locally exactly as on the live site.
+  if (import.meta.env.DEV && !authConfigured()) return next();
 
-  let user: { email?: string; roles?: string[] } | null = null;
+  let user: { email: string } | null = null;
   try {
-    const { getUser } = await import('@netlify/identity');
-    user = await getUser();
+    user = await currentUser(context.cookies);
   } catch (error) {
     console.error('[admin] could not check the login', error);
   }
 
-  if (!user || !(user.roles ?? []).includes('admin')) {
+  if (!isAdmin(user)) {
     const nextPath = encodeURIComponent(context.url.pathname);
     return context.redirect(`/login?next=${nextPath}`, 302);
   }
