@@ -5,7 +5,7 @@ import SiteFooter from '../components/SiteFooter.astro';
 import { WA, WA_PROVIDER, waIcon, steps, services, proBenefits, testimonials, draftTestimonials } from '../data/site';
 import '../styles/redesign.css';
 import '../styles/landing.css';
-import { ACTIVE_TRADES, CITIES, hirePath } from '../data/tradeCityData';
+import { ACTIVE_TRADES, ACTIVE_CITIES, hirePath } from '../data/tradeCityData';
 import { seoServices, seoCities, SITE_URL } from '../data/seo';
 import { faqSchema } from '../lib/landing';
 import FaqSection from '../components/FaqSection.astro';
@@ -553,7 +553,7 @@ const servicePage = (name: string) => seoServices.find((s) => s.plural === name)
     <nav class="rd-section rd-wrap lp-more lp-bycity" aria-label="Browse skilled trades by city">
       <h2>Browse skilled trades by city</h2>
       <div class="lp-bycity-cols">
-        {CITIES.map((c) => (
+        {ACTIVE_CITIES.map((c) => (
           <div>
             <h3>{c.name}</h3>
             <ul>

@@ -1,7 +1,7 @@
 // /sitemap.xml: every public page, for Google and Bing. Built once at deploy time.
 import type { APIRoute } from 'astro';
 import { SITE_URL, seoCities, seoServices } from '../data/seo';
-import { ACTIVE_TRADES, CITIES, hirePath, hireCanonicalPath } from '../data/tradeCityData';
+import { ACTIVE_TRADES, ACTIVE_CITIES, hirePath, hireCanonicalPath } from '../data/tradeCityData';
 
 const paths = [
   '/',
@@ -9,7 +9,7 @@ const paths = [
   ...seoCities.map((c) => `/areas/${c.slug}`),
   ...seoServices.flatMap((s) => seoCities.map((c) => `/${s.slug}/${c.slug}`)),
   // /hire pages that are their own main version (copies that point elsewhere are left out)
-  ...ACTIVE_TRADES.flatMap((t) => CITIES.map((c) => (hireCanonicalPath(t, c) === hirePath(t, c) ? hirePath(t, c) : null))).filter(
+  ...ACTIVE_TRADES.flatMap((t) => ACTIVE_CITIES.map((c) => (hireCanonicalPath(t, c) === hirePath(t, c) ? hirePath(t, c) : null))).filter(
     (p): p is string => p !== null,
   ),
   '/privacy',

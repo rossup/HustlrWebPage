@@ -5,14 +5,14 @@ import SiteNav from '../../components/SiteNav.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
 import { WA, waIcon } from '../../data/site';
 import { SITE_URL, PHONE } from '../../data/seo';
-import { ACTIVE_TRADES, CITIES, buildTradeCitySchema, buildTradeCityFaqs, hirePath, hireCanonicalPath, type TradeInfo, type CityInfo } from '../../data/tradeCityData';
+import { ACTIVE_TRADES, ACTIVE_CITIES, buildTradeCitySchema, buildTradeCityFaqs, hirePath, hireCanonicalPath, type TradeInfo, type CityInfo } from '../../data/tradeCityData';
 import '../../styles/redesign.css';
 import '../../styles/landing.css';
 
 export function getStaticPaths() {
   // Only trades marked isActive get pages
   return ACTIVE_TRADES.flatMap((trade) =>
-    CITIES.map((city) => ({ params: { slug: `${trade.slug}-${city.slug}` }, props: { trade, city } })),
+    ACTIVE_CITIES.map((city) => ({ params: { slug: `${trade.slug}-${city.slug}` }, props: { trade, city } })),
   );
 }
 
@@ -32,7 +32,7 @@ const waHref = `${WA}?text=${encodeURIComponent(`Hi Hustlr, I need ${article} ${
 const example = trade.example.replace('{area}', city.suburbs[0]);
 const rate = trade.typicalRateUsd;
 
-const sameTradeElsewhere = CITIES.filter((c) => c.slug !== city.slug).map((c) => ({ label: `${trade.plural} in ${c.name}`, href: hirePath(trade, c) }));
+const sameTradeElsewhere = ACTIVE_CITIES.filter((c) => c.slug !== city.slug).map((c) => ({ label: `${trade.plural} in ${c.name}`, href: hirePath(trade, c) }));
 const otherTradesHere = ACTIVE_TRADES.filter((t) => t.slug !== trade.slug).map((t) => ({ label: `${t.plural} in ${city.name}`, href: hirePath(t, city) }));
 const suburbList = `${city.suburbs.slice(0, -1).join(', ')} and ${city.suburbs[city.suburbs.length - 1]}`;
 ---

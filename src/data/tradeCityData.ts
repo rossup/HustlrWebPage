@@ -46,6 +46,8 @@ export interface CityInfo {
   slug: string;
   name: string;
   region: string;
+  /** Build this city's /hire pages? Defaults to true; set false until workers are onboarded there. */
+  isActive?: boolean;
   /** The local language the city's FAQ adds next to English: ChiShona (sn) or IsiNdebele (nd) */
   primaryVernacular: 'sn' | 'nd';
   /** One or two sentences of local context */
@@ -203,6 +205,9 @@ export const CITIES: CityInfo[] = [
     suburbs: ['Suburbs', 'Hillside', 'Kumalo', 'Famona', 'Nkulumane', 'Burnside'],
   },
 ];
+
+/** Cities whose /hire pages are built */
+export const ACTIVE_CITIES = CITIES.filter((c) => c.isActive !== false);
 
 export const hirePath = (trade: TradeInfo, city: CityInfo) => `/hire/${trade.slug}-${city.slug}`;
 
