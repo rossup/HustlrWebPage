@@ -1,5 +1,5 @@
 ---
-// Shared frame for every admin page: collapsible sidebar, dark page header, content area.
+// Shared frame for every admin page: collapsible sidebar, page header, content area.
 // Each page under src/pages/admin/ wraps its content in this layout.
 import HomeLayout from './HomeLayout.astro';
 import '../styles/redesign.css';
@@ -53,8 +53,8 @@ const sideLinks: { id: Props['active']; href: string; label: string; icon: Admin
     <aside class="ad-side" id="adSide" aria-label="Admin navigation">
       <div class="ad-side-brand">
         <a href="/admin" aria-label="Hustlr admin">
-          <img class="ad-side-logo" src="/assets/logo-reverse.svg" alt="Hustlr" width="106" height="38" />
-          <img class="ad-side-symbol" src="/assets/logo-symbol.svg" alt="" width="38" height="38" aria-hidden="true" />
+          <img class="ad-side-logo" src="/assets/logo-primary.svg" alt="Hustlr" width="106" height="38" />
+          <img class="ad-side-symbol" src="/assets/logo-symbol-dark.svg" alt="" width="38" height="38" aria-hidden="true" />
         </a>
         <span class="ad-side-tag">Admin</span>
       </div>
