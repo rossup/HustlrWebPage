@@ -1,0 +1,42 @@
+# Hustlr
+
+> Hustlr is an AI-powered WhatsApp marketplace in Zimbabwe that connects homeowners and businesses with vetted local skilled workers. There is no app to download: clients describe the job in a WhatsApp chat in English, ChiShona or IsiNdebele, and Hustlr matches them with available tradespeople near their location.
+
+- Website: https://hustlr.chat
+- WhatsApp: +263 71 935 1207 (https://wa.me/263719351207)
+- Built by Zimnovate in Zimbabwe
+
+## How the WhatsApp matching flow works
+
+1. **Say what you need.** Message Hustlr on WhatsApp and describe the job in plain words or a voice note, for example "My geyser is leaking in Avondale".
+2. **Meet your match.** Hustlr suggests verified providers who cover your trade and area. Reply with a provider's number to see their profile: business name, trade, areas served and services.
+3. **Book it.** Reply CONFIRM or YES to send the booking request. The provider messages to confirm, and you get status updates in the chat. Reply SAVE to keep the provider in your favourites for rebooking.
+
+Asking Hustlr for a match is free. Clients agree the price for the job directly with the provider before work starts.
+
+Skilled workers join by messaging "I want to register as a service provider", sharing their name, business, trade and the areas they cover, then replying YES to accept booking requests.
+
+## Trades
+
+Plumbers, electricians, cleaners, tutors, solar system installers, tilers, painters, carpenters, mechanics and appliance repair specialists.
+
+## Cities
+
+Harare, Chitungwiza, Bulawayo, Mutare, Gweru, Kwekwe, Masvingo and Victoria Falls, with more towns across Zimbabwe on the way.
+
+## Languages
+
+English, ChiShona (Shona) and IsiNdebele (Ndebele).
+
+## Key pages
+
+- [Home](https://hustlr.chat/): what Hustlr is, how it works, who it serves, FAQ
+- [Plumbers](https://hustlr.chat/plumbers): plumbers across Zimbabwe, by town
+- [Electricians](https://hustlr.chat/electricians): electricians across Zimbabwe, by town
+- [Cleaners](https://hustlr.chat/cleaners): home, office and carpet cleaners, by town
+- [Tutors](https://hustlr.chat/tutors): tutors for ZIMSEC, Cambridge and primary school, by town
+- [Harare](https://hustlr.chat/areas/harare): services in Harare (also /areas/bulawayo, /areas/mutare, /areas/gweru, /areas/kwekwe, /areas/masvingo, /areas/chitungwiza, /areas/victoria-falls)
+- [Plumbers in Harare](https://hustlr.chat/plumbers/harare): one page per trade and town, at /{trade}/{town}
+- [Privacy policy](https://hustlr.chat/privacy)
+- [Terms and conditions](https://hustlr.chat/terms)
+- [Sitemap](https://hustlr.chat/sitemap.xml)

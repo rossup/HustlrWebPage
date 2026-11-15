@@ -9,10 +9,11 @@ interface Props {
   noindex?: boolean;
   /** Shrink the whole page slightly on larger screens (see "Whole-site scale" in home.css). The admin pages turn this off. */
   scale?: boolean;
-  /** Extra schema.org objects for this page (added to the site-wide Organization and WebSite) */
-  schema?: object[];
-  /** Social share image (path or full URL) */
-  image?: string;
+  /** Extra schema.org data for this page: one object, an array, or { '@graph': [...] }.
+      It's merged with the site-wide Organization and WebSite into one JSON-LD block. */
+  schema?: Record<string, unknown> | Record<string, unknown>[];
+  /** Social share image (path or full URL, 1200x630) */
+  ogImage?: string;
 }
 
 const {
@@ -21,13 +22,18 @@ const {
   noindex = false,
   scale = true,
   schema = [],
-  image = '/og-image.png',
+  ogImage = '/og-image.png',
 } = Astro.props;
+
+// Flatten whatever the page passed into a list of schema.org nodes
+const pageNodes = (Array.isArray(schema) ? schema : [schema]).flatMap((node) =>
+  Array.isArray(node['@graph']) ? (node['@graph'] as Record<string, unknown>[]) : [node],
+);
 
 // One address per page for search engines: always https://hustlr.chat, no trailing slash.
 const path = Astro.url.pathname.replace(/\/$/, '').replace(/\.html$/, '') || '/';
 const canonical = `${SITE_URL}${path === '/' ? '/' : path}`;
-const imageUrl = new URL(image, SITE_URL).href;
+const imageUrl = new URL(ogImage, SITE_URL).href;
 
 // Who Hustlr is, for Google's knowledge panel and brand searches.
 const jsonLd = {
@@ -59,7 +65,7 @@ const jsonLd = {
       inLanguage: 'en-ZW',
       publisher: { '@id': `${SITE_URL}/#organization` },
     },
-    ...schema,
+    ...pageNodes,
   ],
 };
 ---

@@ -4,8 +4,10 @@ import SiteNav from '../components/SiteNav.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { WA, WA_PROVIDER, waIcon, steps, services, proBenefits, testimonials, draftTestimonials } from '../data/site';
 import '../styles/redesign.css';
-import { seoServices, seoCities } from '../data/seo';
+import { seoServices, SITE_URL } from '../data/seo';
 import { faqSchema } from '../lib/landing';
+import FaqSection from '../components/FaqSection.astro';
+import { homeFaqs } from '../data/faq';
 
 // WhatsApp conversation shown on the hero phones (copied from a real Hustlr chat).
 type WaMsg = { from: 'in' | 'out'; html: string; time: string; quote?: string };
@@ -146,38 +148,36 @@ const join = [
   { title: 'Start getting jobs.', text: 'Reply YES to take a request.' },
 ];
 
-const faqs = [
-  {
-    q: 'Do I need to install anything?',
-    a: 'No. If you have WhatsApp, you already have everything you need. Hustlr works entirely inside the chat.',
-  },
-  {
-    q: 'What does it cost?',
-    a: 'Asking Hustlr to find someone is free. You agree the price for the job directly with the provider before any work starts.',
-  },
-  {
-    q: 'What happens to my details?',
-    a: 'We only share your job, area and contact with the provider you choose, so they can confirm the booking. Read our privacy policy for the details.',
-  },
-  {
-    q: 'Which services can I find?',
-    a: 'Plumbers, electricians, cleaners and tutors across Zimbabwe, with more trades on the way. If you are not sure, just ask in the chat.',
-  },
-  {
-    q: 'Which towns does Hustlr cover?',
-    a: `${seoCities.map((c) => c.name).slice(0, -1).join(', ')} and ${seoCities[seoCities.length - 1].name}, with more towns on the way. If your town is not listed, ask in the chat.`,
-  },
-  {
-    q: 'How do I join Hustlr as a service provider?',
-    a: 'Message Hustlr on WhatsApp and say you want to register as a service provider. Share your name, business, trade and the areas you cover, then reply YES to take booking requests.',
-  },
-];
+// Homepage structured data: the app itself and the FAQ (Organization and WebSite come from the layout).
+const homeSchema = {
+  '@graph': [
+    {
+      '@type': 'SoftwareApplication',
+      '@id': `${SITE_URL}/#app`,
+      name: 'Hustlr',
+      url: `${SITE_URL}/`,
+      description:
+        'Hustlr is an AI-powered WhatsApp marketplace that connects clients in Zimbabwe with vetted local skilled workers. Describe the job in English, Shona or Ndebele and get matched with tradespeople near you.',
+      applicationCategory: 'Marketplace',
+      operatingSystem: 'WhatsApp (Android, iOS, web)',
+      areaServed: 'Zimbabwe',
+      availableLanguage: ['English', 'Shona', 'Ndebele'],
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', description: 'Free for clients to request a match' },
+      publisher: { '@id': `${SITE_URL}/#organization` },
+    },
+    faqSchema(homeFaqs),
+  ],
+};
 
 // Service pages for each card under "What you can book"
 const servicePage = (name: string) => seoServices.find((s) => s.plural === name)?.slug;
 ---
 
-<HomeLayout schema={[faqSchema(faqs)]}>
+<HomeLayout
+  title="Hustlr | Hire Skilled Workers on WhatsApp in Zimbabwe"
+  description="Find vetted plumbers, electricians, builders, and technicians across Zimbabwe directly on WhatsApp. Chat in English, Shona, or Ndebele and hire in minutes."
+  schema={homeSchema}
+>
   <SiteNav />
 
   <!-- ============================== HERO (Hero v3) ============================== -->
@@ -187,13 +187,9 @@ const servicePage = (name: string) => seoServices.find((s) => s.plural === name)
 
       <div class="hero-body">
         <div class="hero-copy">
-          <span class="hero-eyebrow">Services across Zimbabwe</span>
-          <h1>
-            Say what you need.<br />
-            <em>Hustlr</em> finds who<br />
-            does it.
-          </h1>
-          <p class="hero-sub">Plumbers, electricians, cleaners and tutors in Harare, Bulawayo and across Zimbabwe, found and booked in a WhatsApp chat.</p>
+          <span class="hero-eyebrow">Zimbabwe’s WhatsApp skilled-worker marketplace</span>
+          <h1>Hire Trusted Local Tradespeople Directly on <em>WhatsApp.</em></h1>
+          <p class="hero-sub">Hustlr connects homeowners and businesses in Harare, Bulawayo, and across Zimbabwe with vetted plumbers, electricians, solar installers, and skilled workers—no app download required. Chat in English, Shona, or Ndebele.</p>
           <div class="hero-actions">
             <a href={WA} class="btn btn--yellow" target="_blank" rel="noopener"><Fragment set:html={waIcon} />Chat on WhatsApp</a>
             <a href="#how-it-works" class="btn-circle" aria-label="See how it works">
@@ -544,22 +540,7 @@ const servicePage = (name: string) => seoServices.find((s) => s.plural === name)
     )}
 
     <!-- Questions -->
-    <section class="rd-section rd-wrap rd-faq" id="questions">
-      <div class="rd-faq-intro">
-        <span class="rd-pill">FAQ</span>
-        <h2 class="rd-h2">Good to know</h2>
-        <p class="rd-lead">Anything else? Just ask in the chat.</p>
-        <a href={WA} class="rd-arrow-btn rd-faq-ask" target="_blank" rel="noopener">Ask on WhatsApp<span class="rd-arrow-btn-icon" aria-hidden="true"><Fragment set:html={ic.arrow} /></span></a>
-      </div>
-      <div class="rd-faq-list">
-        {faqs.map((f, i) => (
-          <details open={i === 0}>
-            <summary>{f.q}<span class="rd-faq-plus" aria-hidden="true"></span></summary>
-            <p>{f.a}</p>
-          </details>
-        ))}
-      </div>
-    </section>
+    <FaqSection />
 
     <!-- Closing call to action -->
     <section class="rd-section rd-wrap">

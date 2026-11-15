@@ -555,6 +555,10 @@ ol {
   font-style: normal;
   color: var(--mint);
 }
+/* Keep the longer SEO headline in the text column, clear of the phones */
+@media (min-width: 761px) {
+  .hero h1 { max-width: 540px; font-size: 52px; text-wrap: balance; }
+}
 
 .hero-sub {
   margin-top: 20px;

@@ -1,0 +1,33 @@
+---
+// FAQ section: plain HTML (<details>/<summary>), no client JavaScript, so every
+// question and answer is in the page's HTML for search engines and AI crawlers.
+// Styled with the existing .rd-faq classes from redesign.css.
+import { WA } from '../data/site';
+import { homeFaqs, type FaqItem } from '../data/faq';
+import '../styles/redesign.css';
+
+interface Props {
+  items?: FaqItem[];
+  title?: string;
+}
+
+const { items = homeFaqs, title = 'Good to know' } = Astro.props;
+const arrow = '<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" height="18" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>';
+---
+
+<section class="rd-section rd-wrap rd-faq" id="questions" aria-labelledby="faq-title">
+  <div class="rd-faq-intro">
+    <span class="rd-pill">FAQ</span>
+    <h2 class="rd-h2" id="faq-title">{title}</h2>
+    <p class="rd-lead">Anything else? Just ask in the chat.</p>
+    <a href={WA} class="rd-arrow-btn rd-faq-ask" target="_blank" rel="noopener">Ask on WhatsApp<span class="rd-arrow-btn-icon" aria-hidden="true"><Fragment set:html={arrow} /></span></a>
+  </div>
+  <div class="rd-faq-list">
+    {items.map((f, i) => (
+      <details open={i === 0}>
+        <summary>{f.q}<span class="rd-faq-plus" aria-hidden="true"></span></summary>
+        <p>{f.a}</p>
+      </details>
+    ))}
+  </div>
+</section>

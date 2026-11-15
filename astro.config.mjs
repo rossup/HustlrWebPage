@@ -9,6 +9,7 @@ export default defineConfig({
   site: 'https://hustlr.chat',
   // Pages build as /plumbers/harare.html, served at /plumbers/harare (no trailing slash)
   build: { format: 'file' },
+  trailingSlash: 'never',
   adapter: netlify({
     // Local `astro dev` only. The project has no edge functions, and emulating them needs a recent
     // Deno install, so it's switched off. Has no effect on the deployed site.
