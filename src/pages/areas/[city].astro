@@ -1,0 +1,14 @@
+---
+// /areas/harare, /areas/bulawayo, ... one page per town
+import Landing from '../../components/seo/Landing.astro';
+import { seoCities, type SeoCity } from '../../data/seo';
+import { cityLanding } from '../../lib/landing';
+
+export function getStaticPaths() {
+  return seoCities.map((city) => ({ params: { city: city.slug }, props: { city } }));
+}
+
+const { city } = Astro.props as { city: SeoCity };
+---
+
+<Landing page={cityLanding(city)} />

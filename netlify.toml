@@ -14,3 +14,10 @@
   NODE_VERSION = "24"
   # Website analytics go to this site's own endpoint (src/pages/api/track.ts)
   PUBLIC_ANALYTICS_ENDPOINT = "/api/track"
+
+# One address for search engines: send www.hustlr.chat to hustlr.chat
+[[redirects]]
+  from = "https://www.hustlr.chat/*"
+  to = "https://hustlr.chat/:splat"
+  status = 301
+  force = true

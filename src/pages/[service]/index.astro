@@ -1,0 +1,14 @@
+---
+// /plumbers, /electricians, /cleaners, /tutors
+import Landing from '../../components/seo/Landing.astro';
+import { seoServices, type SeoService } from '../../data/seo';
+import { serviceLanding } from '../../lib/landing';
+
+export function getStaticPaths() {
+  return seoServices.map((service) => ({ params: { service: service.slug }, props: { service } }));
+}
+
+const { service } = Astro.props as { service: SeoService };
+---
+
+<Landing page={serviceLanding(service)} />

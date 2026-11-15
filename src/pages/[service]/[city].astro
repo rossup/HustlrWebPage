@@ -1,0 +1,16 @@
+---
+// /plumbers/harare, /cleaners/bulawayo, ... one page per service and town
+import Landing from '../../components/seo/Landing.astro';
+import { seoCities, seoServices, type SeoCity, type SeoService } from '../../data/seo';
+import { serviceCityLanding } from '../../lib/landing';
+
+export function getStaticPaths() {
+  return seoServices.flatMap((service) =>
+    seoCities.map((city) => ({ params: { service: service.slug, city: city.slug }, props: { service, city } })),
+  );
+}
+
+const { service, city } = Astro.props as { service: SeoService; city: SeoCity };
+---
+
+<Landing page={serviceCityLanding(service, city)} />

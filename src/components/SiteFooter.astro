@@ -1,9 +1,9 @@
 ---
 // Site-wide footer: used on every page.
-import { WA, WA_PROVIDER, services } from '../data/site';
+import { WA, WA_PROVIDER } from '../data/site';
+import { seoServices, seoCities } from '../data/seo';
 import '../styles/redesign.css';
 
-const areas = ['Harare & Chitungwiza', 'Bulawayo', 'Mutare', 'Gweru & Kwekwe', 'Masvingo & Vic Falls'];
 const year = new Date().getFullYear();
 ---
 
@@ -18,7 +18,7 @@ const year = new Date().getFullYear();
       <div class="rd-footer-cols">
         <div class="rd-footer-col">
           <h2>Services</h2>
-          {services.map((s) => <a href="/#services">{s.name}</a>)}
+          {seoServices.map((s) => <a href={`/${s.slug}`}>{s.plural}</a>)}
         </div>
         <div class="rd-footer-col">
           <h2>Hustlr</h2>
@@ -26,11 +26,11 @@ const year = new Date().getFullYear();
           <a href="/#why">Built for WhatsApp</a>
           <a href="/#questions">Questions</a>
           <a href={WA_PROVIDER} target="_blank" rel="noopener">Join as a provider</a>
-          <a href="/admin">Admin dashboard</a>
+          <a href="/admin" rel="nofollow">Admin dashboard</a>
         </div>
         <div class="rd-footer-col">
           <h2>Areas</h2>
-          {areas.map((a) => <span>{a}</span>)}
+          {seoCities.map((c) => <a href={`/areas/${c.slug}`}>{c.name}</a>)}
         </div>
         <div class="rd-footer-col">
           <h2>Contact</h2>

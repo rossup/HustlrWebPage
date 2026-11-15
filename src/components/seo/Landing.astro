@@ -1,0 +1,144 @@
+---
+// Search landing page: one service, one town, or both (see src/lib/landing.ts).
+import HomeLayout from '../../layouts/HomeLayout.astro';
+import SiteNav from '../SiteNav.astro';
+import SiteFooter from '../SiteFooter.astro';
+import { waIcon, steps } from '../../data/site';
+import { PHONE } from '../../data/seo';
+import type { Landing } from '../../lib/landing';
+import '../../styles/redesign.css';
+import '../../styles/landing.css';
+
+interface Props {
+  page: Landing;
+}
+
+const { page } = Astro.props;
+const arrow = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>';
+---
+
+<HomeLayout title={page.title} description={page.description} schema={page.schema}>
+  <SiteNav />
+
+  <header class="rd-page-head lp-head" id="top">
+    <div class="rd-wrap lp-head-inner">
+      <div class="lp-head-copy">
+        <nav class="lp-crumbs" aria-label="Breadcrumb">
+          <ol>
+            {page.crumbs.map((c, i) => (
+              <li>
+                {i < page.crumbs.length - 1 ? <a href={c.href}>{c.name}</a> : <span aria-current="page">{c.name}</span>}
+              </li>
+            ))}
+          </ol>
+        </nav>
+        <p class="rd-eyebrow">{page.eyebrow}</p>
+        <h1>{page.h1}</h1>
+        <p class="lp-lead">{page.lead}</p>
+        <div class="lp-actions">
+          <a href={page.waHref} class="rd-btn rd-btn--yellow" target="_blank" rel="noopener" data-placement="page"><Fragment set:html={waIcon} />Chat on WhatsApp</a>
+          <span>or save <strong>{PHONE}</strong></span>
+        </div>
+      </div>
+
+      <figure class="lp-chat" aria-label="Example message">
+        <figcaption>Just type it, for example</figcaption>
+        <p class="lp-bubble lp-bubble--out">{page.example}</p>
+        <p class="lp-bubble lp-bubble--in">Got it. Here are providers who cover your area. Reply with a number to see their profile.</p>
+      </figure>
+    </div>
+  </header>
+
+  <main class="rd-wrap lp-main">
+    {(page.jobs || page.areas) && (
+      <section class="lp-split">
+        {page.jobs && (
+          <div class="lp-card">
+            <h2>{page.jobsTitle}</h2>
+            <ul class="lp-jobs">
+              {page.jobs.map((j) => <li>{j}</li>)}
+            </ul>
+            <p class="lp-small">Something else? Describe any job in the chat.</p>
+          </div>
+        )}
+        {page.areas && (
+          <div class="lp-card">
+            <h2>{page.areasTitle}</h2>
+            <ul class="lp-areas">
+              {page.areas.map((a) => <li>{a}</li>)}
+            </ul>
+            <p class="lp-small">Not listed? Say where you are and Hustlr checks who covers it.</p>
+          </div>
+        )}
+      </section>
+    )}
+
+    <section class="rd-section" aria-labelledby="lp-how">
+      <span class="rd-pill">How it works</span>
+      <h2 class="rd-h2 lp-h2" id="lp-how">Booked in three messages</h2>
+      <ol class="lp-steps">
+        {steps.map((st) => (
+          <li>
+            <span class="lp-step-n">{st.n}</span>
+            <h3>{st.title}</h3>
+            <p>{st.text}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="rd-section" aria-labelledby="lp-links">
+      <h2 class="rd-h2 lp-h2" id="lp-links">{page.linksTitle}</h2>
+      <ul class="lp-links">
+        {page.links.map((l) => (
+          <li>
+            <a href={l.href}>
+              <span>
+                <strong>{l.label}</strong>
+                {l.note && <small>{l.note}</small>}
+              </span>
+              <Fragment set:html={arrow} />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="rd-section rd-faq" id="questions">
+      <div class="rd-faq-intro">
+        <span class="rd-pill">FAQ</span>
+        <h2 class="rd-h2 lp-h2">Good to know</h2>
+        <p class="rd-lead">Anything else? Just ask in the chat.</p>
+      </div>
+      <div class="rd-faq-list">
+        {page.faqs.map((f, i) => (
+          <details open={i === 0}>
+            <summary>{f.q}<span class="rd-faq-plus" aria-hidden="true"></span></summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    {page.more && (
+      <nav class="rd-section lp-more" aria-label={page.moreTitle}>
+        <h2>{page.moreTitle}</h2>
+        <ul>
+          {page.more.map((m) => <li><a href={m.href}>{m.label}</a></li>)}
+        </ul>
+      </nav>
+    )}
+
+    <section class="rd-section">
+      <div class="rd-cta">
+        <h2>Got a job that needs doing?</h2>
+        <div class="rd-cta-side">
+          <a href={page.waHref} class="rd-btn rd-btn--dark" target="_blank" rel="noopener" data-placement="page"><Fragment set:html={waIcon} />Chat on WhatsApp</a>
+          <span>or save {PHONE}</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <SiteFooter />
+</HomeLayout>

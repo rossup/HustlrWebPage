@@ -4,6 +4,8 @@ import SiteNav from '../components/SiteNav.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { WA, WA_PROVIDER, waIcon, steps, services, proBenefits, testimonials, draftTestimonials } from '../data/site';
 import '../styles/redesign.css';
+import { seoServices, seoCities } from '../data/seo';
+import { faqSchema } from '../lib/landing';
 
 // WhatsApp conversation shown on the hero phones (copied from a real Hustlr chat).
 type WaMsg = { from: 'in' | 'out'; html: string; time: string; quote?: string };
@@ -161,10 +163,21 @@ const faqs = [
     q: 'Which services can I find?',
     a: 'Plumbers, electricians, cleaners and tutors across Zimbabwe, with more trades on the way. If you are not sure, just ask in the chat.',
   },
+  {
+    q: 'Which towns does Hustlr cover?',
+    a: `${seoCities.map((c) => c.name).slice(0, -1).join(', ')} and ${seoCities[seoCities.length - 1].name}, with more towns on the way. If your town is not listed, ask in the chat.`,
+  },
+  {
+    q: 'How do I join Hustlr as a service provider?',
+    a: 'Message Hustlr on WhatsApp and say you want to register as a service provider. Share your name, business, trade and the areas you cover, then reply YES to take booking requests.',
+  },
 ];
+
+// Service pages for each card under "What you can book"
+const servicePage = (name: string) => seoServices.find((s) => s.plural === name)?.slug;
 ---
 
-<HomeLayout>
+<HomeLayout schema={[faqSchema(faqs)]}>
   <SiteNav />
 
   <!-- ============================== HERO (Hero v3) ============================== -->
@@ -180,7 +193,7 @@ const faqs = [
             <em>Hustlr</em> finds who<br />
             does it.
           </h1>
-          <p class="hero-sub">Plumbers, electricians, cleaners and tutors, found and booked in a WhatsApp chat.</p>
+          <p class="hero-sub">Plumbers, electricians, cleaners and tutors in Harare, Bulawayo and across Zimbabwe, found and booked in a WhatsApp chat.</p>
           <div class="hero-actions">
             <a href={WA} class="btn btn--yellow" target="_blank" rel="noopener"><Fragment set:html={waIcon} />Chat on WhatsApp</a>
             <a href="#how-it-works" class="btn-circle" aria-label="See how it works">
@@ -437,7 +450,7 @@ const faqs = [
             <span class="rd-service-icon" aria-hidden="true">
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" set:html={sv.icon} />
             </span>
-            <h3>{sv.name}</h3>
+            <h3>{servicePage(sv.name) ? <a class="rd-service-link" href={`/${servicePage(sv.name)}`}>{sv.name}</a> : sv.name}</h3>
             <p>{sv.text}</p>
             <a class="rd-service-ask" href={`${WA}?text=${encodeURIComponent(sv.ask)}`} target="_blank" rel="noopener">“{sv.ask}”</a>
           </article>
