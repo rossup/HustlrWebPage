@@ -1,30 +1,113 @@
 ---
-// /admin/providers — providers who asked to join and are waiting for review.
+// /admin/providers — every registered provider: add, edit, verify, reject, suspend, restore, delete.
 import AdminLayout from '../../layouts/AdminLayout.astro';
 import StatTiles from '../../components/admin/StatTiles.astro';
-import ProviderList from '../../components/admin/ProviderList.astro';
+import ManageTable, { type Field, type Row, type RowAction } from '../../components/admin/ManageTable.astro';
 import { fmt } from '../../data/admin';
 import { loadAdminData } from '../../lib/admin-data';
+import { manageList, providerStatus, when, type ManagedProvider } from '../../lib/bot-manage';
 
 export const prerender = false;
 
-const data = await loadAdminData();
-const { applications } = data;
+const [data, list] = await Promise.all([loadAdminData(), manageList<ManagedProvider>('providers')]);
+const providers = list?.items ?? null;
 
-const count = (status: string) => (applications === null ? '—' : fmt(applications.filter((a) => a.status === status).length));
-const trades = applications === null ? '—' : fmt(new Set(applications.map((a) => a.trade)).size);
-const off = applications === null ? 'Bot backend not connected' : undefined;
+const statuses = providers?.map(providerStatus) ?? [];
+const count = (status: string) => (providers === null ? '—' : fmt(statuses.filter((s) => s === status).length));
+const off = providers === null ? 'Bot backend not connected' : undefined;
 
 const tiles = [
-  { label: 'New', value: count('New'), note: off ?? 'Not looked at yet' },
-  { label: 'Details requested', value: count('Details requested'), note: off ?? 'Waiting for the provider to reply' },
-  { label: 'Trades', value: trades, note: off ?? 'Different trades applying' },
-  { label: 'Waiting for review', value: applications === null ? '—' : fmt(applications.length), note: off ?? 'All open applications' },
+  { label: 'Verified', value: count('Verified'), note: off ?? 'Shown to customers' },
+  { label: 'Pending', value: count('Pending'), note: off ?? 'Asked to be verified' },
+  { label: 'Unverified', value: count('Unverified'), note: off ?? 'Hidden from customers' },
+  { label: 'All providers', value: providers === null ? '—' : fmt(list?.total ?? 0), note: off ?? 'Everyone registered' },
+];
+
+const name = (p: ManagedProvider) => p.business_name || p.full_name || 'Provider';
+
+function actionsFor(p: ManagedProvider, status: string): RowAction[] {
+  const who = name(p);
+  // In the row: only the one thing this provider most likely needs next. The rest is in the "more" menu.
+  const actions: RowAction[] = [{ label: 'Edit details', kind: 'edit' }];
+  if (status !== 'Verified' && status !== 'Suspended') {
+    actions.push({
+      label: 'Verify',
+      kind: 'action',
+      action: 'verify',
+      tone: 'good',
+      primary: true,
+      confirm: `Verify ${who}? Customers searching on WhatsApp will start seeing them.`,
+    });
+  }
+  if (status === 'Pending' || status === 'Unverified') {
+    actions.push({ label: 'Reject verification', kind: 'action', action: 'reject', confirm: `Reject ${who}'s verification?` });
+  }
+  if (status === 'Suspended') {
+    actions.push({ label: 'Restore', kind: 'action', action: 'restore', tone: 'good', primary: true });
+  } else {
+    actions.push({
+      label: 'Suspend',
+      kind: 'action',
+      action: 'suspend',
+      confirm: `Suspend ${who}? They stay in the database but customers stop seeing them.`,
+    });
+  }
+  actions.push({
+    label: 'Delete permanently',
+    kind: 'delete',
+    tone: 'danger',
+    confirm: `Delete ${who} permanently?\n\nThis cannot be undone. Their past bookings stay but lose the link to this provider. Use Suspend to hide them and keep the data.`,
+  });
+  return actions;
+}
+
+const rows: Row[] | null =
+  providers?.map((p, i) => ({
+    id: p.id,
+    cells: [
+      { text: name(p), sub: p.full_name && p.business_name && p.full_name !== p.business_name ? p.full_name : undefined, strong: true },
+      { text: p.category ?? '—' },
+      { text: p.service_areas || p.location || '—', sub: p.service_areas && p.location && p.location !== p.service_areas ? p.location : undefined },
+      { text: p.contact_number ?? '—' },
+      { text: when(p.created_at) },
+    ],
+    status: statuses[i],
+    record: {
+      business_name: p.business_name,
+      full_name: p.full_name,
+      category: p.category,
+      location: p.location,
+      city: p.city,
+      service_areas: p.service_areas,
+      contact_number: p.contact_number,
+      service_description: p.service_description,
+    },
+    actions: actionsFor(p, statuses[i]),
+  })) ?? null;
+
+const fields: Field[] = [
+  { name: 'business_name', label: 'Business name', required: true },
+  { name: 'full_name', label: 'Owner or contact name' },
+  { name: 'category', label: 'Trade', required: true, hint: 'What customers search for, e.g. Plumbing' },
+  { name: 'contact_number', label: 'WhatsApp number', type: 'tel', hint: 'With country code, e.g. 263771234567' },
+  { name: 'location', label: 'Location', required: true, hint: 'Suburb and city, e.g. Avondale, Harare' },
+  { name: 'city', label: 'City' },
+  { name: 'service_areas', label: 'Areas served' },
+  { name: 'service_description', label: 'Description', type: 'textarea' },
 ];
 ---
 
-<AdminLayout title="Providers" lead="Providers who asked to join Hustlr." active="providers" data={data}>
+<AdminLayout title="Providers" lead="Everyone registered with Hustlr. Only verified providers are shown to customers." active="providers" data={data}>
   <StatTiles slot="head" tiles={tiles} period={data.period} />
 
-  <ProviderList applications={applications} />
+  <ManageTable
+    resource="providers"
+    title="All providers"
+    noun="provider"
+    columns={['Provider', 'Trade', 'Areas', 'WhatsApp', 'Joined']}
+    rows={rows}
+    total={list?.total ?? 0}
+    fields={fields}
+    addNote="New providers start unverified and hidden from customers. Verify them once you have checked their details."
+  />
 </AdminLayout>

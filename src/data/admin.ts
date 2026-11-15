@@ -103,8 +103,28 @@ export interface AdminData {
   bookingsByArea: Row[] | null;
   bookings: Booking[] | null;
   applications: Application[] | null;
+  /** Every registered provider; null = not connected yet */
+  providers: ProviderStats | null;
   /** WhatsApp chat sessions; null = not connected yet */
   sessions: SessionStats | null;
+}
+
+/** One registered provider (no contact details) */
+export interface Provider {
+  business: string;
+  trade: string;
+  areas: string;
+  /** When they registered, e.g. "Fri 13 Nov" */
+  joined: string;
+  status: 'Verified' | 'Pending' | 'Unverified' | 'Suspended';
+}
+
+export interface ProviderStats {
+  /** Everyone registered, which can be more than `list` holds */
+  total: number;
+  verified: number;
+  /** Newest first */
+  list: Provider[];
 }
 
 export const sessionOutcomes: SessionOutcome[] = ['In progress', 'Booked', 'Provider sign-up', 'Dropped'];
@@ -187,6 +207,15 @@ export const sampleData: AdminData = {
     { business: 'PipeFix Zimbabwe', trade: 'Plumber', areas: 'Mutare & Rusape', applied: 'Wed 11 Nov', status: 'Details requested' },
     { business: 'Top Marks Tutoring', trade: 'Tutor', areas: 'Gweru & Kwekwe', applied: 'Tue 10 Nov', status: 'New' },
   ],
+  providers: {
+    total: 3,
+    verified: 1,
+    list: [
+      { business: 'Flowline Plumbing', trade: 'Plumber', areas: 'Avondale, Harare', joined: 'Mon 2 Nov', status: 'Verified' },
+      { business: 'Mhofu Electrical', trade: 'Electrician', areas: 'Harare North', joined: 'Fri 13 Nov', status: 'Pending' },
+      { business: 'CleanNest Services', trade: 'Cleaner', areas: 'Bulawayo', joined: 'Thu 12 Nov', status: 'Unverified' },
+    ],
+  },
   sessions: {
     total: 318,
     totalPrev: 276,

@@ -53,6 +53,7 @@ export async function loadAdminData(): Promise<AdminData> {
     bookingsByArea: bot?.byArea ?? null,
     bookings: bot?.recent.slice(0, 50) ?? null,
     applications: bot?.applications ?? null,
+    providers: summary?.providers ?? null,
     sessions: summary?.sessions ? { ...summary.sessions, recent: summary.sessions.recent.slice(0, 100) } : null,
   };
 }

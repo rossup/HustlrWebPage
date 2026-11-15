@@ -1,0 +1,355 @@
+---
+// A table of records an admin can add to, edit, act on and delete (providers, bookings, users).
+// The page builds the rows and says which buttons each one gets; changes are sent to
+// /admin/api/<resource>… (src/pages/admin/api/[...path].ts) and the page reloads on success.
+import { statusClass } from '../../data/admin';
+
+export interface Field {
+  /** Column name sent to the bot backend */
+  name: string;
+  label: string;
+  type?: 'text' | 'tel' | 'number' | 'textarea' | 'select';
+  required?: boolean;
+  options?: { value: string; label: string }[];
+  hint?: string;
+}
+
+export interface RowAction {
+  label: string;
+  /** edit = open the form; action = POST …/<id>/<action>; patch = save `patch`; delete = remove for good */
+  kind: 'edit' | 'action' | 'patch' | 'delete';
+  action?: string;
+  patch?: Record<string, unknown>;
+  /** Asked before going ahead */
+  confirm?: string;
+  tone?: 'good' | 'danger';
+  /** Shown as a button in the row. Everything else goes in the row's "more" menu. Keep to one per row. */
+  primary?: boolean;
+}
+
+export interface Cell {
+  text: string;
+  /** Smaller second line */
+  sub?: string;
+  strong?: boolean;
+}
+
+export interface Row {
+  id: string;
+  cells: Cell[];
+  status?: string;
+  /** Which status colour to use when it differs from the label, e.g. "Confirmed" for "In progress" */
+  statusAs?: string;
+  /** Current values for the edit form, keyed by field name */
+  record: Record<string, unknown>;
+  actions: RowAction[];
+}
+
+interface Props {
+  resource: 'providers' | 'bookings' | 'users';
+  title: string;
+  /** Singular, lower case: "provider" */
+  noun: string;
+  columns: string[];
+  /** null = the bot backend isn't connected */
+  rows: Row[] | null;
+  /** Everything in the database, which can be more than the rows shown */
+  total: number;
+  fields: Field[];
+  /** Shown under the form title when adding */
+  addNote?: string;
+}
+
+const { resource, title, noun, columns, rows: given, total, fields, addNote } = Astro.props;
+const rows = given ?? [];
+const hasStatus = rows.some((r) => r.status);
+---
+
+<section class="ad-card ad-manage" id="adManage" data-resource={resource} data-noun={noun} aria-labelledby="ad-manage-title">
+  <div class="ad-card-head">
+    <div>
+      <h2 id="ad-manage-title">{title}</h2>
+      <p>
+        <span id="adManageCount">{rows.length}</span> shown{total > rows.length ? ` of ${total}` : ''}
+      </p>
+    </div>
+    {given !== null && (
+      <div class="ad-manage-tools">
+        <input class="ad-manage-search" id="adManageSearch" type="search" placeholder={`Search ${noun}s`} aria-label={`Search ${noun}s`} />
+        <button type="button" class="ad-btn ad-btn--primary" id="adManageAdd">Add {noun}</button>
+      </div>
+    )}
+  </div>
+
+  <p class="ad-manage-msg" id="adManageMsg" role="status" aria-live="polite"></p>
+
+  <div class="ad-table-wrap">
+    <table class="ad-table">
+      <thead>
+        <tr>
+          {columns.map((c) => <th scope="col">{c}</th>)}
+          {hasStatus && <th scope="col">Status</th>}
+          <th scope="col"><span class="ad-sr">Actions</span></th>
+        </tr>
+      </thead>
+      <tbody id="adManageRows">
+        {rows.map((row) => (
+          <tr data-id={row.id} data-record={JSON.stringify(row.record)}>
+            {row.cells.map((cell) => (
+              <td>
+                {cell.strong ? <strong>{cell.text}</strong> : cell.text}
+                {cell.sub && <span class="ad-manage-sub">{cell.sub}</span>}
+              </td>
+            ))}
+            {hasStatus && <td>{row.status && <span class={statusClass(row.statusAs ?? row.status)}>{row.status}</span>}</td>}
+            <td>
+              <div class="ad-manage-actions">
+                {row.actions.filter((a) => a.primary).map((a) => (
+                  <button
+                    type="button"
+                    class:list={['ad-btn', a.tone && `ad-btn--${a.tone}`]}
+                    data-kind={a.kind}
+                    data-action={a.action}
+                    data-patch={a.patch ? JSON.stringify(a.patch) : undefined}
+                    data-confirm={a.confirm}
+                  >{a.label}</button>
+                ))}
+                {row.actions.some((a) => !a.primary) && (
+                  <Fragment>
+                  <button
+                    type="button"
+                    class="ad-btn ad-btn--more"
+                    popovertarget={`adMenu-${row.id}`}
+                    aria-label={`More actions for ${row.cells[0]?.text ?? noun}`}
+                  >
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+                      <circle cx="5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="19" cy="12" r="1.8"></circle>
+                    </svg>
+                  </button>
+                  <div class="ad-menu" id={`adMenu-${row.id}`} popover>
+                    {row.actions.filter((a) => !a.primary).map((a) => (
+                      <button
+                        type="button"
+                        class:list={['ad-menu-item', a.tone && `ad-menu-item--${a.tone}`]}
+                        data-kind={a.kind}
+                        data-action={a.action}
+                        data-patch={a.patch ? JSON.stringify(a.patch) : undefined}
+                        data-confirm={a.confirm}
+                      >{a.label}</button>
+                    ))}
+                  </div>
+                  </Fragment>
+                )}
+              </div>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <p class="ad-empty" id="adManageEmpty" hidden={rows.length > 0}>
+      {given === null ? `Not connected yet: ${noun}s come from the bot backend.` : rows.length === 0 ? `No ${noun}s yet.` : `No ${noun}s match that search.`}
+    </p>
+  </div>
+
+  <dialog class="ad-dialog" id="adManageDialog" aria-labelledby="adManageDialogTitle">
+    <form id="adManageForm" novalidate>
+      <h2 id="adManageDialogTitle">Add {noun}</h2>
+      {addNote && <p class="ad-dialog-note" id="adManageAddNote">{addNote}</p>}
+      <div class="ad-dialog-fields">
+        {fields.map((f) => (
+          <label class:list={[{ 'is-wide': f.type === 'textarea' }]}>
+            <span>{f.label}{f.required ? '' : <small> (optional)</small>}</span>
+            {f.type === 'textarea' ? (
+              <textarea name={f.name} rows="3" data-required={f.required ? 'true' : undefined}></textarea>
+            ) : f.type === 'select' ? (
+              <select name={f.name} data-required={f.required ? 'true' : undefined}>
+                {!f.required && <option value="">—</option>}
+                {f.options?.map((o) => <option value={o.value}>{o.label}</option>)}
+              </select>
+            ) : (
+              <input
+                name={f.name}
+                type={f.type ?? 'text'}
+                step={f.type === 'number' ? 'any' : undefined}
+                min={f.type === 'number' ? '0' : undefined}
+                autocomplete="off"
+                data-required={f.required ? 'true' : undefined}
+              />
+            )}
+            {f.hint && <small class="ad-dialog-hint">{f.hint}</small>}
+          </label>
+        ))}
+      </div>
+      <p class="ad-manage-msg is-error" id="adManageFormMsg" role="alert"></p>
+      <div class="ad-dialog-foot">
+        <button type="button" class="ad-btn" id="adManageCancel">Cancel</button>
+        <button type="submit" class="ad-btn ad-btn--primary" id="adManageSave">Save</button>
+      </div>
+    </form>
+  </dialog>
+</section>
+
+<script>
+  const root = document.getElementById('adManage');
+  if (root) {
+    const resource = root.dataset.resource ?? '';
+    const noun = root.dataset.noun ?? 'record';
+    const dialog = document.getElementById('adManageDialog') as HTMLDialogElement;
+    const form = document.getElementById('adManageForm') as HTMLFormElement;
+    const formMsg = document.getElementById('adManageFormMsg') as HTMLElement;
+    const pageMsg = document.getElementById('adManageMsg') as HTMLElement;
+    const title = document.getElementById('adManageDialogTitle') as HTMLElement;
+    const addNote = document.getElementById('adManageAddNote');
+    const saveBtn = document.getElementById('adManageSave') as HTMLButtonElement;
+    const inputs = () => Array.from(form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>('[name]'));
+
+    // id of the record being edited, or null when adding
+    let editing: string | null = null;
+
+    const say = (el: HTMLElement, text: string, isError = false) => {
+      el.textContent = text;
+      el.classList.toggle('is-error', isError);
+    };
+
+    /** Sends one change. Resolves to an error message, or null when it worked. */
+    async function send(method: string, path: string, body?: unknown): Promise<string | null> {
+      try {
+        const res = await fetch(`/admin/api/${path}`, {
+          method,
+          headers: body === undefined ? undefined : { 'Content-Type': 'application/json' },
+          body: body === undefined ? undefined : JSON.stringify(body),
+          credentials: 'same-origin',
+        });
+        // An expired login answers with a redirect to the login page instead of JSON
+        if (res.redirected || !(res.headers.get('content-type') ?? '').includes('json')) {
+          return 'Your sign-in has expired. Reload the page and sign in again.';
+        }
+        const data = await res.json().catch(() => null);
+        return res.ok ? null : (data?.error ?? 'The change could not be saved.');
+      } catch {
+        return 'Could not reach the server. Check your connection and try again.';
+      }
+    }
+
+    const reloadWith = (text: string) => {
+      try {
+        sessionStorage.setItem('hustlr.admin.flash', text);
+      } catch {
+        /* storage blocked: the page still reloads */
+      }
+      location.reload();
+    };
+    try {
+      const flash = sessionStorage.getItem('hustlr.admin.flash');
+      if (flash) {
+        say(pageMsg, flash);
+        sessionStorage.removeItem('hustlr.admin.flash');
+      }
+    } catch {
+      /* storage blocked */
+    }
+
+    function openForm(record: Record<string, unknown> | null, id: string | null) {
+      editing = id;
+      title.textContent = `${id ? 'Edit' : 'Add'} ${noun}`;
+      if (addNote) addNote.hidden = id !== null;
+      say(formMsg, '');
+      inputs().forEach((input) => {
+        const value = record?.[input.name];
+        if (input instanceof HTMLSelectElement && !record) input.selectedIndex = 0;
+        else input.value = value === null || value === undefined ? '' : String(value);
+      });
+      dialog.showModal();
+      inputs()[0]?.focus();
+    }
+
+    document.getElementById('adManageAdd')?.addEventListener('click', () => openForm(null, null));
+    document.getElementById('adManageCancel')?.addEventListener('click', () => dialog.close());
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const body: Record<string, unknown> = {};
+      for (const input of inputs()) {
+        const value = input.value.trim();
+        if (!value && input.dataset.required) {
+          say(formMsg, 'Fill in every field that is not marked optional.', true);
+          input.focus();
+          return;
+        }
+        // Adding: leave empty fields out. Editing: send them, so a cleared field is cleared.
+        if (!value && !editing) continue;
+        body[input.name] = input.type === 'number' ? (value ? Number(value) : null) : value;
+      }
+      saveBtn.disabled = true;
+      say(formMsg, '');
+      const error = editing ? await send('PATCH', `${resource}/${editing}`, body) : await send('POST', resource, body);
+      saveBtn.disabled = false;
+      if (error) return say(formMsg, error, true);
+      reloadWith(editing ? 'Saved.' : `Added the ${noun}.`);
+    });
+
+    document.getElementById('adManageRows')?.addEventListener('click', async (e) => {
+      const button = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-kind]');
+      const row = button?.closest<HTMLTableRowElement>('tr[data-id]');
+      if (!button || !row) return;
+      const id = row.dataset.id ?? '';
+      const kind = button.dataset.kind;
+      // Chosen from the row's "more" menu: close it first
+      button.closest<HTMLElement>('.ad-menu')?.hidePopover();
+
+      if (kind === 'edit') return openForm(JSON.parse(row.dataset.record ?? '{}'), id);
+      if (button.dataset.confirm && !window.confirm(button.dataset.confirm)) return;
+
+      button.disabled = true;
+      say(pageMsg, 'Working…');
+      const error =
+        kind === 'delete'
+          ? await send('DELETE', `${resource}/${id}`)
+          : kind === 'patch'
+            ? await send('PATCH', `${resource}/${id}`, JSON.parse(button.dataset.patch ?? '{}'))
+            : await send('POST', `${resource}/${id}/${button.dataset.action}`);
+      button.disabled = false;
+      if (error) return say(pageMsg, error, true);
+      reloadWith(kind === 'delete' ? `Deleted the ${noun}.` : 'Done.');
+    });
+
+    // "More" menus open in the top layer, so the table's scroll area can't clip them:
+    // place each one under its button, right edges aligned, flipped above when there's no room below.
+    document.addEventListener(
+      'toggle',
+      (e) => {
+        const menu = e.target as HTMLElement;
+        if (!menu.classList?.contains('ad-menu') || (e as ToggleEvent).newState !== 'open') return;
+        const opener = document.querySelector<HTMLElement>(`[popovertarget="${menu.id}"]`);
+        if (!opener) return;
+        const at = opener.getBoundingClientRect();
+        const below = at.bottom + 6 + menu.offsetHeight <= window.innerHeight;
+        menu.style.top = `${below ? at.bottom + 6 : Math.max(8, at.top - 6 - menu.offsetHeight)}px`;
+        menu.style.left = `${Math.max(8, at.right - menu.offsetWidth)}px`;
+        menu.querySelector<HTMLButtonElement>('button')?.focus();
+      },
+      true,
+    );
+    // The page moving under an open menu would leave it floating in the wrong place
+    const closeMenus = () => document.querySelectorAll<HTMLElement>('.ad-menu:popover-open').forEach((m) => m.hidePopover());
+    window.addEventListener('scroll', closeMenus, { capture: true, passive: true });
+    window.addEventListener('resize', closeMenus);
+
+    // Search: hide rows whose text doesn't contain what was typed
+    const search = document.getElementById('adManageSearch') as HTMLInputElement | null;
+    const count = document.getElementById('adManageCount');
+    const empty = document.getElementById('adManageEmpty');
+    search?.addEventListener('input', () => {
+      if (empty) empty.textContent = `No ${noun}s match that search.`;
+      const query = search.value.trim().toLowerCase();
+      let shown = 0;
+      document.querySelectorAll<HTMLTableRowElement>('#adManageRows tr').forEach((row) => {
+        const show = !query || (row.textContent ?? '').toLowerCase().includes(query);
+        row.hidden = !show;
+        if (show) shown += 1;
+      });
+      if (count) count.textContent = String(shown);
+      if (empty) empty.hidden = shown > 0;
+    });
+  }
+</script>

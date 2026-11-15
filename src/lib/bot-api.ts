@@ -9,7 +9,7 @@
 //   BOT_API_URL   e.g. https://api.hustlr.chat
 //   BOT_API_KEY   a long random secret, the same value the bot backend checks
 // This site only calls the bot from its server, so the key never reaches a visitor's browser.
-import type { Application, Booking, Row, SessionStats } from '../data/admin';
+import type { Application, Booking, ProviderStats, Row, SessionStats } from '../data/admin';
 import type { Window } from './visits';
 
 export interface VisitData {
@@ -44,6 +44,8 @@ export interface BookingData {
 export interface BotSummary {
   visits?: VisitData;
   bookings?: BookingData;
+  /** Every registered provider, newest first */
+  providers?: ProviderStats;
   /** WhatsApp chat sessions (conversations with the bot) */
   sessions?: SessionStats;
 }
@@ -109,6 +111,10 @@ export async function loadBotSummary(win: Window): Promise<BotSummary | null> {
   const summary: BotSummary = {};
   if (validVisits(body.visits)) summary.visits = body.visits;
   else if (body.visits !== undefined) console.error('[admin] bot API: unexpected shape for "visits"');
+  const providers = body.providers as ProviderStats | undefined;
+  if (providers && isNum(providers.total) && isNum(providers.verified) && Array.isArray(providers.list)) {
+    summary.providers = providers;
+  } else if (providers !== undefined) console.error('[admin] bot API: unexpected shape for "providers"');
   if (validBookings(body.bookings)) summary.bookings = body.bookings;
   else if (body.bookings !== undefined) console.error('[admin] bot API: unexpected shape for "bookings"');
   if (validSessions(body.sessions)) summary.sessions = body.sessions;

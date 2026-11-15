@@ -1,15 +1,47 @@
 ---
-// /admin/bookings — every booking in the period, with a status filter.
+// /admin/bookings — every booking: add, edit, cancel, delete.
 import AdminLayout from '../../layouts/AdminLayout.astro';
 import StatTiles from '../../components/admin/StatTiles.astro';
-import BookingsTable from '../../components/admin/BookingsTable.astro';
+import ManageTable, { type Field, type Row, type RowAction } from '../../components/admin/ManageTable.astro';
 import { bookingStatuses, fmt } from '../../data/admin';
 import { loadAdminData } from '../../lib/admin-data';
+import { manageList, when, type ManagedBooking, type ManagedProvider } from '../../lib/bot-manage';
 
 export const prerender = false;
 
-const data = await loadAdminData();
-const { bookings } = data;
+const [data, list, providerList] = await Promise.all([
+  loadAdminData(),
+  manageList<ManagedBooking>('bookings'),
+  manageList<ManagedProvider>('providers'),
+]);
+const bookings = list?.items ?? null;
+
+// The bot's own statuses, and the four the dashboard groups them into
+const STATUS_OPTIONS = [
+  { value: 'pending', label: 'Pending' },
+  { value: 'accepted', label: 'Accepted by provider' },
+  { value: 'confirmed', label: 'Confirmed' },
+  { value: 'in_progress', label: 'In progress' },
+  { value: 'evidence_submitted', label: 'Proof photos sent' },
+  { value: 'completed', label: 'Completed' },
+  { value: 'verified', label: 'Completed and approved' },
+  { value: 'disputed', label: 'Disputed' },
+  { value: 'cancelled', label: 'Cancelled' },
+  { value: 'rejected', label: 'Rejected by provider' },
+];
+const GROUP: Record<string, string> = {
+  pending: 'Pending',
+  accepted: 'Confirmed',
+  confirmed: 'Confirmed',
+  in_progress: 'Confirmed',
+  evidence_submitted: 'Confirmed',
+  disputed: 'Confirmed',
+  completed: 'Completed',
+  verified: 'Completed',
+  cancelled: 'Cancelled',
+  rejected: 'Cancelled',
+};
+const groupOf = (b: ManagedBooking) => GROUP[b.status ?? 'pending'] ?? 'Pending';
 
 const notes: Record<string, string> = {
   Pending: 'Waiting for the provider',
@@ -17,17 +49,83 @@ const notes: Record<string, string> = {
   Completed: 'Job finished',
   Cancelled: 'Did not go ahead',
 };
-// Tiles follow the booking's journey
-const order = ['Pending', 'Confirmed', 'Completed', 'Cancelled'].filter((s) => (bookingStatuses as string[]).includes(s));
-const tiles = order.map((s) => ({
+const tiles = (bookingStatuses as string[]).map((s) => ({
   label: s,
-  value: bookings === null ? '—' : fmt(bookings.filter((b) => b.status === s).length),
+  value: bookings === null ? '—' : fmt(bookings.filter((b) => groupOf(b) === s).length),
   note: bookings === null ? 'Bot backend not connected' : notes[s],
 }));
+
+function actionsFor(b: ManagedBooking): RowAction[] {
+  const actions: RowAction[] = [{ label: 'Edit booking', kind: 'edit' }];
+  if (groupOf(b) !== 'Cancelled' && groupOf(b) !== 'Completed') {
+    actions.push({
+      label: 'Cancel booking',
+      kind: 'patch',
+      patch: { status: 'cancelled' },
+      confirm: 'Cancel this booking? It stays in the list as cancelled. Nobody is messaged.',
+    });
+  }
+  actions.push({
+    label: 'Delete permanently',
+    kind: 'delete',
+    tone: 'danger',
+    confirm: 'Delete this booking permanently?\n\nThis cannot be undone. Use Cancel to keep the record.',
+  });
+  return actions;
+}
+
+const rows: Row[] | null =
+  bookings?.map((b) => ({
+    id: b.id,
+    cells: [
+      { text: b.customer_name || 'Customer', sub: b.customer_phone ?? undefined, strong: true },
+      { text: b.service_type || b.job_description || '—', sub: b.service_type && b.job_description ? b.job_description : undefined },
+      { text: b.provider_name || 'Unknown provider' },
+      { text: when(b.created_at, true), sub: b.job_timing || b.preferred_time || undefined },
+      { text: b.amount === null || b.amount === undefined ? '—' : `$${fmt(b.amount)}` },
+    ],
+    status: STATUS_OPTIONS.find((o) => o.value === b.status)?.label ?? 'Pending',
+    statusAs: groupOf(b),
+    record: {
+      customer_phone: b.customer_phone,
+      provider_id: b.provider_id,
+      job_description: b.job_description,
+      status: b.status ?? 'pending',
+      service_type: b.service_type,
+      job_timing: b.job_timing,
+      preferred_time: b.preferred_time,
+      amount: b.amount,
+    },
+    actions: actionsFor(b),
+  })) ?? null;
+
+const providerOptions = (providerList?.items ?? [])
+  .map((p) => ({ value: p.id, label: `${p.business_name || p.full_name || 'Provider'}${p.category ? ` (${p.category})` : ''}` }))
+  .sort((a, b) => a.label.localeCompare(b.label));
+
+const fields: Field[] = [
+  { name: 'customer_phone', label: 'Customer WhatsApp number', type: 'tel', required: true, hint: 'With country code, e.g. 263771234567' },
+  { name: 'provider_id', label: 'Provider', type: 'select', required: true, options: providerOptions },
+  { name: 'job_description', label: 'Job', type: 'textarea', required: true },
+  { name: 'status', label: 'Status', type: 'select', required: true, options: STATUS_OPTIONS },
+  { name: 'service_type', label: 'Service' },
+  { name: 'job_timing', label: 'When the job is needed' },
+  { name: 'preferred_time', label: 'Preferred time' },
+  { name: 'amount', label: 'Amount (USD)', type: 'number' },
+];
 ---
 
-<AdminLayout title="Bookings" lead="Recent bookings made through WhatsApp." active="bookings" data={data}>
-  <StatTiles slot="head" tiles={tiles} period={data.period} />
+<AdminLayout title="Bookings" lead="Every booking made through WhatsApp or added here." active="bookings" data={data}>
+  <StatTiles slot="head" tiles={tiles} period={{ ...data.period, label: 'All time', range: '', compare: '' }} />
 
-  <BookingsTable title="Recent bookings" rows={bookings} filters />
+  <ManageTable
+    resource="bookings"
+    title="All bookings"
+    noun="booking"
+    columns={['Customer', 'Job', 'Provider', 'Booked', 'Amount']}
+    rows={rows}
+    total={list?.total ?? 0}
+    fields={fields}
+    addNote="Adding a booking here only records it. The customer and the provider are not messaged."
+  />
 </AdminLayout>

@@ -140,7 +140,7 @@ Answer quickly; the website waits at most 4 seconds and never retries.
 
 `from` → `to` is the current 7-day window (Harare midnight 6 days ago until now); `prevFrom` → `from` is the
 7 days before, for comparisons. All three are ISO times. Answer `200` with JSON. Every part (`visits`,
-`bookings`, `sessions`) is optional, so you can ship them one at a time; a missing or malformed part shows as
+`bookings`, `sessions`, `providers`) is optional, so you can ship them one at a time; a missing or malformed part shows as
 "not connected".
 
 ```json
@@ -189,4 +189,27 @@ Answer quickly; the website waits at most 4 seconds and never retries.
   `outcome` is `Booked`, `In progress`, `Dropped` or `Provider sign-up`; `service` and `area` are what the person
   asked for (`—` if they never said); `source` is `Website` when the first message carried a `(ref …)`. Show customers
   by first name and initial only, and don't send message contents.
+- `providers` (optional, not shown in the example above): every registered provider, not limited to the window.
+  `{ "total": 53, "verified": 2, "list": [{ "business": "Flowline Plumbing", "trade": "Plumber",
+  "areas": "Avondale, Harare", "joined": "Fri 13 Nov", "status": "Verified" }] }`. `list` is newest first, at most 500;
+  `total` counts everyone; `status` is `Verified`, `Pending`, `Unverified` or `Suspended`. Don't send contact details.
 - Keep it fast: the page waits at most 8 seconds.
+
+### 3. `/admin/manage/…`: managing providers, bookings and users
+
+The Providers, Bookings and Users admin pages list every record and let an admin add, edit and delete them, and
+verify, reject, suspend or restore providers. Pages read the lists from the website's server (`src/lib/bot-manage.ts`);
+buttons send changes to `/admin/api/…` (`src/pages/admin/api/[...path].ts`), which passes them on with the admin's
+email in `X-Admin-Email`. Same `Authorization: Bearer {BOT_API_KEY}` as above.
+
+| Call | What it does |
+| --- | --- |
+| `GET /admin/manage/{providers,bookings,users}` | `{ "items": [...], "total": n }`, newest first, at most 500 |
+| `POST /admin/manage/{providers,bookings,users}` | add one; `201` with the record |
+| `PATCH /admin/manage/{…}/{id}` | change only the fields sent; `200` with the record |
+| `DELETE /admin/manage/{…}/{id}` | remove permanently; `204` |
+| `POST /admin/manage/providers/{id}/{verify,reject,suspend,restore}` | change a provider's standing |
+
+Errors come back as `{ "detail": "…" }` (or FastAPI's validation list) with `4xx`; the website shows the text to the admin.
+Customers only see providers that are verified and active, so `verify` switches both on and `suspend` switches active off.
+None of these calls message anyone on WhatsApp.

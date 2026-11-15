@@ -14,7 +14,7 @@ interface Props {
   /** One line under the heading saying what the page is for. */
   lead?: string;
   /** Which sidebar link is the current page. */
-  active: 'overview' | 'chats' | 'sessions' | 'breakdowns' | 'bookings' | 'providers';
+  active: 'overview' | 'chats' | 'sessions' | 'breakdowns' | 'bookings' | 'providers' | 'users';
   /** Everything the dashboard shows (from src/lib/admin-data.ts) */
   data: AdminData;
 }
@@ -35,6 +35,7 @@ const sideLinks: { id: Props['active']; href: string; label: string; icon: Admin
   { id: 'breakdowns', href: '/admin/breakdowns', label: 'Breakdowns', icon: 'breakdowns' },
   { id: 'bookings', href: '/admin/bookings', label: 'Bookings', icon: 'bookings', badge: pendingBookings, badgeLabel: 'pending' },
   { id: 'providers', href: '/admin/providers', label: 'Providers', icon: 'providers', badge: waitingProviders, badgeLabel: 'waiting for review' },
+  { id: 'users', href: '/admin/users', label: 'Users', icon: 'users' },
 ];
 ---
 

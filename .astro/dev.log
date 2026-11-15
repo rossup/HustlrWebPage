@@ -8,3 +8,240 @@
 {"message":" astro  v7.4.11 ready in 9079 ms\n┃ Local    http://localhost:4321/\n┃ Network  use --host to expose","label":"SKIP_FORMAT","level":"info"}
 {"message":"watching for file changes...","label":null,"level":"info"}
 {"message":"[302] /admin 103ms","label":null,"level":"info"}
+[admin] could not reach the bot backend Error: bot API answered 404
+    at loadBotSummary (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\lib\bot-api.ts:105:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadAdminData (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\lib\admin-data.ts:12:19)
+    at async eval (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\pages\admin\index.astro:13:1)
+    at async callComponentAsTemplateResultOrResponse (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\astro\render.js:253:24)
+    at async renderToAsyncIterable (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\astro\render.js:282:25)
+    at async renderPage (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\page.js:67:21)
+    at async handlePages (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\astro\dist\core\pages\handler.js:39:16)
+    at async eval (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\middleware.ts:28:20)
+    at async callMiddleware (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\astro\dist\core\middleware\callMiddleware.js:46:9)
+{"message":"[200] /admin 660ms","label":null,"level":"info"}
+[admin] could not reach the bot backend Error: bot API answered 404
+    at loadBotSummary (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\lib\bot-api.ts:105:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadAdminData (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\lib\admin-data.ts:12:19)
+    at async eval (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\pages\admin\index.astro:13:1)
+    at async callComponentAsTemplateResultOrResponse (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\astro\render.js:253:24)
+    at async renderToAsyncIterable (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\astro\render.js:282:25)
+    at async renderPage (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\page.js:67:21)
+    at async handlePages (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\astro\dist\core\pages\handler.js:39:16)
+    at async eval (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\middleware.ts:28:20)
+    at async callMiddleware (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\astro\dist\core\middleware\callMiddleware.js:46:9)
+{"message":"[200] /admin 264ms","label":null,"level":"info"}
+[admin] could not reach the bot backend Error: bot API answered 404
+    at loadBotSummary (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\lib\bot-api.ts:105:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadAdminData (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\lib\admin-data.ts:12:19)
+    at async eval (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\pages\admin\sessions.astro:12:1)
+    at async callComponentAsTemplateResultOrResponse (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\astro\render.js:253:24)
+    at async renderToAsyncIterable (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\astro\render.js:282:25)
+    at async renderPage (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\page.js:67:21)
+    at async handlePages (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\astro\dist\core\pages\handler.js:39:16)
+    at async eval (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\middleware.ts:28:20)
+    at async callMiddleware (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\astro\dist\core\middleware\callMiddleware.js:46:9)
+{"message":"[200] /admin/sessions 298ms","label":null,"level":"info"}
+[admin] could not reach the bot backend Error: bot API answered 404
+    at loadBotSummary (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\lib\bot-api.ts:105:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadAdminData (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\lib\admin-data.ts:12:19)
+    at async eval (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\pages\admin\index.astro:13:1)
+    at async callComponentAsTemplateResultOrResponse (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\astro\render.js:253:24)
+    at async renderToAsyncIterable (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\astro\render.js:282:25)
+    at async renderPage (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\page.js:67:21)
+    at async handlePages (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\astro\dist\core\pages\handler.js:39:16)
+    at async eval (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\middleware.ts:28:20)
+    at async callMiddleware (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\astro\dist\core\middleware\callMiddleware.js:46:9)
+{"message":"[200] /admin 388ms","label":null,"level":"info"}
+[admin] could not reach the bot backend Error: bot API answered 404
+    at loadBotSummary (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\lib\bot-api.ts:105:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadAdminData (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\lib\admin-data.ts:12:19)
+    at async eval (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\pages\admin\chats.astro:12:1)
+    at async callComponentAsTemplateResultOrResponse (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\astro\render.js:253:24)
+    at async renderToAsyncIterable (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\astro\render.js:282:25)
+    at async renderPage (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\page.js:67:21)
+    at async handlePages (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\astro\dist\core\pages\handler.js:39:16)
+    at async eval (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\middleware.ts:28:20)
+    at async callMiddleware (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\astro\dist\core\middleware\callMiddleware.js:46:9)
+{"message":"[200] /admin/chats 439ms","label":null,"level":"info"}
+[admin] could not reach the bot backend Error: bot API answered 404
+    at loadBotSummary (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\lib\bot-api.ts:105:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadAdminData (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\lib\admin-data.ts:12:19)
+    at async eval (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\pages\admin\sessions.astro:12:1)
+    at async callComponentAsTemplateResultOrResponse (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\astro\render.js:253:24)
+    at async renderToAsyncIterable (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\astro\render.js:282:25)
+    at async renderPage (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\page.js:67:21)
+    at async handlePages (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\astro\dist\core\pages\handler.js:39:16)
+    at async eval (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\middleware.ts:28:20)
+    at async callMiddleware (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\astro\dist\core\middleware\callMiddleware.js:46:9)
+{"message":"[200] /admin/sessions 244ms","label":null,"level":"info"}
+[admin] could not reach the bot backend Error: bot API answered 404
+    at loadBotSummary (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\lib\bot-api.ts:105:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadAdminData (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\lib\admin-data.ts:12:19)
+    at async eval (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\pages\admin\breakdowns.astro:11:1)
+    at async callComponentAsTemplateResultOrResponse (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\astro\render.js:253:24)
+    at async renderToAsyncIterable (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\astro\render.js:282:25)
+    at async renderPage (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\page.js:67:21)
+    at async handlePages (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\astro\dist\core\pages\handler.js:39:16)
+    at async eval (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\middleware.ts:28:20)
+    at async callMiddleware (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\astro\dist\core\middleware\callMiddleware.js:46:9)
+{"message":"[200] /admin/breakdowns 281ms","label":null,"level":"info"}
+[admin] could not reach the bot backend Error: bot API answered 404
+    at loadBotSummary (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\lib\bot-api.ts:105:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadAdminData (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\lib\admin-data.ts:12:19)
+    at async eval (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\pages\admin\bookings.astro:11:1)
+    at async callComponentAsTemplateResultOrResponse (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\astro\render.js:253:24)
+    at async renderToAsyncIterable (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\astro\render.js:282:25)
+    at async renderPage (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\page.js:67:21)
+    at async handlePages (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\astro\dist\core\pages\handler.js:39:16)
+    at async eval (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\middleware.ts:28:20)
+    at async callMiddleware (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\astro\dist\core\middleware\callMiddleware.js:46:9)
+{"message":"[200] /admin/bookings 310ms","label":null,"level":"info"}
+[admin] could not reach the bot backend Error: bot API answered 404
+    at loadBotSummary (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\lib\bot-api.ts:105:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadAdminData (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\lib\admin-data.ts:12:19)
+    at async eval (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\pages\admin\providers.astro:11:1)
+    at async callComponentAsTemplateResultOrResponse (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\astro\render.js:253:24)
+    at async renderToAsyncIterable (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\astro\render.js:282:25)
+    at async renderPage (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\page.js:67:21)
+    at async handlePages (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\astro\dist\core\pages\handler.js:39:16)
+    at async eval (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\middleware.ts:28:20)
+    at async callMiddleware (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\astro\dist\core\middleware\callMiddleware.js:46:9)
+{"message":"[200] /admin/providers 322ms","label":null,"level":"info"}
+[admin] could not reach the bot backend Error: bot API answered 404
+    at loadBotSummary (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\lib\bot-api.ts:105:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadAdminData (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\lib\admin-data.ts:12:19)
+    at async eval (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\pages\admin\index.astro:13:1)
+    at async callComponentAsTemplateResultOrResponse (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\astro\render.js:253:24)
+    at async renderToAsyncIterable (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\astro\render.js:282:25)
+    at async renderPage (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\page.js:67:21)
+    at async handlePages (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\astro\dist\core\pages\handler.js:39:16)
+    at async eval (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\middleware.ts:28:20)
+    at async callMiddleware (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\astro\dist\core\middleware\callMiddleware.js:46:9)
+{"message":"[200] /admin 348ms","label":null,"level":"info"}
+[admin] could not reach the bot backend Error: bot API answered 404
+    at loadBotSummary (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\lib\bot-api.ts:105:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadAdminData (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\lib\admin-data.ts:12:19)
+    at async eval (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\pages\admin\sessions.astro:12:1)
+    at async callComponentAsTemplateResultOrResponse (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\astro\render.js:253:24)
+    at async renderToAsyncIterable (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\astro\render.js:282:25)
+    at async renderPage (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\page.js:67:21)
+    at async handlePages (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\astro\dist\core\pages\handler.js:39:16)
+    at async eval (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\middleware.ts:28:20)
+    at async callMiddleware (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\astro\dist\core\middleware\callMiddleware.js:46:9)
+{"message":"[200] /admin/sessions 408ms","label":null,"level":"info"}
+[admin] could not reach the bot backend Error: bot API answered 404
+    at loadBotSummary (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\lib\bot-api.ts:105:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadAdminData (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\lib\admin-data.ts:12:19)
+    at async eval (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\pages\admin\sessions.astro:12:1)
+    at async callComponentAsTemplateResultOrResponse (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\astro\render.js:253:24)
+    at async renderToAsyncIterable (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\astro\render.js:282:25)
+    at async renderPage (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\page.js:67:21)
+    at async handlePages (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\astro\dist\core\pages\handler.js:39:16)
+    at async eval (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\middleware.ts:28:20)
+    at async callMiddleware (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\astro\dist\core\middleware\callMiddleware.js:46:9)
+{"message":"[200] /admin/sessions 377ms","label":null,"level":"info"}
+[admin] could not reach the bot backend Error: bot API answered 404
+    at loadBotSummary (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\lib\bot-api.ts:105:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadAdminData (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\lib\admin-data.ts:12:19)
+    at async eval (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\pages\admin\sessions.astro:12:1)
+    at async callComponentAsTemplateResultOrResponse (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\astro\render.js:253:24)
+    at async renderToAsyncIterable (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\astro\render.js:282:25)
+    at async renderPage (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\page.js:67:21)
+    at async handlePages (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\astro\dist\core\pages\handler.js:39:16)
+    at async eval (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\middleware.ts:28:20)
+    at async callMiddleware (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\astro\dist\core\middleware\callMiddleware.js:46:9)
+{"message":"[200] /admin/sessions 256ms","label":null,"level":"info"}
+[admin] could not reach the bot backend Error: bot API answered 404
+    at loadBotSummary (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\lib\bot-api.ts:105:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async loadAdminData (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\lib\admin-data.ts:12:19)
+    at async eval (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\pages\admin\sessions.astro:12:1)
+    at async callComponentAsTemplateResultOrResponse (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\astro\render.js:253:24)
+    at async renderToAsyncIterable (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\astro\render.js:282:25)
+    at async renderPage (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\@astrojs\runtime\dist\internal\server\render\page.js:67:21)
+    at async handlePages (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\astro\dist\core\pages\handler.js:39:16)
+    at async eval (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\src\middleware.ts:28:20)
+    at async callMiddleware (C:\Users\vinmu\OneDrive\Desktop\zimnovate_projects\HustlrWebPage\node_modules\astro\dist\core\middleware\callMiddleware.js:46:9)
+{"message":"[200] /admin/sessions 613ms","label":null,"level":"info"}
+{"message":"[200] /admin/sessions 3085ms","label":null,"level":"info"}
+{"message":"[200] /admin/chats 2916ms","label":null,"level":"info"}
+{"message":"[200] /admin/breakdowns 2770ms","label":null,"level":"info"}
+{"message":"[200] /admin/bookings 2898ms","label":null,"level":"info"}
+{"message":"[200] /admin/providers 2799ms","label":null,"level":"info"}
+{"message":"/src/styles/admin.css","label":"watch","level":"info"}
+{"message":"[200] /admin/providers 3612ms","label":null,"level":"info"}
+{"message":"[200] /admin/providers 2958ms","label":null,"level":"info"}
+{"message":"[302] /admin/providers 16ms","label":null,"level":"info"}
+{"message":"[200] /admin/providers 4756ms","label":null,"level":"info"}
+{"message":"[200] /admin/providers 3741ms","label":null,"level":"info"}
+{"message":"[200] /admin/providers 3299ms","label":null,"level":"info"}
+{"message":"[200] /admin/providers 3674ms","label":null,"level":"info"}
+{"message":"[200] /admin/providers 5513ms","label":null,"level":"info"}
+[admin] bot API: could not list providers (404)
+{"message":"[200] /admin/providers 3692ms","label":null,"level":"info"}
+{"message":"src/layouts/AdminLayout.astro","label":"watch","level":"info"}
+{"message":"src/components/admin/ManageTable.astro","label":"watch","level":"info"}
+{"message":"/src/styles/admin.css","label":"watch","level":"info"}
+[admin] bot API: could not list providers (404)
+{"message":"[200] /admin/providers 3672ms","label":null,"level":"info"}
+{"message":"[200] /admin/providers 3066ms","label":null,"level":"info"}
+{"message":"[302] DELETE /admin/api/users/00000000-0000-4000-8000-000000000000 1ms","label":null,"level":"info"}
+{"message":"[200] /admin/providers 3389ms","label":null,"level":"info"}
+{"message":"[302] /admin/providers 1ms","label":null,"level":"info"}
+{"message":"[200] /login 91ms","label":null,"level":"info"}
+{"message":"[200] /api/auth/me 5ms","label":null,"level":"info"}
+{"message":"[302] /admin/providers 1ms","label":null,"level":"info"}
+{"message":"[302] /admin/bookings 1ms","label":null,"level":"info"}
+{"message":"[302] /admin/users 1ms","label":null,"level":"info"}
+{"message":"[302] /admin/api/users 1ms","label":null,"level":"info"}
+{"message":"[200] DELETE /admin/api/providers/dfdaa7b3-a44c-4d3e-94a2-6971a6ac56f3 2166ms","label":null,"level":"info"}
+{"message":"[200] /admin/providers 3411ms","label":null,"level":"info"}
+{"message":"src/components/admin/ManageTable.astro","label":"watch","level":"info"}
+{"message":"src/components/admin/ManageTable.astro","label":"watch","level":"info"}
+{"message":"[200] /login 143ms","label":null,"level":"info"}
+{"message":"src/components/admin/ManageTable.astro","label":"watch","level":"info"}
+{"message":"src/components/admin/ManageTable.astro","label":"watch","level":"info"}
+{"message":"[200] /api/auth/me 21ms","label":null,"level":"info"}
+{"message":"/src/styles/admin.css","label":"watch","level":"info"}
+{"message":"[200] /login 118ms","label":null,"level":"info"}
+{"message":"[200] /api/auth/me 48ms","label":null,"level":"info"}
+{"message":"[200] /login 28ms","label":null,"level":"info"}
+{"message":"[200] /api/auth/me 1ms","label":null,"level":"info"}
+{"message":"[200] /admin/providers 4291ms","label":null,"level":"info"}
+{"message":"src/components/admin/ManageTable.astro","label":"watch","level":"info"}
+{"message":"[200] /login 25ms","label":null,"level":"info"}
+{"message":"[200] /api/auth/me 1ms","label":null,"level":"info"}
+{"message":"[200] /admin/providers 3537ms","label":null,"level":"info"}
+{"message":"[302] /admin/providers 1ms","label":null,"level":"info"}
+{"message":"[200] /login 9ms","label":null,"level":"info"}
+{"message":"[200] /api/auth/me 0ms","label":null,"level":"info"}
+{"message":"[200] POST /admin/api/providers 1096ms","label":null,"level":"info"}
+{"message":"[200] /admin/providers 2949ms","label":null,"level":"info"}
+{"message":"[200] POST /admin/api/providers/b26dd843-e125-4736-b767-3789efcab5a8/verify 938ms","label":null,"level":"info"}
+{"message":"[200] /admin/providers 2863ms","label":null,"level":"info"}
+{"message":"[200] /login 16ms","label":null,"level":"info"}
+{"message":"[200] /api/auth/me 1ms","label":null,"level":"info"}
+{"message":"[200] /admin/providers 3373ms","label":null,"level":"info"}
+{"message":"[200] /admin/bookings 3710ms","label":null,"level":"info"}
+{"message":"[200] /admin/sessions 3343ms","label":null,"level":"info"}
+{"message":"[200] /admin/providers 4097ms","label":null,"level":"info"}
+{"message":"[200] /admin/providers 3317ms","label":null,"level":"info"}
+{"message":"[200] /admin/bookings 3116ms","label":null,"level":"info"}
+{"message":"[200] /admin/bookings 3103ms","label":null,"level":"info"}
+{"message":"[200] PATCH /admin/api/bookings/b11b3e0e-afdb-41c6-b534-f0ef1b155c7b 1915ms","label":null,"level":"info"}
+{"message":"[200] /admin/bookings 2988ms","label":null,"level":"info"}
+{"message":"[200] /admin/bookings 3738ms","label":null,"level":"info"}
+{"message":"[200] /admin/providers 3137ms","label":null,"level":"info"}

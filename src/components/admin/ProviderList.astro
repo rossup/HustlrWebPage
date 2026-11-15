@@ -1,13 +1,15 @@
 ---
 // Card listing providers who asked to join and are waiting for review.
-import { statusClass, type Application } from '../../data/admin';
+import { statusClass, type Application, type ProviderStats } from '../../data/admin';
 
 interface Props {
   /** null = the bot backend isn't connected yet */
   applications: Application[] | null;
+  /** Every registered provider; null = not connected yet */
+  providers?: ProviderStats | null;
 }
 
-const { applications } = Astro.props;
+const { applications, providers } = Astro.props;
 ---
 
 <section class="ad-card" aria-labelledby="ad-apps-title">
@@ -37,3 +39,33 @@ const { applications } = Astro.props;
   </ul>
   )}
 </section>
+
+{providers !== undefined && (
+<section class="ad-card" aria-labelledby="ad-all-providers-title">
+  <div class="ad-card-head">
+    <div>
+      <h2 id="ad-all-providers-title">All providers{providers ? ` (${providers.total})` : ''}</h2>
+      <p>Everyone registered with Hustlr, newest first.{providers ? ` ${providers.verified} verified.` : ''}</p>
+    </div>
+  </div>
+  {!providers || providers.list.length === 0 ? (
+    <p class="ad-empty">
+      {providers === null ? 'Not connected yet: the provider list comes from the bot backend.' : 'No providers registered yet.'}
+    </p>
+  ) : (
+  <ul class="ad-apps">
+    {providers.list.map((p) => (
+      <li>
+        <span class="ad-apps-avatar" aria-hidden="true">{p.business.charAt(0)}</span>
+        <span class="ad-apps-main">
+          <strong>{p.business}</strong>
+          <span>{p.trade} · {p.areas}</span>
+        </span>
+        <span class="ad-apps-date">Joined {p.joined}</span>
+        <span class={statusClass(p.status)}>{p.status}</span>
+      </li>
+    ))}
+  </ul>
+  )}
+</section>
+)}

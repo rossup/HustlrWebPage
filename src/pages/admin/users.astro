@@ -1,0 +1,82 @@
+---
+// /admin/users — everyone who has messaged the bot: add, edit, delete.
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import StatTiles from '../../components/admin/StatTiles.astro';
+import ManageTable, { type Field, type Row } from '../../components/admin/ManageTable.astro';
+import { fmt } from '../../data/admin';
+import { loadAdminData } from '../../lib/admin-data';
+import { manageList, when, type ManagedUser } from '../../lib/bot-manage';
+
+export const prerender = false;
+
+const [data, list] = await Promise.all([loadAdminData(), manageList<ManagedUser>('users')]);
+const users = list?.items ?? null;
+
+const LANGUAGES: Record<string, string> = { en: 'English', sn: 'Shona', nd: 'Ndebele' };
+const roleOf = (u: ManagedUser) => (u.role ? u.role.charAt(0).toUpperCase() + u.role.slice(1) : 'Customer');
+
+const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+const activeThisWeek = users?.filter((u) => u.last_active_at && new Date(u.last_active_at).getTime() >= weekAgo).length ?? 0;
+const off = users === null ? 'Bot backend not connected' : undefined;
+const value = (n: number) => (users === null ? '—' : fmt(n));
+
+const tiles = [
+  { label: 'All users', value: users === null ? '—' : fmt(list?.total ?? 0), note: off ?? 'Everyone who has messaged the bot' },
+  { label: 'Active this week', value: value(activeThisWeek), note: off ?? 'Messaged in the last 7 days' },
+  { label: 'Providers', value: value(users?.filter((u) => u.role === 'provider').length ?? 0), note: off ?? 'Users with the provider role' },
+  { label: 'Admins', value: value(users?.filter((u) => u.role === 'admin').length ?? 0), note: off ?? 'Users with the admin role' },
+];
+
+const rows: Row[] | null =
+  users?.map((u) => ({
+    id: u.id,
+    cells: [
+      { text: u.full_name || 'No name yet', sub: u.location ?? undefined, strong: true },
+      { text: u.phone ?? '—' },
+      { text: roleOf(u) },
+      { text: LANGUAGES[u.language ?? 'en'] ?? '—' },
+      { text: when(u.last_active_at ?? u.created_at, true), sub: `${fmt(u.interaction_count ?? 0)} messages` },
+    ],
+    record: { phone: u.phone, full_name: u.full_name, role: u.role, language: u.language ?? 'en', location: u.location },
+    actions: [
+      { label: 'Edit user', kind: 'edit' as const },
+      {
+        label: 'Delete permanently',
+        kind: 'delete' as const,
+        tone: 'danger' as const,
+        confirm: `Delete ${u.full_name || 'this user'} permanently?\n\nThis cannot be undone. Their bookings and chats stay, but are no longer linked to a user. If they message the bot again they start as a new user.`,
+      },
+    ],
+  })) ?? null;
+
+const fields: Field[] = [
+  { name: 'phone', label: 'WhatsApp number', type: 'tel', required: true, hint: 'With country code, e.g. 263771234567' },
+  { name: 'full_name', label: 'Name' },
+  {
+    name: 'role',
+    label: 'Role',
+    type: 'select',
+    options: [
+      { value: 'customer', label: 'Customer' },
+      { value: 'provider', label: 'Provider' },
+      { value: 'admin', label: 'Admin' },
+    ],
+  },
+  { name: 'language', label: 'Language', type: 'select', required: true, options: Object.entries(LANGUAGES).map(([v, label]) => ({ value: v, label })) },
+  { name: 'location', label: 'Location' },
+];
+---
+
+<AdminLayout title="Users" lead="Everyone who has messaged Hustlr on WhatsApp." active="users" data={data}>
+  <StatTiles slot="head" tiles={tiles} period={{ ...data.period, label: 'All time', range: '', compare: '' }} />
+
+  <ManageTable
+    resource="users"
+    title="All users"
+    noun="user"
+    columns={['Name', 'WhatsApp', 'Role', 'Language', 'Last active']}
+    rows={rows}
+    total={list?.total ?? 0}
+    fields={fields}
+  />
+</AdminLayout>
