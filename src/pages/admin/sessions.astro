@@ -1,0 +1,35 @@
+---
+// /admin/sessions — WhatsApp chat sessions: every conversation with the Hustlr bot and how it ended.
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import StatTiles from '../../components/admin/StatTiles.astro';
+import SessionsTable from '../../components/admin/SessionsTable.astro';
+import { fmt, pct, change } from '../../data/admin';
+import { loadAdminData } from '../../lib/admin-data';
+
+// Rendered on each request with live data (login checked in src/middleware.ts)
+export const prerender = false;
+
+const data = await loadAdminData();
+const { sessions } = data;
+const off = 'Bot backend not connected';
+
+const tiles = sessions
+  ? [
+      { label: 'Chat sessions', value: fmt(sessions.total), note: 'Conversations with the bot', change: change(sessions.total, sessions.totalPrev) },
+      { label: 'Ended in a booking', value: fmt(sessions.booked), note: `${pct(sessions.booked, sessions.total)}% of sessions` },
+      { label: 'Dropped', value: fmt(sessions.dropped), note: `${pct(sessions.dropped, sessions.total)}% left before booking` },
+      { label: 'Messages per session', value: sessions.avgMessages.toFixed(1), note: 'Average, both sides' },
+    ]
+  : [
+      { label: 'Chat sessions', value: '—', note: off },
+      { label: 'Ended in a booking', value: '—', note: off },
+      { label: 'Dropped', value: '—', note: off },
+      { label: 'Messages per session', value: '—', note: off },
+    ];
+---
+
+<AdminLayout title="Sessions" lead="Conversations with the Hustlr bot on WhatsApp, and how each one ended." active="sessions" data={data}>
+  <StatTiles slot="head" tiles={tiles} period={data.period} />
+
+  <SessionsTable rows={sessions?.recent ?? null} />
+</AdminLayout>

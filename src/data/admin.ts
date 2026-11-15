@@ -1,7 +1,7 @@
 // Shapes, helpers and sample data for the admin dashboard (/admin).
 //
 // Live numbers are loaded by src/lib/admin-data.ts from the WhatsApp bot backend (src/lib/bot-api.ts):
-// website visits, sessions, WhatsApp chats, bookings and providers.
+// website visits, sessions, WhatsApp chats, WhatsApp chat sessions, bookings and providers.
 // The SAMPLE data at the bottom is only used for local previews, when no database is reachable.
 
 export interface Period {
@@ -57,11 +57,43 @@ export interface Application {
   status: 'New' | 'Details requested';
 }
 
+/** How a WhatsApp chat session with the bot ended up */
+export type SessionOutcome = 'Booked' | 'In progress' | 'Dropped' | 'Provider sign-up';
+
+/** One conversation with the Hustlr bot on WhatsApp */
+export interface ChatSession {
+  ref: string;
+  /** First name and initial only */
+  customer: string;
+  /** When the conversation started, e.g. "Fri 13 Nov, 14:02" */
+  started: string;
+  /** How long from first to last message, e.g. "6 min" */
+  duration: string;
+  messages: number;
+  /** What they asked for, e.g. "Plumber" ("—" if never said) */
+  service: string;
+  area: string;
+  /** Website = the chat started from a button on the site (it carried a ref) */
+  source: 'Website' | 'WhatsApp';
+  outcome: SessionOutcome;
+}
+
+export interface SessionStats {
+  total: number;
+  totalPrev: number;
+  booked: number;
+  dropped: number;
+  /** Average messages per session */
+  avgMessages: number;
+  /** Most recent first */
+  recent: ChatSession[];
+}
+
 export interface AdminData {
   /** true = everything shown is sample data (local preview without a database) */
   sample: boolean;
   /** Which parts the bot backend is sending (false = shown as "not connected") */
-  connected: { visits: boolean; bookings: boolean };
+  connected: { visits: boolean; bookings: boolean; sessions: boolean };
   period: Period;
   kpis: Kpi[];
   daily: DailyChats[];
@@ -71,7 +103,11 @@ export interface AdminData {
   bookingsByArea: Row[] | null;
   bookings: Booking[] | null;
   applications: Application[] | null;
+  /** WhatsApp chat sessions; null = not connected yet */
+  sessions: SessionStats | null;
 }
+
+export const sessionOutcomes: SessionOutcome[] = ['In progress', 'Booked', 'Provider sign-up', 'Dropped'];
 
 export const bookingStatuses: BookingStatus[] = ['Pending', 'Confirmed', 'Completed', 'Cancelled'];
 
@@ -92,11 +128,11 @@ export const change = (value: number | null, previous: number | null): { text: s
 // ---------- SAMPLE DATA (local preview only) ----------
 export const sampleData: AdminData = {
   sample: true,
-  connected: { visits: true, bookings: true },
+  connected: { visits: true, bookings: true, sessions: true },
   period: { label: 'Last 7 days', range: '7 – 13 Nov 2026', compare: 'previous 7 days' },
   kpis: [
     { label: 'Unique visitors', value: 1842, previous: 1610, note: 'People who opened the website' },
-    { label: 'Sessions', value: 2316, previous: 2090, note: 'Visits, including repeat visits' },
+    { label: 'Website sessions', value: 2316, previous: 2090, note: 'Visits, including repeat visits' },
     { label: 'WhatsApp chats started', value: 274, previous: 231, note: 'Taps on a WhatsApp button' },
     { label: 'Bookings', value: 96, previous: 88, note: 'Confirmed in WhatsApp' },
   ],
@@ -151,4 +187,21 @@ export const sampleData: AdminData = {
     { business: 'PipeFix Zimbabwe', trade: 'Plumber', areas: 'Mutare & Rusape', applied: 'Wed 11 Nov', status: 'Details requested' },
     { business: 'Top Marks Tutoring', trade: 'Tutor', areas: 'Gweru & Kwekwe', applied: 'Tue 10 Nov', status: 'New' },
   ],
+  sessions: {
+    total: 318,
+    totalPrev: 276,
+    booked: 96,
+    dropped: 121,
+    avgMessages: 7.4,
+    recent: [
+      { ref: 'b7e2c901', customer: 'Tendai M.', started: 'Fri 13 Nov, 14:12', duration: '8 min', messages: 9, service: 'Plumber', area: 'Avondale, Harare', source: 'Website', outcome: 'Booked' },
+      { ref: '5d0a3f6e', customer: 'Kuda R.', started: 'Fri 13 Nov, 13:47', duration: '2 min', messages: 3, service: 'Electrician', area: '—', source: 'WhatsApp', outcome: 'Dropped' },
+      { ref: 'f19c4b27', customer: 'Rudo C.', started: 'Fri 13 Nov, 10:58', duration: '7 min', messages: 8, service: 'Cleaner', area: 'Hillside, Bulawayo', source: 'Website', outcome: 'Booked' },
+      { ref: '0e8d6a13', customer: 'Simba T.', started: 'Fri 13 Nov, 10:21', duration: '14 min', messages: 12, service: 'Electrician', area: 'Harare North', source: 'WhatsApp', outcome: 'Provider sign-up' },
+      { ref: '93ab17c4', customer: 'Farai N.', started: 'Fri 13 Nov, 09:31', duration: '9 min', messages: 10, service: 'Electrician', area: 'Borrowdale, Harare', source: 'WhatsApp', outcome: 'Booked' },
+      { ref: 'c4f05e82', customer: 'Ruvimbo K.', started: 'Fri 13 Nov, 08:55', duration: '3 min', messages: 5, service: 'Tutor', area: 'Mutare CBD', source: 'Website', outcome: 'In progress' },
+      { ref: '6a72d9b0', customer: 'Tafadzwa M.', started: 'Thu 12 Nov, 19:40', duration: '1 min', messages: 2, service: '—', area: '—', source: 'WhatsApp', outcome: 'Dropped' },
+      { ref: 'e3b8124f', customer: 'Nyasha K.', started: 'Thu 12 Nov, 17:18', duration: '11 min', messages: 11, service: 'Tutor', area: 'Mutare CBD', source: 'Website', outcome: 'Booked' },
+    ],
+  },
 };

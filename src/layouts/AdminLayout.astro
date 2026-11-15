@@ -14,7 +14,7 @@ interface Props {
   /** One line under the heading saying what the page is for. */
   lead?: string;
   /** Which sidebar link is the current page. */
-  active: 'overview' | 'chats' | 'breakdowns' | 'bookings' | 'providers';
+  active: 'overview' | 'chats' | 'sessions' | 'breakdowns' | 'bookings' | 'providers';
   /** Everything the dashboard shows (from src/lib/admin-data.ts) */
   data: AdminData;
 }
@@ -25,11 +25,13 @@ const adminEmail = Astro.locals.adminEmail;
 
 const pendingBookings = data.bookings?.filter((b) => b.status === 'Pending').length ?? 0;
 const waitingProviders = data.applications?.length ?? 0;
+const liveSessions = data.sessions?.recent.filter((s) => s.outcome === 'In progress').length ?? 0;
 
 // One sidebar link per admin page
 const sideLinks: { id: Props['active']; href: string; label: string; icon: AdminIconName; badge?: number; badgeLabel?: string }[] = [
   { id: 'overview', href: '/admin', label: 'Overview', icon: 'overview' },
   { id: 'chats', href: '/admin/chats', label: 'Chats', icon: 'chats' },
+  { id: 'sessions', href: '/admin/sessions', label: 'Sessions', icon: 'sessions', badge: liveSessions, badgeLabel: 'in progress' },
   { id: 'breakdowns', href: '/admin/breakdowns', label: 'Breakdowns', icon: 'breakdowns' },
   { id: 'bookings', href: '/admin/bookings', label: 'Bookings', icon: 'bookings', badge: pendingBookings, badgeLabel: 'pending' },
   { id: 'providers', href: '/admin/providers', label: 'Providers', icon: 'providers', badge: waitingProviders, badgeLabel: 'waiting for review' },
@@ -122,17 +124,21 @@ const sideLinks: { id: Props['active']; href: string; label: string; icon: Admin
       <main class="rd-wrap ad-main">
         {data.sample ? (
           <p class="rd-legal-note ad-sample">
-            <strong>Sample data, local preview only.</strong> No database is reachable here, so these numbers are made up.
-            The live site shows real visits from Netlify Database and never shows this sample.
+            <strong>Sample data, local preview only.</strong> The bot backend isn't connected here, so these numbers are made up.
+            The live site shows real numbers from the bot backend and never shows this sample.
           </p>
-        ) : !data.connected.visits || !data.connected.bookings ? (
+        ) : !data.connected.visits || !data.connected.bookings || !data.connected.sessions ? (
           <p class="rd-legal-note ad-sample">
             <strong>
-              {!data.connected.visits && !data.connected.bookings
+              {!data.connected.visits && !data.connected.bookings && !data.connected.sessions
                 ? 'The bot backend isn’t connected yet.'
-                : !data.connected.visits
-                  ? 'Website visits aren’t connected yet.'
-                  : 'Bookings and providers aren’t connected yet.'}
+                : `Not connected yet: ${[
+                    !data.connected.visits && 'website visits',
+                    !data.connected.bookings && 'bookings and providers',
+                    !data.connected.sessions && 'WhatsApp chat sessions',
+                  ]
+                    .filter(Boolean)
+                    .join(', ')}.`}
             </strong>
             Numbers appear here once the bot backend serves the admin API and <code>BOT_API_URL</code> and <code>BOT_API_KEY</code> are set in Netlify (see ANALYTICS.md).
           </p>

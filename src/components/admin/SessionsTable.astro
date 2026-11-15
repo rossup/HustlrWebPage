@@ -1,0 +1,88 @@
+---
+// WhatsApp chat sessions (conversations with the Hustlr bot), with an outcome filter.
+import { sessionOutcomes, statusClass, type ChatSession } from '../../data/admin';
+
+interface Props {
+  /** null = the bot backend isn't sending sessions yet */
+  rows: ChatSession[] | null;
+}
+
+const { rows: given } = Astro.props;
+const rows = given ?? [];
+---
+
+<section class="ad-card ad-bookings" aria-labelledby="ad-sessions-title">
+  <div class="ad-card-head">
+    <div>
+      <h2 id="ad-sessions-title">Recent sessions</h2>
+      <p><span id="adSessionCount">{rows.length}</span> shown · newest first</p>
+    </div>
+    {rows.length > 0 && (
+      <div class="ad-filters" role="group" aria-label="Filter sessions by outcome">
+        <button type="button" class="ad-chip ad-session-chip" data-filter="all" aria-pressed="true">All</button>
+        {sessionOutcomes.map((o) => (
+          <button type="button" class="ad-chip ad-session-chip" data-filter={o} aria-pressed="false">{o}</button>
+        ))}
+      </div>
+    )}
+  </div>
+
+  <div class="ad-table-wrap">
+    <table class="ad-table">
+      <thead>
+        <tr>
+          <th scope="col">Ref</th>
+          <th scope="col">Customer</th>
+          <th scope="col">Started</th>
+          <th scope="col">Asked for</th>
+          <th scope="col">Area</th>
+          <th scope="col" class="ad-num">Messages</th>
+          <th scope="col">Length</th>
+          <th scope="col">Came from</th>
+          <th scope="col">Outcome</th>
+        </tr>
+      </thead>
+      <tbody id="adSessionRows">
+        {rows.map((s) => (
+          <tr data-status={s.outcome}>
+            <td><span class="ad-ref">{s.ref}</span></td>
+            <td><strong>{s.customer}</strong></td>
+            <td class="ad-nowrap">{s.started}</td>
+            <td>{s.service}</td>
+            <td>{s.area}</td>
+            <td class="ad-num">{s.messages}</td>
+            <td class="ad-nowrap">{s.duration}</td>
+            <td>{s.source}</td>
+            <td><span class={statusClass(s.outcome)}>{s.outcome}</span></td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <p class="ad-empty" id="adSessionEmpty" hidden={rows.length > 0}>
+      {given === null ? 'Not connected yet: WhatsApp chat sessions come from the bot backend.' : rows.length === 0 ? 'No chat sessions in this period yet.' : 'No sessions with this outcome in the period.'}
+    </p>
+  </div>
+</section>
+
+<script>
+  // Filter the sessions table by outcome
+  const chips = document.querySelectorAll<HTMLButtonElement>('.ad-session-chip');
+  const rows = document.querySelectorAll<HTMLTableRowElement>('#adSessionRows tr');
+  const count = document.getElementById('adSessionCount');
+  const empty = document.getElementById('adSessionEmpty');
+
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      const filter = chip.dataset.filter;
+      let shown = 0;
+      rows.forEach((row) => {
+        const show = filter === 'all' || row.dataset.status === filter;
+        row.hidden = !show;
+        if (show) shown += 1;
+      });
+      chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+      if (count) count.textContent = String(shown);
+      if (empty) empty.hidden = shown > 0;
+    });
+  });
+</script>

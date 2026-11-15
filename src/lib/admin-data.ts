@@ -33,11 +33,11 @@ export async function loadAdminData(): Promise<AdminData> {
   const off = 'Bot backend not connected';
   return {
     sample: false,
-    connected: { visits: !!visits, bookings: !!bot },
+    connected: { visits: !!visits, bookings: !!bot, sessions: !!summary?.sessions },
     period: { label: 'Last 7 days', range: rangeFmt.formatRange(win.from, win.to), compare: 'previous 7 days' },
     kpis: [
       { label: 'Unique visitors', value: visits?.visitors ?? null, previous: visits?.visitorsPrev ?? null, note: visits ? 'People who opened the website' : off },
-      { label: 'Sessions', value: visits?.sessions ?? null, previous: visits?.sessionsPrev ?? null, note: visits ? 'Visits, including repeat visits' : off },
+      { label: 'Website sessions', value: visits?.sessions ?? null, previous: visits?.sessionsPrev ?? null, note: visits ? 'Visits, including repeat visits' : off },
       { label: 'WhatsApp chats started', value: visits?.chats ?? null, previous: visits?.chatsPrev ?? null, note: visits ? 'Taps on a WhatsApp button' : off },
       { label: 'Bookings', value: bot?.bookings ?? null, previous: bot?.bookingsPrev ?? null, note: bot ? 'Made in WhatsApp' : off },
     ],
@@ -53,5 +53,6 @@ export async function loadAdminData(): Promise<AdminData> {
     bookingsByArea: bot?.byArea ?? null,
     bookings: bot?.recent.slice(0, 50) ?? null,
     applications: bot?.applications ?? null,
+    sessions: summary?.sessions ? { ...summary.sessions, recent: summary.sessions.recent.slice(0, 100) } : null,
   };
 }

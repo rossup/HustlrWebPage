@@ -9,7 +9,7 @@
 //   BOT_API_URL   e.g. https://api.hustlr.chat
 //   BOT_API_KEY   a long random secret, the same value the bot backend checks
 // This site only calls the bot from its server, so the key never reaches a visitor's browser.
-import type { Application, Booking, Row } from '../data/admin';
+import type { Application, Booking, Row, SessionStats } from '../data/admin';
 import type { Window } from './visits';
 
 export interface VisitData {
@@ -40,10 +40,12 @@ export interface BookingData {
   applications: Application[];
 }
 
-/** Each part is optional, so the bot can ship visits and bookings separately. */
+/** Each part is optional, so the bot can ship visits, bookings and sessions separately. */
 export interface BotSummary {
   visits?: VisitData;
   bookings?: BookingData;
+  /** WhatsApp chat sessions (conversations with the bot) */
+  sessions?: SessionStats;
 }
 
 const TIMEOUT_MS = 8000;
@@ -70,6 +72,21 @@ const validBookings = (b: any): b is BookingData =>
   isRows(b.byArea) &&
   Array.isArray(b.applications);
 
+const OUTCOMES = new Set(['Booked', 'In progress', 'Dropped', 'Provider sign-up']);
+const validSessions = (x: any): x is SessionStats =>
+  !!x &&
+  [x.total, x.totalPrev, x.booked, x.dropped, x.avgMessages].every(isNum) &&
+  Array.isArray(x.recent) &&
+  x.recent.every(
+    (s: any) =>
+      s &&
+      typeof s.ref === 'string' &&
+      typeof s.customer === 'string' &&
+      typeof s.started === 'string' &&
+      isNum(s.messages) &&
+      OUTCOMES.has(s.outcome),
+  );
+
 /** Returns null when the bot backend isn't configured yet. Throws when it is but the call fails. */
 export async function loadBotSummary(win: Window): Promise<BotSummary | null> {
   const base = botEnv('BOT_API_URL');
@@ -94,5 +111,7 @@ export async function loadBotSummary(win: Window): Promise<BotSummary | null> {
   else if (body.visits !== undefined) console.error('[admin] bot API: unexpected shape for "visits"');
   if (validBookings(body.bookings)) summary.bookings = body.bookings;
   else if (body.bookings !== undefined) console.error('[admin] bot API: unexpected shape for "bookings"');
+  if (validSessions(body.sessions)) summary.sessions = body.sessions;
+  else if (body.sessions !== undefined) console.error('[admin] bot API: unexpected shape for "sessions"');
   return summary;
 }

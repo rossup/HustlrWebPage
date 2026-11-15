@@ -718,6 +718,7 @@ html[data-ad-side='collapsed'] .ad-side-link:focus-visible .ad-side-tip {
 .ad-table th:last-child,
 .ad-table td:last-child { padding-right: 0; }
 .ad-nowrap { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.ad-table .ad-num { text-align: right; font-variant-numeric: tabular-nums; }
 .ad-ref {
   padding: 2px 6px;
   border-radius: 5px;
@@ -756,6 +757,12 @@ html[data-ad-side='collapsed'] .ad-side-link:focus-visible .ad-side-tip {
 .ad-status--new::before { background: #1fa855; }
 .ad-status--completed::before { background: var(--ink); }
 .ad-status--cancelled::before { background: #c8442b; }
+/* WhatsApp chat session outcomes */
+.ad-status--booked::before { background: #1fa855; }
+.ad-status--in-progress::before { background: var(--yellow); box-shadow: 0 0 0 1px rgba(11, 31, 22, 0.3); }
+.ad-status--provider-sign-up::before { background: var(--ink); }
+.ad-status--dropped::before { background: #c8442b; }
+.ad-status--dropped { color: var(--ad-muted); }
 .ad-status--cancelled { color: var(--ad-muted); }
 
 /* ---------- Provider applications ---------- */

@@ -131,8 +131,9 @@ Answer quickly; the website waits at most 4 seconds and never retries.
 ### 2. `GET /admin/summary?from=…&prevFrom=…&to=…`: the dashboard numbers
 
 `from` → `to` is the current 7-day window (Harare midnight 6 days ago until now); `prevFrom` → `from` is the
-7 days before, for comparisons. All three are ISO times. Answer `200` with JSON. Both parts are optional, so you
-can ship one before the other; a missing or malformed part shows as "not connected".
+7 days before, for comparisons. All three are ISO times. Answer `200` with JSON. Every part (`visits`,
+`bookings`, `sessions`) is optional, so you can ship them one at a time; a missing or malformed part shows as
+"not connected".
 
 ```json
 {
@@ -154,6 +155,13 @@ can ship one before the other; a missing or malformed part shows as "not connect
     "applications": [
       { "business": "Mhofu Electrical", "trade": "Electrician", "areas": "Harare North", "applied": "Fri 13 Nov", "status": "New" }
     ]
+  },
+  "sessions": {
+    "total": 318, "totalPrev": 276, "booked": 96, "dropped": 121, "avgMessages": 7.4,
+    "recent": [
+      { "ref": "b7e2c901", "customer": "Tendai M.", "started": "Fri 13 Nov, 14:12", "duration": "8 min",
+        "messages": 9, "service": "Plumber", "area": "Avondale, Harare", "source": "Website", "outcome": "Booked" }
+    ]
   }
 }
 ```
@@ -166,4 +174,11 @@ can ship one before the other; a missing or malformed part shows as "not connect
   `recent` is newest first, at most 50; `status` is `Pending`, `Confirmed`, `Completed` or `Cancelled`; `source` is
   `Website` when the chat carried a `(ref …)` from the site, otherwise `WhatsApp`. Show customers by first name and
   initial only. `applications` are providers waiting for approval, `status` `New` or `Details requested`.
+- `sessions`: WhatsApp chat sessions, i.e. conversations with the bot that **started** in the window. Decide in
+  the bot when a session ends (for example 30 minutes without a message). `total` / `totalPrev` count sessions in
+  each window; `booked` = sessions that ended in a booking; `dropped` = sessions that ended without a booking or a
+  provider sign-up; `avgMessages` = average messages per session, both sides. `recent` is newest first, at most 100.
+  `outcome` is `Booked`, `In progress`, `Dropped` or `Provider sign-up`; `service` and `area` are what the person
+  asked for (`—` if they never said); `source` is `Website` when the first message carried a `(ref …)`. Show customers
+  by first name and initial only, and don't send message contents.
 - Keep it fast: the page waits at most 8 seconds.
