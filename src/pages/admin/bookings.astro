@@ -56,7 +56,17 @@ const tiles = (bookingStatuses as string[]).map((s) => ({
 }));
 
 function actionsFor(b: ManagedBooking): RowAction[] {
-  const actions: RowAction[] = [{ label: 'Edit booking', kind: 'edit' }];
+  const actions: RowAction[] = [];
+  if (groupOf(b) === 'Pending') {
+    actions.push({
+      label: 'Accept',
+      kind: 'patch',
+      patch: { status: 'accepted' },
+      tone: 'good',
+      primary: true,
+    });
+  }
+  actions.push({ label: 'Edit booking', kind: 'edit' });
   if (groupOf(b) !== 'Cancelled' && groupOf(b) !== 'Completed') {
     actions.push({
       label: 'Cancel booking',

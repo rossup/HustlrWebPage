@@ -245,3 +245,6 @@
 {"message":"[200] /admin/bookings 2988ms","label":null,"level":"info"}
 {"message":"[200] /admin/bookings 3738ms","label":null,"level":"info"}
 {"message":"[200] /admin/providers 3137ms","label":null,"level":"info"}
+{"message":"[200] /login 75ms","label":null,"level":"info"}
+{"message":"[200] /api/auth/me 1ms","label":null,"level":"info"}
+{"message":"[200] /admin/providers 5487ms","label":null,"level":"info"}
