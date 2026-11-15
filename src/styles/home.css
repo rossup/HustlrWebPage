@@ -459,6 +459,18 @@ ol {
   color: var(--green);
 }
 .menu-foot:hover { background: var(--panel); }
+/* Services menu: town links */
+.menu-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 10px 12px;
+}
+.menu-links span { margin-right: 6px; font-size: 12px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #5b6e64; }
+.menu-links a { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); font-size: 13.5px; font-weight: 700; }
+.menu-links a:hover { background: var(--page); }
 
 /* Mobile menu */
 .nav-panel {

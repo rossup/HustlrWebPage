@@ -6,6 +6,7 @@ import { ACTIVE_TRADES, ACTIVE_CITIES, hirePath, hireCanonicalPath } from '../da
 const paths = [
   '/',
   '/workers',
+  '/hire',
   ...seoServices.map((s) => `/${s.slug}`),
   ...seoCities.map((c) => `/areas/${c.slug}`),
   ...seoServices.flatMap((s) => seoCities.map((c) => `/${s.slug}/${c.slug}`)),

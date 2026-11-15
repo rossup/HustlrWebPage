@@ -1,0 +1,114 @@
+---
+// /hire: one page that links every service, town and trade page, so people (and crawlers)
+// can reach any of them from the nav or footer in one click.
+import HomeLayout from '../../layouts/HomeLayout.astro';
+import SiteNav from '../../components/SiteNav.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import { WA, waIcon } from '../../data/site';
+import { SITE_URL, PHONE, seoServices, seoCities } from '../../data/seo';
+import { ACTIVE_TRADES, ACTIVE_CITIES, hirePath } from '../../data/tradeCityData';
+import '../../styles/redesign.css';
+import '../../styles/landing.css';
+
+const pageUrl = `${SITE_URL}/hire`;
+const schema = {
+  '@graph': [
+    {
+      '@type': 'CollectionPage',
+      '@id': `${pageUrl}#page`,
+      url: pageUrl,
+      name: 'Find skilled workers by trade and city',
+      isPartOf: { '@id': `${SITE_URL}/#website` },
+      about: { '@id': `${SITE_URL}/#organization` },
+      breadcrumb: { '@id': `${pageUrl}#breadcrumb` },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${pageUrl}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Hustlr Zimbabwe', item: `${SITE_URL}/` },
+        { '@type': 'ListItem', position: 2, name: 'Find a pro', item: pageUrl },
+      ],
+    },
+  ],
+};
+---
+
+<HomeLayout
+  title="Find Skilled Workers by Trade and City | Hustlr Zimbabwe"
+  description="Plumbers, electricians, solar installers, tilers, painters, mechanics, cleaners and tutors in Harare, Bulawayo and across Zimbabwe. Pick a trade and town, then book on WhatsApp."
+  schema={schema}
+>
+  <SiteNav />
+
+  <header class="rd-page-head lp-head" id="top">
+    <div class="rd-wrap lp-head-inner">
+      <div class="lp-head-copy">
+        <nav class="lp-crumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Hustlr Zimbabwe</a></li>
+            <li><span aria-current="page">Find a pro</span></li>
+          </ol>
+        </nav>
+        <p class="rd-eyebrow">Every trade · Every town</p>
+        <h1>Find a skilled worker near you.</h1>
+        <p class="lp-lead">Pick your trade and town to see what you can book, or just describe the job on WhatsApp and Hustlr finds who does it.</p>
+        <div class="lp-actions">
+          <a href={WA} class="rd-btn rd-btn--yellow" target="_blank" rel="noopener" data-placement="page"><Fragment set:html={waIcon} />Chat on WhatsApp</a>
+          <span>or save <strong>{PHONE}</strong></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="rd-wrap lp-main">
+    <section aria-labelledby="by-city">
+      <h2 class="rd-h2 lp-h2" id="by-city">Trades by city</h2>
+      <div class="lp-split lp-hub">
+        {ACTIVE_CITIES.map((c) => (
+          <div class="lp-card">
+            <h3>{c.name}</h3>
+            <ul class="lp-hub-list">
+              {ACTIVE_TRADES.map((t) => (
+                <li><a href={hirePath(t, c)}>{t.plural} in {c.name}</a></li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="rd-section" aria-labelledby="by-service">
+      <h2 class="rd-h2 lp-h2" id="by-service">Services across Zimbabwe</h2>
+      <ul class="lp-links">
+        {seoServices.map((s) => (
+          <li>
+            <a href={`/${s.slug}`}>
+              <span><strong>{s.plural}</strong><small>{s.summary}</small></span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <nav class="rd-section lp-more" aria-labelledby="by-town">
+      <h2 id="by-town">Services by town</h2>
+      <ul>
+        {seoCities.map((c) => <li><a href={`/areas/${c.slug}`}>{c.name}</a></li>)}
+      </ul>
+    </nav>
+
+    <section class="rd-section">
+      <div class="rd-cta">
+        <h2>Are you a skilled worker?</h2>
+        <div class="rd-cta-side">
+          <a href="/workers" class="rd-btn rd-btn--dark">See how to join</a>
+          <span>Free to register on WhatsApp</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <SiteFooter />
+</HomeLayout>

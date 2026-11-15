@@ -3,6 +3,7 @@
 // The bar is see-through over a dark top section with id="top",
 // then turns light once you scroll past it.
 import { WA, WA_PROVIDER, waIcon, steps, services, proBenefits } from '../data/site';
+import { seoCities } from '../data/seo';
 ---
 
     <header class="nav" id="siteNav">
@@ -22,11 +23,12 @@ import { WA, WA_PROVIDER, waIcon, steps, services, proBenefits } from '../data/s
         <button class="nav-trigger" type="button" data-menu="menu-providers" data-section="for-providers" aria-expanded="false" aria-controls="menu-providers">
           Providers <svg class="nav-chevron" width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 4.5 3 3 3-3"/></svg>
         </button>
+        <a class="nav-trigger" href="/hire">Find a pro</a>
         <a class="nav-trigger" href="/#questions" data-section="questions">Questions</a>
       </nav>
 
       <div class="nav-right">
-        <a href={WA_PROVIDER} class="nav-ghost" target="_blank" rel="noopener">Join as a provider</a>
+        <a href="/workers" class="nav-ghost">For workers</a>
         <a href={WA} class="btn btn--yellow btn--sm nav-cta" target="_blank" rel="noopener">
           <Fragment set:html={waIcon} />
           <span>Chat on WhatsApp</span>
@@ -53,7 +55,7 @@ import { WA, WA_PROVIDER, waIcon, steps, services, proBenefits } from '../data/s
     <div class="nav-menu" id="menu-services" hidden>
       <div class="menu-grid menu-grid--services">
         {services.map((sv) => (
-          <a class="menu-service" href={`${WA}?text=${encodeURIComponent(sv.ask)}`} target="_blank" rel="noopener">
+          <a class="menu-service" href={`/${sv.id}`}>
             <span class="menu-icon" aria-hidden="true">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={sv.icon} />
             </span>
@@ -64,7 +66,11 @@ import { WA, WA_PROVIDER, waIcon, steps, services, proBenefits } from '../data/s
           </a>
         ))}
       </div>
-      <a href={WA} class="menu-foot" target="_blank" rel="noopener">Something else? Describe any job in the chat <span aria-hidden="true">&rarr;</span></a>
+      <div class="menu-links" aria-label="Services by town">
+        <span>By town</span>
+        {seoCities.map((c) => <a href={`/areas/${c.slug}`}>{c.name}</a>)}
+      </div>
+      <a href="/hire" class="menu-foot">All trades: solar, tiling, painting, mechanics and more <span aria-hidden="true">&rarr;</span></a>
     </div>
 
     <div class="nav-menu" id="menu-providers" hidden>
@@ -89,14 +95,15 @@ import { WA, WA_PROVIDER, waIcon, steps, services, proBenefits } from '../data/s
           ))}
         </ul>
       </div>
-      <a href="/#for-providers" class="menu-foot">How Hustlr works for providers <span aria-hidden="true">&rarr;</span></a>
+      <a href="/workers" class="menu-foot">How to join, step by step <span aria-hidden="true">&rarr;</span></a>
     </div>
 
     <!-- Mobile menu -->
     <div class="nav-panel" id="navPanel" hidden>
       <a href="/#how-it-works">How it works</a>
+      <a href="/hire">Find a pro</a>
       <a href="/#services">Services</a>
-      <a href="/#for-providers">Providers</a>
+      <a href="/workers">For skilled workers</a>
       <a href="/#questions">Questions</a>
       <div class="nav-panel-actions">
         <a href={WA_PROVIDER} class="nav-panel-secondary" target="_blank" rel="noopener">Join as a provider &rarr;</a>

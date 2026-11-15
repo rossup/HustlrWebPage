@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build && node scripts/audit-seo.mjs",
+    "gen:og": "node scripts/generate-og.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "audit:seo": "node scripts/audit-seo.mjs"
