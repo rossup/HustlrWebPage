@@ -89,7 +89,8 @@ const sideLinks: { id: Props['active']; href: string; label: string; icon: Admin
           <span class="ad-side-text">Hustlr on WhatsApp</span>
           <span class="ad-side-tip" aria-hidden="true">Hustlr on WhatsApp</span>
         </a>
-        {!data.sample && (
+        {/* Hidden only when nobody is signed in: local `astro dev` without the Supabase settings */}
+        {(!data.sample || adminEmail) && (
           <button class="ad-side-link ad-side-logout" type="button" id="adLogout">
             <span class="ad-side-icon"><Fragment set:html={adminIcons.logout} /></span>
             <span class="ad-side-text">Sign out{adminEmail ? <small>{adminEmail}</small> : null}</span>
