@@ -3,32 +3,8 @@
 {"message":"Environment loaded","label":"vite","level":"info"}
 {"message":"Middleware loaded. Emulating features: aiGateway, blobs, database, functions, geolocation, headers, images, redirects, server, static.","label":"vite","level":"info"}
 {"message":"💭 Linking this project to a Netlify site lets you deploy your site, use any environment variables defined on your team and site and much more. Run npx netlify init to get started.","label":"vite","level":"info"}
-{"message":"Generated 6ms","label":"types","level":"info"}
+{"message":"Generated 3ms","label":"types","level":"info"}
 {"message":"connected.","label":"vite","level":"info"}
-{"message":" astro  v7.4.11 ready in 12534 ms\n┃ Local    http://localhost:4321/\n┃ Network  use --host to expose","label":"SKIP_FORMAT","level":"info"}
+{"message":" astro  v7.4.11 ready in 9079 ms\n┃ Local    http://localhost:4321/\n┃ Network  use --host to expose","label":"SKIP_FORMAT","level":"info"}
 {"message":"watching for file changes...","label":null,"level":"info"}
-{"message":"[302] /admin 71ms","label":null,"level":"info"}
-{"message":"[200] /login 122ms","label":null,"level":"info"}
-{"message":"[401] POST /api/auth/login 798ms","label":null,"level":"info"}
-{"message":"[200] /login 12ms","label":null,"level":"info"}
-{"message":"[200] /api/auth/me 2ms","label":null,"level":"info"}
-{"message":"[200] /login 10ms","label":null,"level":"info"}
-{"message":"[200] /api/auth/me 4ms","label":null,"level":"info"}
-{"message":"[401] POST /api/auth/login 939ms","label":null,"level":"info"}
-{"message":"[401] POST /api/auth/login 443ms","label":null,"level":"info"}
-{"message":"[200] POST /api/auth/recover 670ms","label":null,"level":"info"}
-{"message":"[200] /login 5ms","label":null,"level":"info"}
-{"message":"[200] POST /api/auth/password 798ms","label":null,"level":"info"}
-{"message":"[200] /admin 318ms","label":null,"level":"info"}
-{"message":"[200] /admin/sessions 401ms","label":null,"level":"info"}
-{"message":"[200] /admin/bookings 428ms","label":null,"level":"info"}
-{"message":"[200] POST /api/auth/login 336ms","label":null,"level":"info"}
-{"message":"[200] /admin 268ms","label":null,"level":"info"}
-{"message":".env changed, restarting server...","label":"vite","level":"info"}
-{"message":"connected.","label":"vite","level":"info"}
-{"message":"⚠ Warning: Multiple instances of @netlify/vite-plugin have been loaded. This may cause unexpected behavior if the plugin is configured differently in each instance. If you have one instance of this plugin in your Vite config, you may safely remove it.","label":"vite","level":"warn"}
-{"message":"Environment loaded","label":"vite","level":"info"}
-{"message":"Middleware loaded. Emulating features: aiGateway, blobs, database, functions, geolocation, headers, images, redirects, server, static.","label":"vite","level":"info"}
-{"message":"💭 Linking this project to a Netlify site lets you deploy your site, use any environment variables defined on your team and site and much more. Run npx netlify init to get started.","label":"vite","level":"info"}
-{"message":"connected.","label":"vite","level":"info"}
-{"message":"server restarted.","label":"vite","level":"info"}
+{"message":"[302] /admin 103ms","label":null,"level":"info"}
