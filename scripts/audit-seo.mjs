@@ -252,6 +252,14 @@ function main() {
     for (const p of PLACEHOLDERS) if (llms.includes(p)) fail('dist/llms.txt', `contains placeholder or dev address "${p}"`);
   }
 
+  // ---------- IndexNow key file: must ship with every deploy ----------
+  const keyFiles = fs.readdirSync(DIST).filter((f) => /^[0-9a-f]{32}\.txt$/.test(f));
+  if (keyFiles.length === 0) fail('dist/', 'no IndexNow key file (32-character hex <key>.txt from public/)');
+  for (const f of keyFiles) {
+    const content = fs.readFileSync(path.join(DIST, f), 'utf-8');
+    if (content !== f.replace(/\.txt$/, '')) fail(`dist/${f}`, 'must contain exactly its own key, with no spaces or newlines');
+  }
+
   // ---------- 3. robots.txt ----------
   const robotsFile = path.join(DIST, 'robots.txt');
   if (!fs.existsSync(robotsFile)) fail('dist/robots.txt', 'missing');

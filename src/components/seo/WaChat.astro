@@ -1,0 +1,33 @@
+---
+// A small WhatsApp window used in the hero of the search and sign-up pages:
+// shows the kind of message people send, so the page opens like a chat already started.
+interface Message {
+  from: 'out' | 'in';
+  text: string;
+  /** BCP 47 language tag when the message isn't English (sn, nd) */
+  lang?: string;
+}
+interface Props {
+  caption: string;
+  messages: Message[];
+}
+const { caption, messages } = Astro.props;
+const times = ['09:41', '09:41', '09:42', '09:42'];
+const ticks = '<svg width="16" height="11" viewBox="0 0 16 11" aria-hidden="true"><path d="M1 5.6 3.8 8.4 10 2.2M6.2 8.4 12.4 2.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+---
+
+<figure class="lp-wa">
+  <div class="lp-wa-head" aria-hidden="true">
+    <span class="lp-wa-avatar">H</span>
+    <span class="lp-wa-name">Hustlr<small>online</small></span>
+  </div>
+  <div class="lp-wa-body">
+    <figcaption class="lp-wa-caption">{caption}</figcaption>
+    {messages.map((m, i) => (
+      <p class:list={['lp-wa-msg', `lp-wa-msg--${m.from}`]} lang={m.lang}>
+        <span>{m.text}</span>
+        <span class="lp-wa-meta" aria-hidden="true">{times[i] ?? '09:42'}{m.from === 'out' && <Fragment set:html={ticks} />}</span>
+      </p>
+    ))}
+  </div>
+</figure>

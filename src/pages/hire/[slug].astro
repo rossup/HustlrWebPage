@@ -6,6 +6,8 @@ import SiteFooter from '../../components/SiteFooter.astro';
 import { WA, waIcon } from '../../data/site';
 import { SITE_URL, PHONE } from '../../data/seo';
 import { ACTIVE_TRADES, ACTIVE_CITIES, buildTradeCitySchema, buildTradeCityFaqs, hirePath, hireCanonicalPath, type TradeInfo, type CityInfo } from '../../data/tradeCityData';
+import WaChat from '../../components/seo/WaChat.astro';
+import { steps } from '../../data/site';
 import '../../styles/redesign.css';
 import '../../styles/landing.css';
 
@@ -67,16 +69,14 @@ const suburbList = `${city.suburbs.slice(0, -1).join(', ')} and ${city.suburbs[c
         </div>
       </div>
 
-      <figure class="lp-chat" aria-label="Example messages">
-        <figcaption>Ask in your language</figcaption>
-        <p class="lp-bubble lp-bubble--out">{example}</p>
-        {city.primaryVernacular === 'sn' ? (
-          <p class="lp-bubble lp-bubble--out" lang="sn">{trade.shona}</p>
-        ) : (
-          <p class="lp-bubble lp-bubble--out" lang="nd">{trade.ndebele}</p>
-        )}
-        <p class="lp-bubble lp-bubble--in">Got it. Here are {trade.plural.toLowerCase()} who cover your area.</p>
-      </figure>
+      <WaChat
+        caption="Ask in your language"
+        messages={[
+          { from: 'out', text: example },
+          city.primaryVernacular === 'sn' ? { from: 'out', text: trade.shona, lang: 'sn' } : { from: 'out', text: trade.ndebele, lang: 'nd' },
+          { from: 'in', text: `Got it. Here are ${trade.plural.toLowerCase()} who cover your area.` },
+        ]}
+      />
     </div>
   </header>
 
@@ -95,15 +95,30 @@ const suburbList = `${city.suburbs.slice(0, -1).join(', ')} and ${city.suburbs[c
         <ul class="lp-areas">
           {city.suburbs.map((s) => <li>{s}</li>)}
         </ul>
-        <h3 class="lp-price-title">Price</h3>
-        {rate ? (
-          <p class="lp-small">
-            Typically <strong>{rate}</strong>. You agree the final price with the provider before work starts.
-          </p>
-        ) : (
-          <p class="lp-small">Asking Hustlr is free. You agree the price for the job with the provider before any work starts.</p>
-        )}
       </div>
+    </section>
+
+    <p class="lp-note">
+      <span class="lp-note-label">Price</span>
+      {rate ? (
+        <span>Typically <strong>{rate}</strong>. You agree the final price with the provider before work starts.</span>
+      ) : (
+        <span>Asking Hustlr is free. You agree the price for the job with the provider before any work starts.</span>
+      )}
+    </p>
+
+    <section class="rd-section" aria-labelledby="lp-how">
+      <span class="rd-pill">How it works</span>
+      <h2 class="rd-h2 lp-h2" id="lp-how">Booked in three messages</h2>
+      <ol class="lp-steps">
+        {steps.map((st) => (
+          <li>
+            <span class="lp-step-n">{st.n.padStart(2, '0')}</span>
+            <h3>{st.title}</h3>
+            <p>{st.text}</p>
+          </li>
+        ))}
+      </ol>
     </section>
 
     <section class="rd-section rd-faq" id="questions" aria-labelledby="local-faq-heading">
@@ -122,11 +137,20 @@ const suburbList = `${city.suburbs.slice(0, -1).join(', ')} and ${city.suburbs[c
       </div>
     </section>
 
-    <nav class="rd-section lp-more" aria-label="More trades and cities">
-      <h2>More on Hustlr</h2>
-      <ul>
-        {[...sameTradeElsewhere, ...otherTradesHere].map((l) => <li><a href={l.href}>{l.label}</a></li>)}
-      </ul>
+    <nav class="rd-section lp-more lp-more--split" aria-label="More trades and cities">
+      <div>
+        <h2>Other trades in {city.name}</h2>
+        <ul>
+          {otherTradesHere.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+        </ul>
+      </div>
+      <div>
+        <h2>{trade.plural} in other cities</h2>
+        <ul>
+          {sameTradeElsewhere.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+          <li><a href="/hire">All trades and cities</a></li>
+        </ul>
+      </div>
     </nav>
 
     <section class="rd-section">

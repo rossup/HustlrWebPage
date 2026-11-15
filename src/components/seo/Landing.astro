@@ -6,6 +6,7 @@ import SiteFooter from '../SiteFooter.astro';
 import { waIcon, steps } from '../../data/site';
 import { PHONE } from '../../data/seo';
 import type { Landing } from '../../lib/landing';
+import WaChat from './WaChat.astro';
 import '../../styles/redesign.css';
 import '../../styles/landing.css';
 
@@ -41,11 +42,13 @@ const arrow = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" strok
         </div>
       </div>
 
-      <figure class="lp-chat" aria-label="Example message">
-        <figcaption>Just type it, for example</figcaption>
-        <p class="lp-bubble lp-bubble--out">{page.example}</p>
-        <p class="lp-bubble lp-bubble--in">Got it. Here are providers who cover your area. Reply with a number to see their profile.</p>
-      </figure>
+      <WaChat
+        caption="Just type it, for example"
+        messages={[
+          { from: 'out', text: page.example },
+          { from: 'in', text: 'Got it. Here are providers who cover your area. Reply with a number to see their profile.' },
+        ]}
+      />
     </div>
   </header>
 
@@ -79,7 +82,7 @@ const arrow = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" strok
       <ol class="lp-steps">
         {steps.map((st) => (
           <li>
-            <span class="lp-step-n">{st.n}</span>
+            <span class="lp-step-n">{st.n.padStart(2, '0')}</span>
             <h3>{st.title}</h3>
             <p>{st.text}</p>
           </li>

@@ -7,6 +7,7 @@ import { WA, waIcon } from '../data/site';
 import { PHONE } from '../data/seo';
 import { ACTIVE_TRADES } from '../data/tradeCityData';
 import { WORKER_STEPS, WORKER_FAQS, WORKER_WA_TEXT, buildWorkersPageSchema } from '../data/workersSeo';
+import WaChat from '../components/seo/WaChat.astro';
 import '../styles/redesign.css';
 import '../styles/landing.css';
 
@@ -46,11 +47,13 @@ const registerHref = `${waBase}?text=${encodeURIComponent(WORKER_WA_TEXT)}`;
         </div>
       </div>
 
-      <figure class="lp-chat" aria-label="Example sign-up message">
-        <figcaption>Start with one message</figcaption>
-        <p class="lp-bubble lp-bubble--out">{WORKER_WA_TEXT}</p>
-        <p class="lp-bubble lp-bubble--in">Welcome! Which trade do you do, and which town and suburbs do you work in?</p>
-      </figure>
+      <WaChat
+        caption="Start with one message"
+        messages={[
+          { from: 'out', text: WORKER_WA_TEXT },
+          { from: 'in', text: 'Welcome! Which trade do you do, and which town and suburbs do you work in?' },
+        ]}
+      />
     </div>
   </header>
 
@@ -61,7 +64,7 @@ const registerHref = `${waBase}?text=${encodeURIComponent(WORKER_WA_TEXT)}`;
       <ol class="lp-steps">
         {WORKER_STEPS.map((s) => (
           <li>
-            <span class="lp-step-n">{s.step}</span>
+            <span class="lp-step-n">{String(s.step).padStart(2, '0')}</span>
             <h3>{s.title}</h3>
             <p>{s.detail}</p>
           </li>
