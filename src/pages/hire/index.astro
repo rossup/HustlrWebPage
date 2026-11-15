@@ -7,6 +7,7 @@ import SiteFooter from '../../components/SiteFooter.astro';
 import { WA, waIcon } from '../../data/site';
 import { SITE_URL, PHONE, seoServices, seoCities } from '../../data/seo';
 import { ACTIVE_TRADES, ACTIVE_CITIES, hirePath } from '../../data/tradeCityData';
+import WaChat from '../../components/seo/WaChat.astro';
 import '../../styles/redesign.css';
 import '../../styles/landing.css';
 
@@ -58,6 +59,14 @@ const schema = {
           <span>or save <strong>{PHONE}</strong></span>
         </div>
       </div>
+
+      <WaChat
+        caption="Not sure who you need?"
+        messages={[
+          { from: 'out', text: 'Water is leaking under my kitchen sink in Hillside' },
+          { from: 'in', text: 'That’s a job for a plumber. Here are plumbers who cover Hillside, Bulawayo.' },
+        ]}
+      />
     </div>
   </header>
 
