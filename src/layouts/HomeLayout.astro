@@ -83,6 +83,7 @@ const jsonLd = {
     <meta name="description" content={description} />
     {noindex ? <meta name="robots" content="noindex, nofollow" /> : <meta name="robots" content="index, follow, max-image-preview:large" />}
     {!noindex && <link rel="canonical" href={canonical} />}
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM context" />
     <meta name="theme-color" content="#0b1f16" />
     <meta name="geo.region" content="ZW" />
     <meta name="geo.placename" content="Zimbabwe" />
