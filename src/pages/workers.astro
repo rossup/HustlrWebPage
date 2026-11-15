@@ -1,0 +1,107 @@
+---
+// /workers: sign-up page for tradespeople (data in src/data/workersSeo.ts). Static HTML, no client JS.
+import HomeLayout from '../layouts/HomeLayout.astro';
+import SiteNav from '../components/SiteNav.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { WA, waIcon } from '../data/site';
+import { PHONE } from '../data/seo';
+import { ACTIVE_TRADES } from '../data/tradeCityData';
+import { WORKER_STEPS, WORKER_FAQS, WORKER_WA_TEXT, buildWorkersPageSchema } from '../data/workersSeo';
+import '../styles/redesign.css';
+import '../styles/landing.css';
+
+// Same WhatsApp number as the rest of the site (src/data/site.ts), unless PUBLIC_WHATSAPP_NUMBER is set
+const waNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER;
+const waBase = waNumber ? `https://wa.me/${String(waNumber).replace(/\D/g, '')}` : WA;
+const registerHref = `${waBase}?text=${encodeURIComponent(WORKER_WA_TEXT)}`;
+---
+
+<HomeLayout
+  title="Join Hustlr as a Skilled Worker | Get Jobs on WhatsApp in Zimbabwe"
+  description="Are you a plumber, electrician, solar installer, tiler, painter or mechanic in Zimbabwe? Register free on WhatsApp in English, Shona or Ndebele to get local client jobs."
+  schema={buildWorkersPageSchema()}
+  ogImage="/og-workers.png"
+>
+  <SiteNav />
+
+  <header class="rd-page-head lp-head" id="top">
+    <div class="rd-wrap lp-head-inner">
+      <div class="lp-head-copy">
+        <nav class="lp-crumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Hustlr Zimbabwe</a></li>
+            <li><span aria-current="page">For Skilled Workers</span></li>
+          </ol>
+        </nav>
+        <p class="rd-eyebrow">For Zimbabwean artisans &amp; technicians · Free WhatsApp sign-up</p>
+        <h1>Get Verified Client Jobs Directly on WhatsApp.</h1>
+        <p class="lp-lead">
+          Hustlr helps skilled tradespeople across Harare, Bulawayo and Zimbabwe win steady local jobs without paying for
+          expensive ads or downloading heavy apps. Register in English, ChiShona or IsiNdebele in under 5 minutes.
+        </p>
+        <div class="lp-actions">
+          <a href={registerHref} class="rd-btn rd-btn--yellow" target="_blank" rel="noopener" data-placement="page"><Fragment set:html={waIcon} />Register on WhatsApp</a>
+          <span>Free profile set-up · Works on low mobile data</span>
+        </div>
+      </div>
+
+      <figure class="lp-chat" aria-label="Example sign-up message">
+        <figcaption>Start with one message</figcaption>
+        <p class="lp-bubble lp-bubble--out">{WORKER_WA_TEXT}</p>
+        <p class="lp-bubble lp-bubble--in">Welcome! Which trade do you do, and which town and suburbs do you work in?</p>
+      </figure>
+    </div>
+  </header>
+
+  <main class="rd-wrap lp-main">
+    <section aria-labelledby="how-to-join">
+      <span class="rd-pill">How to join</span>
+      <h2 class="rd-h2 lp-h2" id="how-to-join">How to Register on Hustlr in 3 Steps</h2>
+      <ol class="lp-steps">
+        {WORKER_STEPS.map((s) => (
+          <li>
+            <span class="lp-step-n">{s.step}</span>
+            <h3>{s.title}</h3>
+            <p>{s.detail}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="rd-section lp-card" aria-labelledby="trades-onboarding">
+      <h2 id="trades-onboarding">Trades with local pages right now</h2>
+      <p class="lp-small lp-context">We prioritise verified tradespeople with their own tools, references, or photos of completed work.</p>
+      <ul class="lp-areas">
+        {ACTIVE_TRADES.map((t) => <li>{t.plural}</li>)}
+      </ul>
+    </section>
+
+    <section class="rd-section rd-faq" id="questions" aria-labelledby="worker-faq">
+      <div class="rd-faq-intro">
+        <span class="rd-pill">FAQ</span>
+        <h2 class="rd-h2 lp-h2" id="worker-faq">Questions from tradespeople</h2>
+        <p class="rd-lead">In English, ChiShona and IsiNdebele. Anything else? Ask on WhatsApp.</p>
+      </div>
+      <div class="rd-faq-list">
+        {WORKER_FAQS.map((f, i) => (
+          <details lang={f.lang === 'en' ? 'en-ZW' : f.lang} open={i === 0}>
+            <summary>{f.question}<span class="rd-faq-plus" aria-hidden="true"></span></summary>
+            <p>{f.answer}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section class="rd-section">
+      <div class="rd-cta">
+        <h2>Ready for your next job?</h2>
+        <div class="rd-cta-side">
+          <a href={registerHref} class="rd-btn rd-btn--dark" target="_blank" rel="noopener" data-placement="page"><Fragment set:html={waIcon} />Register on WhatsApp</a>
+          <span>or save {PHONE}</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <SiteFooter />
+</HomeLayout>

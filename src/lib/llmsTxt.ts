@@ -35,7 +35,7 @@ export function buildLlmsTxt(siteUrl: string): string {
     '',
     `- [Hustlr homepage](${S}/): What Hustlr is, how WhatsApp matching works, who it serves, and the WhatsApp contact.`,
     `- [FAQ](${S}/#questions): Short answers on how Hustlr works, trades, app-free use, cities and languages.`,
-    `- [For skilled workers](${S}/#for-providers): How tradespeople join Hustlr and receive booking requests on WhatsApp.`,
+    `- [For Skilled Workers](${S}/workers): Registration guide and onboarding requirements for Zimbabwean tradespeople seeking verified client leads via WhatsApp.`,
     '',
     '## Services',
     '',

@@ -17,7 +17,7 @@ Key facts:
 
 - [Hustlr homepage](https://hustlr.chat/): What Hustlr is, how WhatsApp matching works, who it serves, and the WhatsApp contact.
 - [FAQ](https://hustlr.chat/#questions): Short answers on how Hustlr works, trades, app-free use, cities and languages.
-- [For skilled workers](https://hustlr.chat/#for-providers): How tradespeople join Hustlr and receive booking requests on WhatsApp.
+- [For Skilled Workers](https://hustlr.chat/workers): Registration guide and onboarding requirements for Zimbabwean tradespeople seeking verified client leads via WhatsApp.
 
 ## Services
 

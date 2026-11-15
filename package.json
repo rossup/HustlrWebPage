@@ -7,9 +7,10 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/audit-seo.mjs",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "audit:seo": "node scripts/audit-seo.mjs"
   },
   "dependencies": {
     "@astrojs/netlify": "^8.2.14",
