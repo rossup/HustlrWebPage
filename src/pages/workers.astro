@@ -7,7 +7,7 @@ import { WA, waIcon } from '../data/site';
 import { PHONE } from '../data/seo';
 import { ACTIVE_TRADES } from '../data/tradeCityData';
 import { WORKER_STEPS, WORKER_FAQS, WORKER_WA_TEXT, buildWorkersPageSchema } from '../data/workersSeo';
-import WaChat from '../components/seo/WaChat.astro';
+import LpHero from '../components/seo/LpHero.astro';
 import '../styles/redesign.css';
 import '../styles/landing.css';
 
@@ -26,36 +26,25 @@ const registerHref = `${waBase}?text=${encodeURIComponent(WORKER_WA_TEXT)}`;
 >
   <SiteNav />
 
-  <header class="rd-page-head lp-head" id="top">
-    <div class="rd-wrap lp-head-inner">
-      <div class="lp-head-copy">
-        <nav class="lp-crumbs" aria-label="Breadcrumb">
-          <ol>
-            <li><a href="/">Hustlr Zimbabwe</a></li>
-            <li><span aria-current="page">For Skilled Workers</span></li>
-          </ol>
-        </nav>
-        <p class="rd-eyebrow">For Zimbabwean artisans &amp; technicians · Free WhatsApp sign-up</p>
-        <h1>Get Verified Client Jobs Directly on WhatsApp.</h1>
-        <p class="lp-lead">
-          Hustlr helps skilled tradespeople across Harare, Bulawayo and Zimbabwe win steady local jobs without paying for
-          expensive ads or downloading heavy apps. Register in English, ChiShona or IsiNdebele in under 5 minutes.
-        </p>
-        <div class="lp-actions">
-          <a href={registerHref} class="rd-btn rd-btn--yellow" target="_blank" rel="noopener" data-placement="page"><Fragment set:html={waIcon} />Register on WhatsApp</a>
-          <span>Free profile set-up · Works on low mobile data</span>
-        </div>
-      </div>
-
-      <WaChat
-        caption="Start with one message"
-        messages={[
-          { from: 'out', text: WORKER_WA_TEXT },
-          { from: 'in', text: 'Welcome! Which trade do you do, and which town and suburbs do you work in?' },
-        ]}
-      />
-    </div>
-  </header>
+  <LpHero
+    crumbs={[
+      { name: 'Hustlr Zimbabwe', href: '/' },
+      { name: 'For Skilled Workers', href: '/workers' },
+    ]}
+    eyebrow="For Zimbabwean artisans & technicians · Free WhatsApp sign-up"
+    h1="Get Verified Client Jobs Directly on WhatsApp."
+    mark="WhatsApp"
+    lead="Hustlr helps skilled tradespeople across Harare, Bulawayo and Zimbabwe win steady local jobs without paying for expensive ads or downloading heavy apps. Register in English, ChiShona or IsiNdebele in under 5 minutes."
+    cta={{ href: registerHref, label: 'Register on WhatsApp' }}
+    facts={['Free to register', 'Works on low mobile data', 'English, ChiShona, IsiNdebele']}
+    chat={{
+      caption: 'Start with one message',
+      messages: [
+        { from: 'out', text: WORKER_WA_TEXT },
+        { from: 'in', text: 'Welcome! Which trade do you do, and which town and suburbs do you work in?' },
+      ],
+    }}
+  />
 
   <main class="rd-wrap lp-main">
     <section aria-labelledby="how-to-join">

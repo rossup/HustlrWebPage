@@ -6,7 +6,7 @@ import SiteFooter from '../SiteFooter.astro';
 import { waIcon, steps } from '../../data/site';
 import { PHONE } from '../../data/seo';
 import type { Landing } from '../../lib/landing';
-import WaChat from './WaChat.astro';
+import LpHero from './LpHero.astro';
 import '../../styles/redesign.css';
 import '../../styles/landing.css';
 
@@ -21,36 +21,22 @@ const arrow = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" strok
 <HomeLayout title={page.title} description={page.description} schema={page.schema}>
   <SiteNav />
 
-  <header class="rd-page-head lp-head" id="top">
-    <div class="rd-wrap lp-head-inner">
-      <div class="lp-head-copy">
-        <nav class="lp-crumbs" aria-label="Breadcrumb">
-          <ol>
-            {page.crumbs.map((c, i) => (
-              <li>
-                {i < page.crumbs.length - 1 ? <a href={c.href}>{c.name}</a> : <span aria-current="page">{c.name}</span>}
-              </li>
-            ))}
-          </ol>
-        </nav>
-        <p class="rd-eyebrow">{page.eyebrow}</p>
-        <h1>{page.h1}</h1>
-        <p class="lp-lead">{page.lead}</p>
-        <div class="lp-actions">
-          <a href={page.waHref} class="rd-btn rd-btn--yellow" target="_blank" rel="noopener" data-placement="page"><Fragment set:html={waIcon} />Chat on WhatsApp</a>
-          <span>or save <strong>{PHONE}</strong></span>
-        </div>
-      </div>
-
-      <WaChat
-        caption="Just type it, for example"
-        messages={[
-          { from: 'out', text: page.example },
-          { from: 'in', text: 'Got it. Here are providers who cover your area. Reply with a number to see their profile.' },
-        ]}
-      />
-    </div>
-  </header>
+  <LpHero
+    crumbs={page.crumbs}
+    eyebrow={page.eyebrow}
+    h1={page.h1}
+    mark={page.h1.includes('near you') ? 'near you' : page.crumbs[page.crumbs.length - 1].name}
+    lead={page.lead}
+    cta={{ href: page.waHref, label: 'Chat on WhatsApp' }}
+    facts={['Free to ask', 'No app needed', 'English, ChiShona, IsiNdebele']}
+    chat={{
+      caption: 'Just type it, for example',
+      messages: [
+        { from: 'out', text: page.example },
+        { from: 'in', text: 'Got it. Here are providers who cover your area. Reply with a number to see their profile.' },
+      ],
+    }}
+  />
 
   <main class="rd-wrap lp-main">
     {(page.jobs || page.areas) && (

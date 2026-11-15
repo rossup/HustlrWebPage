@@ -1,0 +1,62 @@
+---
+// Hero for the search and sign-up pages (light theme): headline with one highlighted word,
+// the WhatsApp action, three short facts, and a WhatsApp window on a mint panel.
+// data-nav="light" keeps the site nav in its light style over this hero.
+import { waIcon } from '../../data/site';
+import { PHONE } from '../../data/seo';
+import WaChat from './WaChat.astro';
+
+interface Crumb { name: string; href: string }
+interface Message { from: 'out' | 'in'; text: string; lang?: string }
+interface Props {
+  crumbs: Crumb[];
+  eyebrow: string;
+  h1: string;
+  /** Part of the h1 to highlight (e.g. the city name); must appear in h1 */
+  mark?: string;
+  lead: string;
+  cta: { href: string; label: string; external?: boolean };
+  /** Short facts under the button, 2-3 items */
+  facts: string[];
+  chat: { caption: string; messages: Message[] };
+}
+
+const { crumbs, eyebrow, h1, mark, lead, cta, facts, chat } = Astro.props;
+const at = mark ? h1.lastIndexOf(mark) : -1;
+const external = cta.external ?? true;
+const check = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
+---
+
+<header class="lp-head" id="top" data-nav="light">
+  <div class="rd-wrap lp-head-grid">
+    <div class="lp-head-copy">
+      <nav class="lp-crumbs" aria-label="Breadcrumb">
+        <ol>
+          {crumbs.map((c, i) => (
+            <li>{i < crumbs.length - 1 ? <a href={c.href}>{c.name}</a> : <span aria-current="page">{c.name}</span>}</li>
+          ))}
+        </ol>
+      </nav>
+      <p class="rd-eyebrow lp-eyebrow">{eyebrow}</p>
+      <h1>
+        {at >= 0 && mark ? (
+          <Fragment>{h1.slice(0, at)}<span class="lp-mark">{mark}</span>{h1.slice(at + mark.length)}</Fragment>
+        ) : (
+          h1
+        )}
+      </h1>
+      <p class="lp-lead">{lead}</p>
+      <div class="lp-actions">
+        <a href={cta.href} class="rd-btn rd-btn--dark lp-cta" target={external ? '_blank' : undefined} rel={external ? 'noopener' : undefined} data-placement="page"><Fragment set:html={waIcon} />{cta.label}</a>
+        <span class="lp-save">or save <strong>{PHONE}</strong></span>
+      </div>
+      <ul class="lp-facts">
+        {facts.map((f) => <li><Fragment set:html={check} />{f}</li>)}
+      </ul>
+    </div>
+
+    <div class="lp-head-panel">
+      <WaChat caption={chat.caption} messages={chat.messages} />
+    </div>
+  </div>
+</header>

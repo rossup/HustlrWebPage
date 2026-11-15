@@ -116,6 +116,8 @@ import { seoCities } from '../data/seo';
     // ---- Nav: light/dark state, active section, dropdowns, mobile menu ----
     const nav = document.getElementById('siteNav');
     const heroEl = document.getElementById('top');
+    // Pages with a light hero (data-nav="light") keep the light nav from the top
+    const lightHero = heroEl?.dataset.nav === 'light';
     const triggers = [...document.querySelectorAll<HTMLElement>('.nav-trigger')];
     const toggle = document.querySelector<HTMLButtonElement>('.nav-toggle');
     const panel = document.getElementById('navPanel');
@@ -126,7 +128,7 @@ import { seoCities } from '../data/seo';
       nav?.classList.toggle('is-scrolled', y > 20);
       // Measured on screen, so it stays right when the page is scaled (see "Whole-site scale" in home.css)
       const heroBottom = heroEl ? heroEl.getBoundingClientRect().bottom : 700 - y;
-      nav?.classList.toggle('is-light', heroBottom < 90);
+      nav?.classList.toggle('is-light', lightHero || heroBottom < 90);
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
