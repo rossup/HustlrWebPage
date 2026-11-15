@@ -1,6 +1,6 @@
 ---
 import '../styles/home.css';
-import { SITE_URL, PHONE_E164 } from '../data/seo';
+import { SITE_URL, PHONE_E164, SAME_AS } from '../data/seo';
 
 interface Props {
   title?: string;
@@ -45,24 +45,29 @@ const jsonLd = {
       name: 'Hustlr',
       alternateName: ['Hustlr Zimbabwe', 'Hustlr Chat'],
       url: `${SITE_URL}/`,
-      logo: { '@type': 'ImageObject', url: `${SITE_URL}/apple-touch-icon.png`, width: 180, height: 180 },
-      description: 'Hustlr finds and books plumbers, electricians, cleaners and tutors across Zimbabwe in one WhatsApp chat.',
+      logo: { '@type': 'ImageObject', url: `${SITE_URL}/logo.png`, width: 512, height: 512 },
+      description:
+        "Zimbabwe's AI-powered WhatsApp marketplace connecting clients with vetted local skilled workers in English, ChiShona and IsiNdebele.",
       areaServed: { '@type': 'Country', name: 'Zimbabwe' },
+      knowsLanguage: ['en', 'sn', 'nd'],
       contactPoint: {
         '@type': 'ContactPoint',
         telephone: PHONE_E164,
         contactType: 'customer service',
         areaServed: 'ZW',
         availableLanguage: ['English', 'Shona', 'Ndebele'],
+        url: 'https://wa.me/263719351207',
       },
-      sameAs: ['https://wa.me/263719351207'],
+      // Public profiles that belong to this Hustlr (LinkedIn, Facebook, X, press...).
+      // Add only live, verified URLs; they tell Google and AI models which "Hustlr" this is.
+      sameAs: SAME_AS,
     },
     {
       '@type': 'WebSite',
       '@id': `${SITE_URL}/#website`,
       name: 'Hustlr',
       url: `${SITE_URL}/`,
-      inLanguage: 'en-ZW',
+      inLanguage: ['en-ZW', 'sn', 'nd'],
       publisher: { '@id': `${SITE_URL}/#organization` },
     },
     ...pageNodes,

@@ -7,6 +7,11 @@ export const SITE_URL = 'https://hustlr.chat';
 export const PHONE = '+263 71 935 1207';
 export const PHONE_E164 = '+263719351207';
 
+/** Hustlr's own public profiles (LinkedIn, Facebook, X, Instagram, press coverage...).
+    Used as `sameAs` in the site's structured data so Google and AI assistants know which
+    "Hustlr" this is. Add only live URLs you control or that are about this Hustlr. */
+export const SAME_AS: string[] = [];
+
 export interface SeoService {
   /** URL slug, e.g. "plumbers" */
   slug: string;

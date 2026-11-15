@@ -4,7 +4,7 @@ import SiteNav from '../components/SiteNav.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { WA, WA_PROVIDER, waIcon, steps, services, proBenefits, testimonials, draftTestimonials } from '../data/site';
 import '../styles/redesign.css';
-import { seoServices, SITE_URL } from '../data/seo';
+import { seoServices, seoCities, SITE_URL } from '../data/seo';
 import { faqSchema } from '../lib/landing';
 import FaqSection from '../components/FaqSection.astro';
 import { homeFaqs } from '../data/faq';
@@ -154,15 +154,20 @@ const homeSchema = {
     {
       '@type': 'SoftwareApplication',
       '@id': `${SITE_URL}/#app`,
-      name: 'Hustlr',
+      name: 'Hustlr WhatsApp Marketplace',
       url: `${SITE_URL}/`,
       description:
         'Hustlr is an AI-powered WhatsApp marketplace that connects clients in Zimbabwe with vetted local skilled workers. Describe the job in English, Shona or Ndebele and get matched with tradespeople near you.',
-      applicationCategory: 'Marketplace',
+      applicationCategory: 'BusinessApplication',
       operatingSystem: 'WhatsApp (Android, iOS, web)',
-      areaServed: 'Zimbabwe',
+      areaServed: [
+        { '@type': 'Country', name: 'Zimbabwe' },
+        ...seoCities.map((c) => ({ '@type': 'City', name: c.name })),
+      ],
       availableLanguage: ['English', 'Shona', 'Ndebele'],
-      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', description: 'Free for clients to request a match' },
+      // Matches the visible "Free to ask" line in the hero
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', description: 'Free for clients to ask Hustlr for a match on WhatsApp.' },
+      provider: { '@id': `${SITE_URL}/#organization` },
       publisher: { '@id': `${SITE_URL}/#organization` },
     },
     faqSchema(homeFaqs),
@@ -196,7 +201,7 @@ const servicePage = (name: string) => seoServices.find((s) => s.plural === name)
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
             </a>
           </div>
-          <p class="hero-note">No app to install. No forms to fill.</p>
+          <p class="hero-note">Free to ask. No app to install. No forms to fill.</p>
         </div>
 
         <div class="hero-visual" aria-hidden="true">

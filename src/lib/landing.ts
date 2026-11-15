@@ -47,8 +47,10 @@ const breadcrumbSchema = (crumbs: Crumb[]) => ({
   '@type': 'BreadcrumbList',
   itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: abs(c.href) })),
 });
-export const faqSchema = (faqs: Faq[]) => ({
+export const faqSchema = (faqs: Faq[], pagePath = '/') => ({
   '@type': 'FAQPage',
+  '@id': `${abs(pagePath)}#faq`,
+  isPartOf: { '@id': `${SITE_URL}/#website` },
   mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
 });
 const cityPlace = (c: SeoCity) => ({
@@ -129,7 +131,7 @@ export function serviceCityLanding(s: SeoService, c: SeoCity): Landing {
     moreTitle: `${s.plural} in other towns`,
     more: seoCities.filter((o) => o.slug !== c.slug).map((o) => ({ label: `${s.plural} in ${o.name}`, href: `/${s.slug}/${o.slug}` })),
     faqs,
-    schema: [serviceSchema(s, path, `${s.plural} in ${c.name}`, cityPlace(c)), breadcrumbSchema(crumbs), faqSchema(faqs)],
+    schema: [serviceSchema(s, path, `${s.plural} in ${c.name}`, cityPlace(c)), breadcrumbSchema(crumbs), faqSchema(faqs, path)],
   };
 }
 
@@ -177,7 +179,7 @@ export function serviceLanding(s: SeoService): Landing {
     schema: [
       serviceSchema(s, path, `${s.plural} in Zimbabwe`, seoCities.map(cityPlace)),
       breadcrumbSchema(crumbs),
-      faqSchema(faqs),
+      faqSchema(faqs, path),
     ],
   };
 }
@@ -233,7 +235,7 @@ export function cityLanding(c: SeoCity): Landing {
         publisher: ORG,
       },
       breadcrumbSchema(crumbs),
-      faqSchema(faqs),
+      faqSchema(faqs, path),
     ],
   };
 }
