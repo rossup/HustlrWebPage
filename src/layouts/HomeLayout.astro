@@ -12,8 +12,10 @@ interface Props {
   /** Extra schema.org data for this page: one object, an array, or { '@graph': [...] }.
       It's merged with the site-wide Organization and WebSite into one JSON-LD block. */
   schema?: Record<string, unknown> | Record<string, unknown>[];
-  /** Social share image (path or full URL, 1200x630) */
+  /** Social share image: path or full URL, 1200x630 JPG/PNG under 300KB (WhatsApp drops bigger ones) */
   ogImage?: string;
+  /** Text description of the share image */
+  ogImageAlt?: string;
   /** Point search engines at another page as the main version (e.g. "/plumbers/harare"). Defaults to this page. */
   canonicalPath?: string;
 }
@@ -24,7 +26,8 @@ const {
   noindex = false,
   scale = true,
   schema = [],
-  ogImage = '/og-image.png',
+  ogImage = '/og-default.jpg',
+  ogImageAlt = 'Hustlr — Hire Vetted Skilled Workers on WhatsApp in Zimbabwe',
   canonicalPath,
 } = Astro.props;
 
@@ -37,6 +40,7 @@ const pageNodes = (Array.isArray(schema) ? schema : [schema]).flatMap((node) =>
 const path = Astro.url.pathname.replace(/\/$/, '').replace(/\.html$/, '') || '/';
 const canonicalTarget = canonicalPath ?? path;
 const canonical = `${SITE_URL}${canonicalTarget === '/' ? '/' : canonicalTarget}`;
+// Always an absolute https:// URL: WhatsApp's preview crawler ignores relative image paths
 const imageUrl = new URL(ogImage, SITE_URL).href;
 
 // Who Hustlr is, for Google's knowledge panel and brand searches.
@@ -84,37 +88,40 @@ const jsonLd = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
-    {noindex ? <meta name="robots" content="noindex, nofollow" /> : <meta name="robots" content="index, follow, max-image-preview:large" />}
     {!noindex && <link rel="canonical" href={canonical} />}
-    <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM context" />
-    <meta name="theme-color" content="#0b1f16" />
-    <meta name="geo.region" content="ZW" />
-    <meta name="geo.placename" content="Zimbabwe" />
+    {/* Link-preview tags first: WhatsApp and other mobile crawlers read only the start of <head> */}
     {!noindex && (
       <>
+        <meta property="og:site_name" content="Hustlr Zimbabwe" />
         <meta property="og:type" content="website" />
-        <meta property="og:site_name" content="Hustlr" />
         <meta property="og:locale" content="en_ZW" />
         <meta property="og:url" content={canonical} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:image" content={imageUrl} />
+        <meta property="og:image:secure_url" content={imageUrl} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content="Hustlr: say what you need, Hustlr finds who does it, on WhatsApp" />
+        <meta property="og:image:alt" content={ogImageAlt} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={imageUrl} />
-        <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>
+        <meta name="twitter:image:alt" content={ogImageAlt} />
       </>
     )}
+    {noindex ? <meta name="robots" content="noindex, nofollow" /> : <meta name="robots" content="index, follow, max-image-preview:large" />}
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM context" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#0b1f16" />
+    <meta name="geo.region" content="ZW" />
+    <meta name="geo.placename" content="Zimbabwe" />
+    <meta name="generator" content={Astro.generator} />
+    {!noindex && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

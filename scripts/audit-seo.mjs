@@ -68,6 +68,22 @@ function htmlFiles(dir) {
   return out;
 }
 
+// ---------- og:image files ----------
+const OG_MAX_BYTES = 300 * 1024; // WhatsApp drops preview images over 300KB
+const ogChecked = new Map(); // pathname -> already reported
+function checkOgImage(where, pathname) {
+  if (ogChecked.has(pathname)) return;
+  ogChecked.set(pathname, true);
+  const file = path.join(DIST, decodeURIComponent(pathname).replace(/^\//, ''));
+  if (!/\.(jpe?g|png)$/i.test(pathname)) warn(where, `og:image ${pathname} should be a JPG or PNG (WhatsApp skips WebP/SVG previews)`);
+  if (!fs.existsSync(file)) {
+    warn(where, `og:image file ${pathname} is not in dist/: add a 1200x630 JPG under 300KB to public${pathname}`);
+    return;
+  }
+  const bytes = fs.statSync(file).size;
+  if (bytes > OG_MAX_BYTES) fail(where, `og:image ${pathname} is ${(bytes / 1024).toFixed(1)}KB; WhatsApp drops previews over 300KB`);
+}
+
 // ---------- 1. every built page ----------
 /**
  * Audits one page. Exported shape kept simple so the same checks can run anywhere.
@@ -114,6 +130,20 @@ export function auditPage(rel, html) {
 
   if (!/<link\s[^>]*rel=["']alternate["'][^>]*href=["']\/llms\.txt["']/i.test(html)) warn(where, 'missing <link rel="alternate" href="/llms.txt">');
   if (!/<meta\s[^>]*property=["']og:title["']/i.test(html)) fail(where, 'missing og:title');
+
+  // og:image: absolute https URL on our domain, file built, under WhatsApp's 300KB limit
+  const ogImage = attr(html, /<meta\s[^>]*property=["']og:image["'][^>]*>/i, 'content');
+  if (!ogImage) fail(where, 'missing og:image');
+  else if (!ogImage.startsWith('https://')) fail(where, `og:image must be an absolute https:// URL (found "${ogImage}")`);
+  else {
+    const u = new URL(ogImage);
+    if (u.origin !== SITE) warn(where, `og:image is hosted outside ${SITE}: ${ogImage}`);
+    else checkOgImage(where, u.pathname);
+    const head = html.slice(0, html.search(/<\/head>/i) + 1 || html.length);
+    const ogAt = head.search(/property=["']og:image["']/i);
+    const ldAt = head.search(/application\/ld\+json/i);
+    if (ldAt !== -1 && ogAt > ldAt) warn(where, 'og:image comes after the JSON-LD block; keep link-preview tags near the top of <head>');
+  }
 
   // JSON-LD: valid JSON, one connected @graph, every @id reference resolves
   const blocks = [...html.matchAll(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];
