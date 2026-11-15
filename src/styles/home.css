@@ -557,7 +557,10 @@ ol {
 }
 /* Keep the longer SEO headline in the text column, clear of the phones */
 @media (min-width: 761px) {
-  .hero h1 { max-width: 540px; font-size: 52px; text-wrap: balance; }
+  .hero h1 { max-width: 600px; font-size: 52px; text-wrap: balance; }
+}
+@media (max-width: 760px) {
+  .hero-eyebrow { height: auto; min-height: 34px; padding: 7px 16px; font-size: 13px; line-height: 1.35; }
 }
 
 .hero-sub {
