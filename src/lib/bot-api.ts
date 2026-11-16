@@ -121,3 +121,72 @@ export async function loadBotSummary(win: Window): Promise<BotSummary | null> {
   else if (body.sessions !== undefined) console.error('[admin] bot API: unexpected shape for "sessions"');
   return summary;
 }
+
+export interface ConsentedConversationSummary {
+  user_phone: string;
+  full_name: string;
+  location: string;
+  message_count: number;
+  last_message_at: string | null;
+  last_message_preview: string;
+  last_flow: string | null;
+}
+
+export interface ConsentedConversationList {
+  items: ConsentedConversationSummary[];
+  total: number;
+  page: number;
+  page_size: number;
+  total_pages: number;
+}
+
+export interface ConsentedConversationMessage {
+  id: number;
+  session_id: string | null;
+  direction: 'inbound' | 'outbound';
+  message_text: string;
+  flow: string | null;
+  created_at: string;
+}
+
+export interface ConsentedConversationDetail {
+  user_phone: string;
+  full_name: string;
+  location: string;
+  messages: ConsentedConversationMessage[];
+}
+
+export async function loadConsentedConversations(page = 1, search = ''): Promise<ConsentedConversationList | null> {
+  const base = botEnv('BOT_API_URL');
+  const key = botEnv('BOT_API_KEY');
+  if (!base || !key) return null;
+
+  const url = new URL('/admin/conversations', base);
+  url.searchParams.set('page', String(page));
+  url.searchParams.set('page_size', '20');
+  if (search.trim()) url.searchParams.set('search', search.trim());
+
+  const res = await fetch(url, {
+    headers: { Authorization: `Bearer ${key}`, Accept: 'application/json' },
+    signal: AbortSignal.timeout(TIMEOUT_MS),
+  });
+  if (!res.ok) throw new Error(`bot API answered ${res.status}`);
+  return (await res.json()) as ConsentedConversationList;
+}
+
+export async function loadConsentedConversationDetail(userPhone: string): Promise<ConsentedConversationDetail | null> {
+  const base = botEnv('BOT_API_URL');
+  const key = botEnv('BOT_API_KEY');
+  if (!base || !key) return null;
+
+  const url = new URL(`/admin/conversations/${encodeURIComponent(userPhone)}`, base);
+  url.searchParams.set('limit', '200');
+
+  const res = await fetch(url, {
+    headers: { Authorization: `Bearer ${key}`, Accept: 'application/json' },
+    signal: AbortSignal.timeout(TIMEOUT_MS),
+  });
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(`bot API answered ${res.status}`);
+  return (await res.json()) as ConsentedConversationDetail;
+}
