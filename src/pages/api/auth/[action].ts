@@ -1,9 +1,11 @@
-// Admin sign-in endpoints, called by src/pages/login.astro and the admin "Sign out" button.
-//   GET  /api/auth/me        who is signed in, and whether they are an admin
+// Admin sign-in endpoints, called by src/pages/login.astro, the admin "Sign out" button,
+// and the superadmin "Invite admin" modal.
+//   GET  /api/auth/me        who is signed in, and whether they are an admin / superadmin
 //   POST /api/auth/login     { email, password }
 //   POST /api/auth/logout
 //   POST /api/auth/recover   { email }                                  emails a reset link
 //   POST /api/auth/password  { accessToken, refreshToken, password }    finishes an invite or reset link
+//   POST /api/auth/invite    { email, role? }                           superadmin invites another admin
 // Supabase is only ever called from here, see src/lib/supabase-auth.ts.
 import type { APIRoute } from 'astro';
 import {
@@ -11,7 +13,9 @@ import {
   accessTokenFrom,
   clearSession,
   currentUser,
+  inviteAdmin,
   isAdmin,
+  isSuperAdmin,
   json,
   sameOrigin,
   saveSession,
@@ -46,7 +50,7 @@ export const GET: APIRoute = async ({ params, cookies }) => {
   if (params.action !== 'me') return json({ error: 'Not found' }, 404);
   try {
     const user = await currentUser(cookies);
-    return json({ email: user?.email ?? null, admin: isAdmin(user) });
+    return json({ email: user?.email ?? null, admin: isAdmin(user), superadmin: isSuperAdmin(user) });
   } catch (error) {
     return fail(error);
   }
@@ -74,7 +78,11 @@ export const POST: APIRoute = async ({ params, request, cookies, url }) => {
         const session = await signIn(email, password);
         // Non-admins stay signed in so /login can say which account has no access
         saveSession(cookies, session);
-        return json({ email: session.user?.email ?? email, admin: isAdmin(session.user) });
+        return json({
+          email: session.user?.email ?? email,
+          admin: isAdmin(session.user),
+          superadmin: isSuperAdmin(session.user),
+        });
       }
 
       case 'logout': {
@@ -116,7 +124,29 @@ export const POST: APIRoute = async ({ params, request, cookies, url }) => {
           throw error;
         }
         saveSession(cookies, { accessToken, refreshToken, expiresIn: 3600, user });
-        return json({ email: user?.email ?? null, admin: isAdmin(user) });
+        return json({ email: user?.email ?? null, admin: isAdmin(user), superadmin: isSuperAdmin(user) });
+      }
+
+      case 'invite': {
+        const caller = await currentUser(cookies);
+        if (!caller) return json({ error: 'Sign in first.' }, 401);
+        if (!isSuperAdmin(caller)) {
+          return json({ error: 'Only a superadmin can send invitations to other admins.' }, 403);
+        }
+        const email = text(body.email, 320).trim().toLowerCase();
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          return json({ error: 'Enter a valid email address.' }, 400);
+        }
+        const role = body.role === 'superadmin' ? 'superadmin' : 'admin';
+        try {
+          await inviteAdmin(email, `${url.origin}/login?invite=1`, caller.email, role);
+        } catch (error) {
+          if (error instanceof AuthFailure && error.status < 500 && error.status !== 429) {
+            return json({ error: error.message || 'Could not send the invitation.' }, 400);
+          }
+          throw error;
+        }
+        return json({ ok: true, email, role });
       }
 
       default:

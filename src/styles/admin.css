@@ -1053,11 +1053,11 @@ tr.is-clickable:hover td { background: rgba(218, 238, 224, 0.35); }
 
 /* ---------- Login page ---------- */
 .ad-login {
-  min-height: 100vh;
-  min-height: 100dvh;
+  min-height: calc(100vh - 120px);
+  min-height: calc(100dvh - 120px);
   display: grid;
   place-items: center;
-  padding: 24px 16px;
+  padding: 120px 16px 72px;
   background:
     radial-gradient(70% 45% at 15% 0%, rgba(61, 204, 141, 0.16), transparent 70%),
     var(--page);

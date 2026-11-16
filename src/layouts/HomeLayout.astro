@@ -133,8 +133,8 @@ const jsonLd = {
     <!-- Supabase emails (admin invites, password resets) can land on the homepage:
          hand those links to the login page, which finishes them. -->
     <script is:inline>
-      if (/(^#|&)(access_token|error_description)=/.test(location.hash) &&!/^\/login\/?$/.test(location.pathname)) {
-        location.replace('/login' + location.hash);
+      if (/(^#|&)(access_token|error_description)=/.test(location.hash) && !/^\/login\/?$/.test(location.pathname)) {
+        location.replace('/login' + location.search + location.hash);
       }
     </script>
     <slot />

@@ -17,13 +17,23 @@ const REFRESH_COOKIE = 'hz_admin_rt';
 const REFRESH_MAX_AGE = 60 * 60 * 24 * 30;
 const TIMEOUT_MS = 8000;
 
-type EnvName = 'SUPABASE_URL' | 'SUPABASE_ANON_KEY' | 'ADMIN_EMAILS';
+/** Built-in owner superadmin emails so the site owner always has superadmin rights. */
+const DEFAULT_SUPERADMINS = ['vincent@uncommon.org', 'vinmugondora@gmail.com'];
+
+type EnvName =
+  | 'SUPABASE_URL'
+  | 'SUPABASE_ANON_KEY'
+  | 'SUPABASE_SERVICE_ROLE_KEY'
+  | 'ADMIN_EMAILS'
+  | 'SUPERADMIN_EMAILS';
 
 const env = (name: EnvName): string | undefined =>
   ((import.meta.env[name] as string | undefined) ?? process.env[name])?.trim() || undefined;
 
 export interface AuthUser {
   email: string;
+  role: 'superadmin' | 'admin' | null;
+  invitedBy?: string;
 }
 
 export interface Session {
@@ -46,14 +56,27 @@ export class AuthFailure extends Error {
 
 export const authConfigured = (): boolean => !!env('SUPABASE_URL') && !!env('SUPABASE_ANON_KEY');
 
-const adminEmails = (): string[] =>
-  (env('ADMIN_EMAILS') ?? '')
+const parseEmailList = (raw: string | undefined): string[] =>
+  (raw ?? '')
     .split(',')
     .map((email) => email.trim().toLowerCase())
     .filter(Boolean);
 
+export const superAdminEmails = (): string[] => {
+  const configured = parseEmailList(env('SUPERADMIN_EMAILS'));
+  return [...new Set([...DEFAULT_SUPERADMINS, ...configured])];
+};
+
+const adminEmails = (): string[] => {
+  const configured = parseEmailList(env('ADMIN_EMAILS'));
+  return [...new Set([...superAdminEmails(), ...configured])];
+};
+
 export const isAdmin = (user: AuthUser | null): user is AuthUser =>
-  !!user && adminEmails().includes(user.email.toLowerCase());
+  !!user && (user.role === 'superadmin' || user.role === 'admin' || adminEmails().includes(user.email.toLowerCase()));
+
+export const isSuperAdmin = (user: AuthUser | null): user is AuthUser =>
+  !!user && (user.role === 'superadmin' || superAdminEmails().includes(user.email.toLowerCase()));
 
 async function call(
   path: string,
@@ -88,10 +111,41 @@ async function call(
 }
 
 // Only an email Supabase has confirmed counts, so nobody gets in on an address they don't own.
-const toUser = (raw: any): AuthUser | null =>
-  raw && typeof raw.email === 'string' && (raw.email_confirmed_at || raw.confirmed_at)
-    ? { email: raw.email }
-    : null;
+const toUser = (raw: any): AuthUser | null => {
+  if (!raw || typeof raw.email !== 'string' || !(raw.email_confirmed_at || raw.confirmed_at)) {
+    return null;
+  }
+  const email = raw.email.trim();
+  const lower = email.toLowerCase();
+  const appMeta = raw.app_metadata && typeof raw.app_metadata === 'object' ? raw.app_metadata : {};
+  const userMeta = raw.user_metadata && typeof raw.user_metadata === 'object' ? raw.user_metadata : {};
+
+  let role: 'superadmin' | 'admin' | null = null;
+  if (
+    superAdminEmails().includes(lower) ||
+    appMeta.hustlr_role === 'superadmin' ||
+    userMeta.hustlr_role === 'superadmin'
+  ) {
+    role = 'superadmin';
+  } else if (
+    adminEmails().includes(lower) ||
+    appMeta.hustlr_admin === true ||
+    userMeta.hustlr_admin === true ||
+    appMeta.hustlr_role === 'admin' ||
+    userMeta.hustlr_role === 'admin'
+  ) {
+    role = 'admin';
+  }
+
+  const invitedBy =
+    typeof userMeta.invited_by === 'string'
+      ? userMeta.invited_by
+      : typeof appMeta.invited_by === 'string'
+        ? appMeta.invited_by
+        : undefined;
+
+  return { email, role, invitedBy };
+};
 
 const toSession = (raw: any): Session => {
   if (!raw || typeof raw.access_token !== 'string' || typeof raw.refresh_token !== 'string') {
@@ -126,6 +180,68 @@ export const userFor = async (accessToken: string): Promise<AuthUser | null> => 
 /** Emails a reset link that lands on `redirectTo` (must be allowed in Supabase > Auth > URL configuration). */
 export const sendRecovery = async (email: string, redirectTo: string): Promise<void> => {
   await call(`/recover?redirect_to=${encodeURIComponent(redirectTo)}`, { method: 'POST', body: { email } });
+};
+
+/**
+ * Sends an admin invitation email that lands on `redirectTo` and marks the recipient as an admin
+ * (or superadmin) in Supabase Auth metadata so they have access as soon as they set their password.
+ */
+export const inviteAdmin = async (
+  email: string,
+  redirectTo: string,
+  invitedBy: string,
+  role: 'admin' | 'superadmin' = 'admin',
+): Promise<void> => {
+  const cleanEmail = email.trim().toLowerCase();
+  const metadata = {
+    hustlr_admin: true,
+    hustlr_role: role,
+    invited_by: invitedBy,
+  };
+
+  const base = env('SUPABASE_URL');
+  const serviceKey = env('SUPABASE_SERVICE_ROLE_KEY');
+
+  if (base && serviceKey) {
+    let response: Response;
+    try {
+      response = await fetch(
+        `${base.replace(/\/+$/, '')}/auth/v1/invite?redirect_to=${encodeURIComponent(redirectTo)}`,
+        {
+          method: 'POST',
+          headers: {
+            apikey: serviceKey,
+            Authorization: `Bearer ${serviceKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email: cleanEmail, data: metadata }),
+          signal: AbortSignal.timeout(TIMEOUT_MS),
+        },
+      );
+    } catch {
+      throw new AuthFailure('Could not reach the sign-in service. Try again.', 502);
+    }
+
+    if (response.ok) return;
+
+    const errData = await response.json().catch(() => null);
+    const errMsg = String(errData?.msg ?? errData?.error_description ?? errData?.message ?? '');
+    // If the user already exists in Supabase Auth, send them a magic/recovery link and update metadata
+    if (response.status !== 422 && !/already|registered|exists/i.test(errMsg)) {
+      throw new AuthFailure(errMsg || 'Could not send invitation.', response.status);
+    }
+  }
+
+  // Fallback using the publishable key: sends a one-click sign-in / confirmation link to `redirectTo`
+  // and stores `metadata` in user_metadata on creation.
+  await call(`/otp?redirect_to=${encodeURIComponent(redirectTo)}`, {
+    method: 'POST',
+    body: {
+      email: cleanEmail,
+      create_user: true,
+      data: metadata,
+    },
+  });
 };
 
 /** Sets the password for the account an invite or reset link signed in. */

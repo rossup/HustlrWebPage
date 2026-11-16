@@ -22,6 +22,11 @@ interface Props {
 const { title, lead, active, data } = Astro.props;
 const { period } = data;
 const adminEmail = Astro.locals.adminEmail;
+const isSuperAdmin =
+  Astro.locals.isSuperAdmin ??
+  (!adminEmail ||
+    adminEmail.toLowerCase() === 'vincent@uncommon.org' ||
+    adminEmail.toLowerCase() === 'vinmugondora@gmail.com');
 
 const pendingBookings = data.bookings?.filter((b) => b.status === 'Pending').length ?? 0;
 const waitingProviders = data.applications?.length ?? 0;
@@ -59,7 +64,7 @@ const sideLinks: { id: Props['active']; href: string; label: string; icon: Admin
           <img class="ad-side-logo" src="/assets/logo-primary.svg" alt="Hustlr" width="106" height="38" />
           <img class="ad-side-symbol" src="/assets/logo-symbol-dark.svg" alt="" width="38" height="38" aria-hidden="true" />
         </a>
-        <span class="ad-side-tag">Admin</span>
+        <span class="ad-side-tag">{isSuperAdmin ? 'Superadmin' : 'Admin'}</span>
       </div>
 
       <button class="ad-side-toggle" type="button" id="adSideToggle" aria-controls="adSide" aria-expanded="true" aria-label="Collapse sidebar">
@@ -90,6 +95,13 @@ const sideLinks: { id: Props['active']; href: string; label: string; icon: Admin
           <span class="ad-side-text">Hustlr on WhatsApp</span>
           <span class="ad-side-tip" aria-hidden="true">Hustlr on WhatsApp</span>
         </a>
+        {isSuperAdmin && (
+          <button class="ad-side-link ad-side-logout" type="button" id="adInviteOpen">
+            <span class="ad-side-icon"><Fragment set:html={adminIcons.invite} /></span>
+            <span class="ad-side-text">Invite admin<small>Superadmin</small></span>
+            <span class="ad-side-tip" aria-hidden="true">Invite admin</span>
+          </button>
+        )}
         {/* Hidden only when nobody is signed in: local `astro dev` without the Supabase settings */}
         {(!data.sample || adminEmail) && (
           <button class="ad-side-link ad-side-logout" type="button" id="adLogout">
@@ -100,6 +112,35 @@ const sideLinks: { id: Props['active']; href: string; label: string; icon: Admin
         )}
       </div>
     </aside>
+
+    {isSuperAdmin && (
+      <dialog class="ad-dialog" id="adInviteDialog" aria-labelledby="adInviteTitle">
+        <form id="adInviteForm">
+          <h2 id="adInviteTitle">Invite an admin</h2>
+          <p class="ad-dialog-note">
+            Send an email invitation so another team member can set a password at <code>/login</code> and access the Hustlr admin dashboard.
+          </p>
+          <div class="ad-dialog-fields">
+            <label class="is-wide">
+              <span>Email address</span>
+              <input type="email" name="email" placeholder="colleague@example.com" required autocomplete="off" />
+            </label>
+            <label class="is-wide">
+              <span>Role</span>
+              <select name="role">
+                <option value="admin">Admin — manage bookings, providers and users</option>
+                <option value="superadmin">Superadmin — full access + can invite other admins</option>
+              </select>
+            </label>
+          </div>
+          <p class="ad-manage-msg" id="adInviteMsg" role="status" aria-live="polite"></p>
+          <div class="ad-dialog-foot">
+            <button type="button" class="ad-btn" id="adInviteCancel">Close</button>
+            <button type="submit" class="ad-btn ad-btn--primary" id="adInviteSubmit">Send invitation</button>
+          </div>
+        </form>
+      </dialog>
+    )}
 
     <!-- Small screens: dims the page while the sidebar is expanded over it -->
     <div class="ad-scrim" id="adScrim"></div>
@@ -201,6 +242,59 @@ const sideLinks: { id: Props['active']; href: string; label: string; icon: Admin
         /* already signed out */
       }
       location.href = '/login';
+    });
+
+    // ----- Invite admin (superadmin only) -----
+    const inviteDialog = document.getElementById('adInviteDialog') as HTMLDialogElement | null;
+    const inviteForm = document.getElementById('adInviteForm') as HTMLFormElement | null;
+    const inviteMsg = document.getElementById('adInviteMsg');
+    const inviteSubmit = document.getElementById('adInviteSubmit') as HTMLButtonElement | null;
+
+    document.getElementById('adInviteOpen')?.addEventListener('click', () => {
+      if (!inviteDialog) return;
+      if (inviteMsg) {
+        inviteMsg.textContent = '';
+        inviteMsg.classList.remove('is-error');
+      }
+      inviteForm?.reset();
+      inviteDialog.showModal();
+    });
+
+    document.getElementById('adInviteCancel')?.addEventListener('click', () => {
+      inviteDialog?.close();
+    });
+
+    inviteDialog?.addEventListener('click', (e) => {
+      if (e.target === inviteDialog) inviteDialog.close();
+    });
+
+    inviteForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!inviteMsg || !inviteSubmit) return;
+      const data = new FormData(inviteForm);
+      const email = String(data.get('email') ?? '').trim();
+      const role = String(data.get('role') ?? 'admin');
+      inviteSubmit.disabled = true;
+      inviteMsg.classList.remove('is-error');
+      inviteMsg.textContent = 'Sending invitation…';
+
+      try {
+        const res = await fetch('/api/auth/invite', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'same-origin',
+          body: JSON.stringify({ email, role }),
+        });
+        const body = await res.json().catch(() => null);
+        if (!res.ok) throw new Error(body?.error ?? 'Could not send the invitation.');
+        inviteMsg.textContent = `Invitation sent to ${email}. They can click the link in their email to set their password.`;
+        inviteForm.reset();
+      } catch (err) {
+        inviteMsg.classList.add('is-error');
+        inviteMsg.textContent = err instanceof Error ? err.message : 'Could not send the invitation.';
+      } finally {
+        inviteSubmit.disabled = false;
+      }
     });
   </script>
 </HomeLayout>
