@@ -1038,7 +1038,11 @@ tr.is-clickable:hover td { background: rgba(218, 238, 224, 0.35); }
   width: 100%;
   border: 0;
   background: none;
-  font: inherit;
+  /* Same type as the other sidebar links: only the family comes from the page */
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: normal;
   text-align: left;
   cursor: pointer;
 }

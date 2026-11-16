@@ -98,15 +98,15 @@ const sideLinks: { id: Props['active']; href: string; label: string; icon: Admin
         {isSuperAdmin && (
           <button class="ad-side-link ad-side-logout" type="button" id="adInviteOpen">
             <span class="ad-side-icon"><Fragment set:html={adminIcons.invite} /></span>
-            <span class="ad-side-text">Invite admin<small>Superadmin</small></span>
+            <span class="ad-side-text">Invite admin</span>
             <span class="ad-side-tip" aria-hidden="true">Invite admin</span>
           </button>
         )}
         {/* Hidden only when nobody is signed in: local `astro dev` without the Supabase settings */}
         {(!data.sample || adminEmail) && (
-          <button class="ad-side-link ad-side-logout" type="button" id="adLogout">
+          <button class="ad-side-link ad-side-logout" type="button" id="adLogout" title={adminEmail ? `Signed in as ${adminEmail}` : undefined}>
             <span class="ad-side-icon"><Fragment set:html={adminIcons.logout} /></span>
-            <span class="ad-side-text">Sign out{adminEmail ? <small>{adminEmail}</small> : null}</span>
+            <span class="ad-side-text">Sign out</span>
             <span class="ad-side-tip" aria-hidden="true">Sign out</span>
           </button>
         )}
