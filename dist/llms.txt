@@ -1,0 +1,92 @@
+# Hustlr
+
+> Hustlr is an AI-powered marketplace that runs inside WhatsApp in Zimbabwe. Homeowners and businesses describe a job in English, ChiShona or IsiNdebele, and Hustlr matches them with vetted local skilled workers nearby. No app download is needed.
+
+Hustlr (hustlr.chat, WhatsApp +263 71 935 1207) is built by Zimnovate in Zimbabwe. It is not affiliated with other businesses, agencies or apps named Hustlr outside Zimbabwe.
+
+How a booking works: the client messages Hustlr on WhatsApp and describes the job in plain words or a voice note. Hustlr works out the trade and the area, suggests verified providers who cover it, and shows a provider’s profile on request. The client replies YES to send the booking request, the provider confirms in the chat, and the client can reply SAVE to rebook that provider later. Asking for a match is free; the client agrees the price with the provider before work starts. Skilled workers join by messaging "I want to register as a service provider" and listing their trade and the areas they cover.
+
+Key facts:
+- Platform: WhatsApp (no separate app)
+- Region: Zimbabwe, including Harare, Chitungwiza, Bulawayo, Mutare, Gweru, Kwekwe, Masvingo and Victoria Falls
+- Languages: English, ChiShona, IsiNdebele
+- Trades with their own pages: plumbers, electricians, cleaners, tutors, solar system installers, tilers, painters and mechanics. Clients can also ask the chat for other trades, such as carpenters and appliance repair.
+- Users: households, small businesses, property managers, and independent tradespeople
+
+## Core pages
+
+- [Hustlr homepage](https://hustlr.chat/): What Hustlr is, how WhatsApp matching works, who it serves, and the WhatsApp contact.
+- [Find a pro](https://hustlr.chat/hire): Every trade and town page in one place, grouped by city and service.
+- [FAQ](https://hustlr.chat/#questions): Short answers on how Hustlr works, trades, app-free use, cities and languages.
+- [For Skilled Workers](https://hustlr.chat/workers): Registration guide and onboarding requirements for Zimbabwean tradespeople seeking verified client leads via WhatsApp.
+
+## Services
+
+- [Plumbers in Zimbabwe](https://hustlr.chat/plumbers): Plumbers for geyser repairs, burst pipes, blocked drains and new fittings, with links to each town.
+- [Electricians in Zimbabwe](https://hustlr.chat/electricians): Electricians for fault finding, wiring, plugs, lights and new installations, with links to each town.
+- [Cleaners in Zimbabwe](https://hustlr.chat/cleaners): Cleaners for home, office, carpet and after-renovation cleaning, with links to each town.
+- [Tutors in Zimbabwe](https://hustlr.chat/tutors): Tutors for maths, sciences, languages, homework help and exam preparation, with links to each town.
+
+## Towns
+
+- [Services in Harare](https://hustlr.chat/areas/harare): Plumbers, electricians, cleaners and tutors who work in Harare.
+- [Services in Chitungwiza](https://hustlr.chat/areas/chitungwiza): Plumbers, electricians, cleaners and tutors who work in Chitungwiza.
+- [Services in Bulawayo](https://hustlr.chat/areas/bulawayo): Plumbers, electricians, cleaners and tutors who work in Bulawayo.
+- [Services in Mutare](https://hustlr.chat/areas/mutare): Plumbers, electricians, cleaners and tutors who work in Mutare.
+- [Services in Gweru](https://hustlr.chat/areas/gweru): Plumbers, electricians, cleaners and tutors who work in Gweru.
+- [Services in Kwekwe](https://hustlr.chat/areas/kwekwe): Plumbers, electricians, cleaners and tutors who work in Kwekwe.
+- [Services in Masvingo](https://hustlr.chat/areas/masvingo): Plumbers, electricians, cleaners and tutors who work in Masvingo.
+- [Services in Victoria Falls](https://hustlr.chat/areas/victoria-falls): Plumbers, electricians, cleaners and tutors who work in Victoria Falls.
+
+## Local Trade Pages
+
+- [Plumbers in Harare](https://hustlr.chat/hire/plumber-harare): Hire plumbers in Harare on WhatsApp (burst pipe and leak detection; geyser installation and element replacement); FAQ in English and ChiShona.
+- [Solar System Installers in Harare](https://hustlr.chat/hire/solar-installer-harare): Hire solar system installers in Harare on WhatsApp (3kVA to 10kVA hybrid inverter set-up; lithium (LiFePO4) battery bank sizing); FAQ in English and ChiShona.
+- [Electricians in Harare](https://hustlr.chat/hire/electrician-harare): Hire electricians in Harare on WhatsApp (dB board repairs, breaker replacements and tripping faults; full house wiring, tubing and ZESA meter box preparation); FAQ in English and ChiShona.
+- [Tilers in Harare](https://hustlr.chat/hire/tiler-harare): Hire tilers in Harare on WhatsApp (porcelain and ceramic floor tiling for lounges and kitchens; bathroom and shower wall tiling with waterproofing); FAQ in English and ChiShona.
+- [Painters in Harare](https://hustlr.chat/hire/painter-harare): Hire painters in Harare on WhatsApp (interior room repainting, crack filling and skim coating; exterior house and Durawall weatherguard painting); FAQ in English and ChiShona.
+- [Mechanics in Harare](https://hustlr.chat/hire/mechanic-harare): Hire mechanics in Harare on WhatsApp (mobile call-outs: on-site OBD2 computer diagnostics and cars that won’t start; minor and major vehicle servicing (oil, filters, spark plugs)); FAQ in English and ChiShona.
+- [Plumbers in Bulawayo](https://hustlr.chat/hire/plumber-bulawayo): Hire plumbers in Bulawayo on WhatsApp (burst pipe and leak detection; geyser installation and element replacement); FAQ in English and IsiNdebele.
+- [Solar System Installers in Bulawayo](https://hustlr.chat/hire/solar-installer-bulawayo): Hire solar system installers in Bulawayo on WhatsApp (3kVA to 10kVA hybrid inverter set-up; lithium (LiFePO4) battery bank sizing); FAQ in English and IsiNdebele.
+- [Electricians in Bulawayo](https://hustlr.chat/hire/electrician-bulawayo): Hire electricians in Bulawayo on WhatsApp (dB board repairs, breaker replacements and tripping faults; full house wiring, tubing and ZESA meter box preparation); FAQ in English and IsiNdebele.
+- [Tilers in Bulawayo](https://hustlr.chat/hire/tiler-bulawayo): Hire tilers in Bulawayo on WhatsApp (porcelain and ceramic floor tiling for lounges and kitchens; bathroom and shower wall tiling with waterproofing); FAQ in English and IsiNdebele.
+- [Painters in Bulawayo](https://hustlr.chat/hire/painter-bulawayo): Hire painters in Bulawayo on WhatsApp (interior room repainting, crack filling and skim coating; exterior house and Durawall weatherguard painting); FAQ in English and IsiNdebele.
+- [Mechanics in Bulawayo](https://hustlr.chat/hire/mechanic-bulawayo): Hire mechanics in Bulawayo on WhatsApp (mobile call-outs: on-site OBD2 computer diagnostics and cars that won’t start; minor and major vehicle servicing (oil, filters, spark plugs)); FAQ in English and IsiNdebele.
+
+## Optional
+
+- [Plumbers in Harare](https://hustlr.chat/plumbers/harare): Book plumbers in Harare on WhatsApp.
+- [Plumbers in Chitungwiza](https://hustlr.chat/plumbers/chitungwiza): Book plumbers in Chitungwiza on WhatsApp.
+- [Plumbers in Bulawayo](https://hustlr.chat/plumbers/bulawayo): Book plumbers in Bulawayo on WhatsApp.
+- [Plumbers in Mutare](https://hustlr.chat/plumbers/mutare): Book plumbers in Mutare on WhatsApp.
+- [Plumbers in Gweru](https://hustlr.chat/plumbers/gweru): Book plumbers in Gweru on WhatsApp.
+- [Plumbers in Kwekwe](https://hustlr.chat/plumbers/kwekwe): Book plumbers in Kwekwe on WhatsApp.
+- [Plumbers in Masvingo](https://hustlr.chat/plumbers/masvingo): Book plumbers in Masvingo on WhatsApp.
+- [Plumbers in Victoria Falls](https://hustlr.chat/plumbers/victoria-falls): Book plumbers in Victoria Falls on WhatsApp.
+- [Electricians in Harare](https://hustlr.chat/electricians/harare): Book electricians in Harare on WhatsApp.
+- [Electricians in Chitungwiza](https://hustlr.chat/electricians/chitungwiza): Book electricians in Chitungwiza on WhatsApp.
+- [Electricians in Bulawayo](https://hustlr.chat/electricians/bulawayo): Book electricians in Bulawayo on WhatsApp.
+- [Electricians in Mutare](https://hustlr.chat/electricians/mutare): Book electricians in Mutare on WhatsApp.
+- [Electricians in Gweru](https://hustlr.chat/electricians/gweru): Book electricians in Gweru on WhatsApp.
+- [Electricians in Kwekwe](https://hustlr.chat/electricians/kwekwe): Book electricians in Kwekwe on WhatsApp.
+- [Electricians in Masvingo](https://hustlr.chat/electricians/masvingo): Book electricians in Masvingo on WhatsApp.
+- [Electricians in Victoria Falls](https://hustlr.chat/electricians/victoria-falls): Book electricians in Victoria Falls on WhatsApp.
+- [Cleaners in Harare](https://hustlr.chat/cleaners/harare): Book cleaners in Harare on WhatsApp.
+- [Cleaners in Chitungwiza](https://hustlr.chat/cleaners/chitungwiza): Book cleaners in Chitungwiza on WhatsApp.
+- [Cleaners in Bulawayo](https://hustlr.chat/cleaners/bulawayo): Book cleaners in Bulawayo on WhatsApp.
+- [Cleaners in Mutare](https://hustlr.chat/cleaners/mutare): Book cleaners in Mutare on WhatsApp.
+- [Cleaners in Gweru](https://hustlr.chat/cleaners/gweru): Book cleaners in Gweru on WhatsApp.
+- [Cleaners in Kwekwe](https://hustlr.chat/cleaners/kwekwe): Book cleaners in Kwekwe on WhatsApp.
+- [Cleaners in Masvingo](https://hustlr.chat/cleaners/masvingo): Book cleaners in Masvingo on WhatsApp.
+- [Cleaners in Victoria Falls](https://hustlr.chat/cleaners/victoria-falls): Book cleaners in Victoria Falls on WhatsApp.
+- [Tutors in Harare](https://hustlr.chat/tutors/harare): Book tutors in Harare on WhatsApp.
+- [Tutors in Chitungwiza](https://hustlr.chat/tutors/chitungwiza): Book tutors in Chitungwiza on WhatsApp.
+- [Tutors in Bulawayo](https://hustlr.chat/tutors/bulawayo): Book tutors in Bulawayo on WhatsApp.
+- [Tutors in Mutare](https://hustlr.chat/tutors/mutare): Book tutors in Mutare on WhatsApp.
+- [Tutors in Gweru](https://hustlr.chat/tutors/gweru): Book tutors in Gweru on WhatsApp.
+- [Tutors in Kwekwe](https://hustlr.chat/tutors/kwekwe): Book tutors in Kwekwe on WhatsApp.
+- [Tutors in Masvingo](https://hustlr.chat/tutors/masvingo): Book tutors in Masvingo on WhatsApp.
+- [Tutors in Victoria Falls](https://hustlr.chat/tutors/victoria-falls): Book tutors in Victoria Falls on WhatsApp.
+- [Sitemap](https://hustlr.chat/sitemap-index.xml): Machine-readable list of every public page.
+- [Privacy policy](https://hustlr.chat/privacy): How Hustlr handles personal information.
+- [Terms and conditions](https://hustlr.chat/terms): Terms for using Hustlr.

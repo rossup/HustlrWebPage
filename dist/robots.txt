@@ -1,0 +1,23 @@
+# Hustlr (hustlr.chat): search engines and AI assistants are welcome.
+
+User-agent: *
+Allow: /
+Disallow: /api/
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /api/
+
+User-agent: GPTBot
+Allow: /
+Disallow: /api/
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /api/
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /api/
+
+Sitemap: https://hustlr.chat/sitemap-index.xml
