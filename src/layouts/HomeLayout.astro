@@ -104,9 +104,21 @@ const jsonLd = {
             try { mode = localStorage.getItem(key); } catch (e) {}
           }
           var ua = navigator.userAgent || '';
-          var tv = /\b(SmartTV|Smart-TV|GoogleTV|AndroidTV|Android TV|BRAVIA|AFT[A-Z]|CrKey|HbbTV|Large Screen|HIKVISION|Hikvision|DS-D\d)/i.test(ua);
+          var tv = /\b(SmartTV|Smart-TV|GoogleTV|AndroidTV|Android TV|BRAVIA|AFT[A-Z]|CrKey|HbbTV|Tizen|Web0S|webOS|Large Screen|HIKVISION|Hikvision|HIK|DS-D\d|Rockchip|rk3\d{3}|Amlogic|HiSilicon)/i.test(ua);
           var sw = screen.width, sh = screen.height;
-          var board = /Android/i.test(ua) && !/Mobile/i.test(ua) && sw > sh && Math.min(sw, sh) >= 500;
+          var android = /Android/i.test(ua);
+          var landscape = sw > sh;
+          var shortSide = Math.min(sw, sh);
+          // Display boards often run a phone-style browser that says "Mobile", so the browser
+          // name alone isn't enough. A board is still recognisable:
+          //  - an Android screen with no touch at all (every phone has touch), or
+          //  - a landscape Android screen whose browser doesn't call itself a phone, or
+          //  - a landscape Android screen too tall to be a phone on its side (phones are
+          //    under ~460px tall when turned sideways; boards are 500px or more).
+          var board = android && (
+            navigator.maxTouchPoints === 0 ||
+            (landscape && (!/Mobile/i.test(ua) || shortSide >= 500))
+          );
           if (mode === 'desktop' || (mode !== 'mobile' && (tv || board))) {
             if (window.innerWidth < 1200) {
               var m = document.querySelector('meta[name="viewport"]');
