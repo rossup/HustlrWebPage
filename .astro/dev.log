@@ -248,3 +248,14 @@
 {"message":"[200] /login 75ms","label":null,"level":"info"}
 {"message":"[200] /api/auth/me 1ms","label":null,"level":"info"}
 {"message":"[200] /admin/providers 5487ms","label":null,"level":"info"}
+{"message":"[200] /admin/providers 3690ms","label":null,"level":"info"}
+{"message":"[200] /admin/bookings 3794ms","label":null,"level":"info"}
+{"message":"[200] PATCH /admin/api/bookings/8e4742f4-04a7-4bf4-a07f-749c23a232d2 1571ms","label":null,"level":"info"}
+{"message":"[200] /admin/bookings 2986ms","label":null,"level":"info"}
+{"message":"[200] PATCH /admin/api/bookings/dea10b36-a85f-4477-ac48-ee2cc53eb90f 1380ms","label":null,"level":"info"}
+{"message":"[200] PATCH /admin/api/bookings/8304f582-6207-4a17-bc35-4fec7ed4a09f 1321ms","label":null,"level":"info"}
+{"message":"[200] PATCH /admin/api/bookings/e95becd4-a03b-412b-a3a7-4469f057d638 1175ms","label":null,"level":"info"}
+{"message":"[200] /admin/bookings 2865ms","label":null,"level":"info"}
+{"message":"[200] PATCH /admin/api/bookings/c99317d8-3266-455a-9f3a-e8abcaca8097 1273ms","label":null,"level":"info"}
+{"message":"[200] PATCH /admin/api/bookings/e95becd4-a03b-412b-a3a7-4469f057d638 1182ms","label":null,"level":"info"}
+{"message":"[200] /admin/bookings 2842ms","label":null,"level":"info"}
