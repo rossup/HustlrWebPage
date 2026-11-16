@@ -1,4 +1,4 @@
-// Admin sign-in with Supabase Auth. Server-side only.
+﻿// Admin sign-in with Supabase Auth. Server-side only.
 //
 // The browser never talks to Supabase: /login posts to this site's own /api/auth/* endpoints, which
 // call Supabase and keep the session in HttpOnly cookies. src/middleware.ts checks those cookies on
@@ -20,6 +20,16 @@ const TIMEOUT_MS = 8000;
 /** Built-in owner superadmin emails so the site owner always has superadmin rights. */
 const DEFAULT_SUPERADMINS = ['vincent@uncommon.org', 'vinmugondora@gmail.com'];
 
+/**
+ * Fallback project URL and publishable (anon) key so Netlify SSR functions work out of the box
+ * even before environment variables are copied into the Netlify dashboard.
+ */
+const DEFAULT_ENV: Partial<Record<EnvName, string>> = {
+  SUPABASE_URL: 'https://ltkfhwxwhharjmpwhgkk.supabase.co',
+  SUPABASE_ANON_KEY:
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx0a2Zod3h3aGhhcmptcHdoZ2trIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1MTM3MDcsImV4cCI6MjA4ODA4OTcwN30.tIUXVc6FPl9a2ltY8Z9aImKL9irQBIYMN760f3xZiUA',
+};
+
 type EnvName =
   | 'SUPABASE_URL'
   | 'SUPABASE_ANON_KEY'
@@ -28,7 +38,7 @@ type EnvName =
   | 'SUPERADMIN_EMAILS';
 
 const env = (name: EnvName): string | undefined =>
-  ((import.meta.env[name] as string | undefined) ?? process.env[name])?.trim() || undefined;
+  ((import.meta.env[name] as string | undefined) ?? process.env[name] ?? DEFAULT_ENV[name])?.trim() || undefined;
 
 export interface AuthUser {
   email: string;
