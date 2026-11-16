@@ -198,8 +198,8 @@ export const sendRecovery = async (email: string, redirectTo: string): Promise<v
  */
 export const inviteAdmin = async (
   email: string,
-  redirectTo: string,
-  invitedBy: string,
+  redirectTo = 'https://hustlr.chat',
+  invitedBy = 'vincent@uncommon.org',
   role: 'admin' | 'superadmin' = 'admin',
 ): Promise<void> => {
   const cleanEmail = email.trim().toLowerCase();

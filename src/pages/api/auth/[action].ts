@@ -1,4 +1,4 @@
-// Admin sign-in endpoints, called by src/pages/login.astro, the admin "Sign out" button,
+﻿// Admin sign-in endpoints, called by src/pages/login.astro, the admin "Sign out" button,
 // and the superadmin "Invite admin" modal.
 //   GET  /api/auth/me        who is signed in, and whether they are an admin / superadmin
 //   POST /api/auth/login     { email, password }
@@ -37,7 +37,7 @@ const text = (value: unknown, max: number): string =>
 const fail = (error: unknown): Response => {
   if (error instanceof AuthFailure) {
     if (error.status === 400 || error.status === 401) {
-      return json({ error: 'That email and password don’t match.' }, 401);
+      return json({ error: 'That email and password donâ€™t match.' }, 401);
     }
     if (error.status === 429) return json({ error: 'Too many tries. Wait a minute and try again.' }, 429);
     if (error.status === 503) return json({ error: error.message }, 503);
@@ -139,7 +139,7 @@ export const POST: APIRoute = async ({ params, request, cookies, url }) => {
         }
         const role = body.role === 'superadmin' ? 'superadmin' : 'admin';
         try {
-          await inviteAdmin(email, `${url.origin}/login?invite=1`, caller.email, role);
+          await inviteAdmin(email, 'https://hustlr.chat', caller.email, role);
         } catch (error) {
           if (error instanceof AuthFailure && error.status < 500 && error.status !== 429) {
             return json({ error: error.message || 'Could not send the invitation.' }, 400);
