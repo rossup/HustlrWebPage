@@ -88,6 +88,34 @@ const jsonLd = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {/* Display boards and TVs (e.g. HIK Vision Android panels) report a phone-sized width,
+        so the site would show its mobile layout. On those screens, lay the page out at desktop
+        width instead. Add ?view=desktop or ?view=mobile to any URL to force a layout on that
+        device (remembered); ?view=auto goes back to automatic. */}
+    <script is:inline>
+      (function () {
+        try {
+          var key = 'hustlr-view', mode = null;
+          var q = /[?&]view=(desktop|mobile|auto)\b/.exec(location.search);
+          if (q) {
+            mode = q[1];
+            try { mode === 'auto' ? localStorage.removeItem(key) : localStorage.setItem(key, mode); } catch (e) {}
+          } else {
+            try { mode = localStorage.getItem(key); } catch (e) {}
+          }
+          var ua = navigator.userAgent || '';
+          var tv = /\b(SmartTV|Smart-TV|GoogleTV|AndroidTV|Android TV|BRAVIA|AFT[A-Z]|CrKey|HbbTV|Large Screen|HIKVISION|Hikvision|DS-D\d)/i.test(ua);
+          var sw = screen.width, sh = screen.height;
+          var board = /Android/i.test(ua) && !/Mobile/i.test(ua) && sw > sh && Math.min(sw, sh) >= 500;
+          if (mode === 'desktop' || (mode !== 'mobile' && (tv || board))) {
+            if (window.innerWidth < 1200) {
+              var m = document.querySelector('meta[name="viewport"]');
+              if (m) m.setAttribute('content', 'width=1440');
+            }
+          }
+        } catch (e) {}
+      })();
+    </script>
     <title>{title}</title>
     <meta name="description" content={description} />
     {!noindex && <link rel="canonical" href={canonical} />}
