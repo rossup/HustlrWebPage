@@ -1,0 +1,293 @@
+---
+// /admin/providers/<id>: everything about one provider. Opened by clicking a provider in the list.
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import StatTiles from '../../../components/admin/StatTiles.astro';
+import { fmt, statusClass } from '../../../data/admin';
+import { loadAdminData } from '../../../lib/admin-data';
+import { manageDetail, providerStatus, when, type ProviderDetail } from '../../../lib/bot-manage';
+
+export const prerender = false;
+
+const { id } = Astro.params;
+if (!id || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) return Astro.redirect('/admin/providers');
+
+const [data, result] = await Promise.all([loadAdminData(), manageDetail<ProviderDetail>(`providers/${id}`)]);
+const detail = result.data;
+const p = detail?.provider;
+
+const BOOKING_LABELS: Record<string, string> = {
+  pending: 'Pending',
+  accepted: 'Accepted',
+  confirmed: 'Confirmed',
+  in_progress: 'In progress',
+  evidence_submitted: 'Proof photos sent',
+  completed: 'Completed',
+  verified: 'Completed and approved',
+  disputed: 'Disputed',
+  cancelled: 'Cancelled',
+  rejected: 'Declined by provider',
+};
+const BOOKING_GROUP: Record<string, string> = {
+  pending: 'Pending',
+  accepted: 'Confirmed',
+  confirmed: 'Confirmed',
+  in_progress: 'Confirmed',
+  evidence_submitted: 'Confirmed',
+  disputed: 'Confirmed',
+  completed: 'Completed',
+  verified: 'Completed',
+  cancelled: 'Cancelled',
+  rejected: 'Cancelled',
+};
+
+const name = p ? p.business_name || p.full_name || 'Provider' : 'Provider';
+const status = p ? providerStatus(p) : '';
+const phoneDigits = (p?.contact_number ?? '').replace(/\D/g, '');
+const rating = p ? (p.average_rating ?? p.rating) : null;
+const byStatus = detail?.stats.by_status ?? {};
+const completed = (byStatus.completed ?? 0) + (byStatus.verified ?? 0);
+const money = (n: number | null | undefined) => (n === null || n === undefined ? '' : `${p?.currency && p.currency !== 'USD' ? p.currency + ' ' : '$'}${fmt(n)}`);
+
+const rate = p?.hourly_rate ? `${money(p.hourly_rate)}/hr` : p?.flat_rate ? `${money(p.flat_rate)} per job` : null;
+const hours = (() => {
+  const h = p?.working_hours;
+  if (!h) return null;
+  if (typeof h === 'string') return h;
+  const parts = Object.entries(h).map(([day, range]) => `${day.charAt(0).toUpperCase()}${day.slice(1)} ${range}`);
+  return parts.length ? parts.join(', ') : null;
+})();
+
+const tiles = [
+  { label: 'Bookings', value: detail ? fmt(detail.stats.bookings_total) : '—', note: detail ? `${fmt(byStatus.pending ?? 0)} pending` : 'Bot backend not connected' },
+  { label: 'Completed', value: detail ? fmt(Math.max(completed, p?.completed_bookings ?? 0)) : '—', note: 'Jobs finished' },
+  { label: 'Rating', value: rating ? Number(rating).toFixed(1) : '—', note: p ? `${fmt(p.review_count ?? 0)} review${(p.review_count ?? 0) === 1 ? '' : 's'}` : undefined },
+  { label: 'Past work', value: detail ? fmt(detail.past_work.length) : '—', note: detail ? `${fmt(detail.past_work.filter((w) => w.photo_url).length)} with photos` : undefined },
+];
+
+const verification: [string, boolean | null | undefined][] = p && detail
+  ? [
+      ['ID document provided', detail.documents.id_document],
+      ['Selfie provided', detail.documents.selfie],
+      ['ID verified', p.id_verified],
+      ['Skills verified', p.skills_verified],
+      ['Location confirmed', p.location_verified],
+      ['Reference checked', p.reference_verified],
+      ['Training completed', p.training_completed],
+      ['Guaranteed badge', p.guaranteed_badge],
+    ]
+  : [];
+---
+
+<AdminLayout title={detail ? name : 'Provider'} lead="Profile, verification, bookings and past work." active="providers" data={data}>
+  <StatTiles slot="head" tiles={tiles} period={{ ...data.period, label: 'All time', range: '', compare: '' }} />
+
+  <a class="ad-back" href="/admin/providers"><span aria-hidden="true">&larr;</span> All providers</a>
+
+  {!detail || !p ? (
+    <section class="ad-card">
+      <p class="ad-empty">
+        {result.status === 404
+          ? 'That provider does not exist. They may have been deleted.'
+          : 'Could not load this provider: the bot backend did not answer. Reload in a moment.'}
+      </p>
+    </section>
+  ) : (
+    <>
+      <section class="ad-card ad-detail" id="adDetail" data-provider-id={p.id} data-provider-name={name} aria-labelledby="ad-detail-name">
+        <div class="ad-detail-head">
+          <div>
+            <h2 id="ad-detail-name">{name}</h2>
+            <div class="ad-detail-meta">
+              <span class={statusClass(status)}>{status}</span>
+              <span>{p.category ?? 'No trade set'}</span>
+              <span>{p.service_areas || p.location || 'No area set'}</span>
+              {p.active === false && <span>Hidden from customers</span>}
+            </div>
+          </div>
+          <div class="ad-detail-actions">
+            {phoneDigits && <a class="ad-btn" href={`https://wa.me/${phoneDigits}`} target="_blank" rel="noopener">Message on WhatsApp</a>}
+            {status !== 'Verified' && status !== 'Suspended' && (
+              <button type="button" class="ad-btn ad-btn--good" data-action="verify" data-confirm={`Verify ${name}? Customers searching on WhatsApp will start seeing them.`}>Verify</button>
+            )}
+            {(status === 'Pending' || status === 'Unverified') && (
+              <button type="button" class="ad-btn" data-action="reject" data-confirm={`Reject ${name}'s verification?`}>Reject verification</button>
+            )}
+            {status === 'Suspended' ? (
+              <button type="button" class="ad-btn ad-btn--good" data-action="restore">Restore</button>
+            ) : (
+              <button type="button" class="ad-btn" data-action="suspend" data-confirm={`Suspend ${name}? They stay in the database but customers stop seeing them.`}>Suspend</button>
+            )}
+          </div>
+        </div>
+        <p class="ad-manage-msg" id="adDetailMsg" role="status" aria-live="polite"></p>
+      </section>
+
+      <div class="ad-detail-grid">
+        <section class="ad-card" aria-labelledby="ad-profile-title">
+          <div class="ad-card-head"><div><h2 id="ad-profile-title">Profile</h2></div></div>
+          {p.service_description && <p class="ad-detail-desc">{p.service_description}</p>}
+          <dl class="ad-dl">
+            <dt>Business name</dt><dd>{p.business_name ?? '—'}</dd>
+            <dt>Owner</dt><dd>{p.full_name ?? '—'}</dd>
+            <dt>Trade</dt><dd>{p.category ?? '—'}</dd>
+            <dt>Location</dt><dd>{p.location ?? '—'}{p.city && p.city !== p.location ? `, ${p.city}` : ''}</dd>
+            <dt>Areas served</dt><dd>{p.service_areas || '—'}{p.travel_radius_km ? `${p.service_areas ? ' ' : ''}(travels up to ${p.travel_radius_km} km)` : ''}</dd>
+            <dt>WhatsApp</dt><dd>{p.contact_number ?? '—'}</dd>
+            <dt>Rate</dt><dd>{rate ?? 'Not set'}</dd>
+            <dt>Working hours</dt><dd>{hours ?? 'Not set'}</dd>
+            <dt>Blocked dates</dt><dd>{p.blocked_dates && p.blocked_dates.length ? p.blocked_dates.join(', ') : 'None'}</dd>
+            <dt>Language</dt><dd>{p.preferred_language ?? '—'}</dd>
+            <dt>Joined</dt><dd>{when(p.created_at)}</dd>
+            <dt>Last active</dt><dd>{p.last_active_at ? when(p.last_active_at, true) : '—'}</dd>
+            <dt>Avg. response</dt><dd>{p.response_time_minutes ? `~${Math.round(p.response_time_minutes)} min` : '—'}</dd>
+            <dt>Account</dt><dd>{p.account_status ?? '—'}{p.badge ? ` · badge: ${p.badge}` : ''}</dd>
+          </dl>
+        </section>
+
+        <section class="ad-card" aria-labelledby="ad-verification-title">
+          <div class="ad-card-head"><div><h2 id="ad-verification-title">Verification</h2><p>Submitted {p.verification_submitted_at ? when(p.verification_submitted_at) : 'never'}{p.verification_completed_at ? ` · reviewed ${when(p.verification_completed_at)}` : ''}</p></div></div>
+          <dl class="ad-dl">
+            {verification.map(([label, ok]) => (
+              <>
+                <dt>{label}</dt>
+                <dd><span class={ok ? 'ad-yes' : 'ad-no'}>{ok ? 'Yes' : 'No'}</span></dd>
+              </>
+            ))}
+            <dt>Reference</dt><dd>{p.reference_name ? `${p.reference_name}${p.reference_phone ? ` · ${p.reference_phone}` : ''}` : '—'}</dd>
+            <dt>Work samples</dt><dd>{detail.documents.work_samples}</dd>
+            <dt>Vouches</dt><dd>{detail.vouches.total}{detail.vouches.recent.length ? ` (${detail.vouches.recent.join(', ')})` : ''}</dd>
+            <dt>Broken commitments</dt><dd>{p.commitment_violations ?? 0}</dd>
+          </dl>
+        </section>
+      </div>
+
+      <div class="ad-detail-stack">
+        <section class="ad-card ad-bookings" aria-labelledby="ad-bookings-title">
+          <div class="ad-card-head">
+            <div>
+              <h2 id="ad-bookings-title">Bookings</h2>
+              <p>
+                {detail.stats.bookings_shown < detail.stats.bookings_total
+                  ? `Latest ${detail.stats.bookings_shown} of ${detail.stats.bookings_total}`
+                  : `${detail.stats.bookings_total} in total`}
+              </p>
+            </div>
+          </div>
+          {detail.bookings.length === 0 ? (
+            <p class="ad-empty">No bookings for this provider yet.</p>
+          ) : (
+            <div class="ad-table-wrap">
+              <table class="ad-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Customer</th>
+                    <th scope="col">Job</th>
+                    <th scope="col">Booked</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {detail.bookings.map((b) => (
+                    <tr>
+                      <td><strong>{b.customer_name || b.customer_phone || 'Customer'}</strong>{b.customer_name && b.customer_phone && <span class="ad-manage-sub">{b.customer_phone}</span>}</td>
+                      <td>{b.service_type || b.job_description || '—'}{b.service_type && b.job_description && <span class="ad-manage-sub">{b.job_description}</span>}</td>
+                      <td class="ad-nowrap">{when(b.created_at, true)}</td>
+                      <td>{b.amount === null || b.amount === undefined ? '—' : `$${fmt(b.amount)}`}</td>
+                      <td><span class={statusClass(BOOKING_GROUP[b.status ?? 'pending'] ?? 'Pending')}>{BOOKING_LABELS[b.status ?? 'pending'] ?? b.status}</span></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </section>
+
+        <section class="ad-card" aria-labelledby="ad-work-title">
+          <div class="ad-card-head"><div><h2 id="ad-work-title">Past work</h2><p>What the provider shows customers</p></div></div>
+          {detail.past_work.length === 0 ? (
+            <p class="ad-empty">Nothing added yet. Providers add past work on WhatsApp with “add past work”.</p>
+          ) : (
+            <ul class="ad-photos">
+              {detail.past_work.map((w) => (
+                <li>
+                  <figure>
+                    {w.photo_url && (
+                      <a href={w.photo_url} target="_blank" rel="noopener"><img src={w.photo_url} alt={w.description} loading="lazy" /></a>
+                    )}
+                    <figcaption>{w.description}</figcaption>
+                  </figure>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
+        <div class="ad-detail-grid">
+          <section class="ad-card" aria-labelledby="ad-reviews-title">
+            <div class="ad-card-head"><div><h2 id="ad-reviews-title">Reviews</h2></div></div>
+            {detail.reviews.length === 0 ? (
+              <p class="ad-empty">No reviews yet.</p>
+            ) : (
+              <ul class="ad-worklist">
+                {detail.reviews.map((r) => (
+                  <li>
+                    <span class="ad-stars" aria-label={`${r.rating ?? 0} out of 5`}>{'★'.repeat(Math.max(0, Math.min(5, r.rating ?? 0)))}{'☆'.repeat(5 - Math.max(0, Math.min(5, r.rating ?? 0)))}</span>
+                    {r.comment && <div>{r.comment}</div>}
+                    <span class="ad-manage-sub">{when(r.created_at)}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+
+          <section class="ad-card" aria-labelledby="ad-referrals-title">
+            <div class="ad-card-head"><div><h2 id="ad-referrals-title">Referrals</h2></div></div>
+            {detail.referrals ? (
+              <dl class="ad-dl">
+                <dt>Referral code</dt><dd><strong>{detail.referrals.code}</strong></dd>
+                <dt>People invited</dt><dd>{detail.referrals.total}</dd>
+                <dt>Successful</dt><dd>{detail.referrals.completed}</dd>
+                <dt>Credits earned</dt><dd>{detail.referrals.credits}</dd>
+              </dl>
+            ) : (
+              <p class="ad-empty">This provider hasn't asked for a referral code yet.</p>
+            )}
+          </section>
+        </div>
+      </div>
+    </>
+  )}
+</AdminLayout>
+
+<script>
+  // Verify / reject / suspend / restore from this page, then reload to show the new state
+  const root = document.getElementById('adDetail');
+  const message = document.getElementById('adDetailMsg');
+  root?.addEventListener('click', async (event) => {
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>('button[data-action]');
+    if (!button || !root || !message) return;
+    if (button.dataset.confirm && !window.confirm(button.dataset.confirm)) return;
+
+    button.disabled = true;
+    message.classList.remove('is-error');
+    message.textContent = 'Working…';
+    try {
+      const res = await fetch(`/admin/api/providers/${root.dataset.providerId}/${button.dataset.action}`, {
+        method: 'POST',
+        credentials: 'same-origin',
+      });
+      // An expired login answers with a redirect to the login page instead of JSON
+      if (res.redirected || !(res.headers.get('content-type') ?? '').includes('json')) {
+        throw new Error('Your sign-in has expired. Reload the page and sign in again.');
+      }
+      const body = await res.json().catch(() => null);
+      if (!res.ok) throw new Error(body?.error ?? 'The change could not be saved.');
+      location.reload();
+    } catch (error) {
+      button.disabled = false;
+      message.classList.add('is-error');
+      message.textContent = error instanceof Error ? error.message : 'The change could not be saved.';
+    }
+  });
+</script>

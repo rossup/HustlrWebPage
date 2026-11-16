@@ -58,6 +58,63 @@ export interface ManagedList<T> {
   total: number;
 }
 
+/** Everything about one provider (GET providers/<id>). */
+export interface ProviderDetail {
+  provider: ManagedProvider & {
+    status: string | null;
+    average_rating: number | null;
+    rating: number | null;
+    review_count: number | null;
+    completed_bookings: number | null;
+    response_time_minutes: number | null;
+    vouch_count: number | null;
+    hourly_rate: number | null;
+    flat_rate: number | null;
+    currency: string | null;
+    working_hours: Record<string, string> | string | null;
+    blocked_dates: string[] | null;
+    badge: string | null;
+    guaranteed_badge: boolean | null;
+    id_verified: boolean | null;
+    skills_verified: boolean | null;
+    location_verified: boolean | null;
+    reference_verified: boolean | null;
+    reference_name: string | null;
+    reference_phone: string | null;
+    training_completed: boolean | null;
+    verification_submitted_at: string | null;
+    verification_completed_at: string | null;
+    preferred_language: string | null;
+    travel_radius_km: number | null;
+    commitment_violations: number | null;
+    last_active_at: string | null;
+    updated_at: string | null;
+  };
+  documents: { id_document: boolean; selfie: boolean; work_samples: number };
+  stats: { bookings_total: number; bookings_shown: number; by_status: Record<string, number> };
+  bookings: ManagedBooking[];
+  past_work: { id?: string; description: string; photo_url?: string | null; created_at?: string | null }[];
+  reviews: { rating: number | null; comment: string | null; created_at: string | null }[];
+  vouches: { total: number; recent: string[] };
+  referrals: { code: string; total: number; completed: number; credits: number } | null;
+}
+
+/** One record in full. `data` is null when it is missing (status 404) or the bot backend can't be reached. */
+export async function manageDetail<T>(path: string): Promise<{ data: T | null; status: number | null }> {
+  try {
+    const result = await manageRequest('GET', path);
+    if (!result) return { data: null, status: null };
+    if (result.status !== 200 || !result.body) {
+      if (result.status !== 404) console.error(`[admin] bot API: could not load ${path} (${result.status})`);
+      return { data: null, status: result.status };
+    }
+    return { data: result.body as T, status: 200 };
+  } catch (error) {
+    console.error(`[admin] could not reach the bot backend for ${path}`, error);
+    return { data: null, status: null };
+  }
+}
+
 export interface ManageResult {
   status: number;
   body: unknown;

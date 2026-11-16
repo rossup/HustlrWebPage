@@ -29,6 +29,8 @@ export interface RowAction {
 
 export interface Cell {
   text: string;
+  /** Makes the text a link (to the record's own page) */
+  href?: string;
   /** Smaller second line */
   sub?: string;
   strong?: boolean;
@@ -36,6 +38,8 @@ export interface Cell {
 
 export interface Row {
   id: string;
+  /** Clicking anywhere on the row (outside its buttons) opens this page */
+  href?: string;
   cells: Cell[];
   status?: string;
   /** Which status colour to use when it differs from the label, e.g. "Confirmed" for "In progress" */
@@ -94,10 +98,12 @@ const hasStatus = rows.some((r) => r.status);
       </thead>
       <tbody id="adManageRows">
         {rows.map((row) => (
-          <tr data-id={row.id} data-record={JSON.stringify(row.record)}>
+          <tr data-id={row.id} data-record={JSON.stringify(row.record)} data-href={row.href} class:list={{ 'is-clickable': !!row.href }}>
             {row.cells.map((cell) => (
               <td>
-                {cell.strong ? <strong>{cell.text}</strong> : cell.text}
+                {cell.href ? (
+                  <a class="ad-manage-link" href={cell.href}>{cell.strong ? <strong>{cell.text}</strong> : cell.text}</a>
+                ) : cell.strong ? <strong>{cell.text}</strong> : cell.text}
                 {cell.sub && <span class="ad-manage-sub">{cell.sub}</span>}
               </td>
             ))}
@@ -286,6 +292,14 @@ const hasStatus = rows.some((r) => r.status);
       saveBtn.disabled = false;
       if (error) return say(formMsg, error, true);
       reloadWith(editing ? 'Saved.' : `Added the ${noun}.`);
+    });
+
+    // A click on the row itself (not on a button, link, menu or field in it) opens the record's page
+    document.getElementById('adManageRows')?.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('button, a, input, select, textarea, .ad-menu')) return;
+      const href = target.closest<HTMLTableRowElement>('tr[data-href]')?.dataset.href;
+      if (href) location.href = href;
     });
 
     document.getElementById('adManageRows')?.addEventListener('click', async (e) => {

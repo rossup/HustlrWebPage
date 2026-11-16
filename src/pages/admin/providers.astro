@@ -64,8 +64,14 @@ function actionsFor(p: ManagedProvider, status: string): RowAction[] {
 const rows: Row[] | null =
   providers?.map((p, i) => ({
     id: p.id,
+    href: `/admin/providers/${p.id}`,
     cells: [
-      { text: name(p), sub: p.full_name && p.business_name && p.full_name !== p.business_name ? p.full_name : undefined, strong: true },
+      {
+        text: name(p),
+        sub: p.full_name && p.business_name && p.full_name !== p.business_name ? p.full_name : undefined,
+        strong: true,
+        href: `/admin/providers/${p.id}`,
+      },
       { text: p.category ?? '—' },
       { text: p.service_areas || p.location || '—', sub: p.service_areas && p.location && p.location !== p.service_areas ? p.location : undefined },
       { text: p.contact_number ?? '—' },
