@@ -6,10 +6,40 @@ import DailyChart from '../../components/admin/DailyChart.astro';
 import BarList from '../../components/admin/BarList.astro';
 import { fmt, pct } from '../../data/admin';
 import { loadAdminData } from '../../lib/admin-data';
+import { loadConsentedConversations, loadConsentedConversationDetail } from '../../lib/bot-api';
 
 export const prerender = false;
 
-const data = await loadAdminData();
+const selectedPhone = Astro.url.searchParams.get('phone')?.trim() || '';
+const searchQuery = Astro.url.searchParams.get('q')?.trim() || '';
+const pageParam = Math.max(1, Number.parseInt(Astro.url.searchParams.get('page') || '1', 10) || 1);
+
+const [data, conversations, selectedConversation] = await Promise.all([
+  loadAdminData(),
+  loadConsentedConversations(pageParam, searchQuery).catch((error) => {
+    console.error('[admin/chats] could not load consented conversations', error);
+    return null;
+  }),
+  selectedPhone
+    ? loadConsentedConversationDetail(selectedPhone).catch((error) => {
+        console.error('[admin/chats] could not load conversation detail', error);
+        return null;
+      })
+    : Promise.resolve(null),
+]);
+
+const timeFmt = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'short',
+  hour: '2-digit',
+  minute: '2-digit',
+  timeZone: 'Africa/Harare',
+});
+const fmtTs = (iso: string | null | undefined) => {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime()) ? '—' : timeFmt.format(d);
+};
 const { daily, kpis, chatsByPlacement } = data;
 
 const customers = daily.reduce((sum, d) => sum + d.customer, 0);
@@ -35,5 +65,100 @@ const tiles = [
   <section class="ad-grid ad-grid--lead" aria-label="Chats">
     <DailyChart daily={daily} />
     <BarList title="Where chats start" unit="chats" rows={chatsByPlacement} empty="No WhatsApp buttons tapped in this period yet." />
+  </section>
+
+  {selectedConversation && (
+    <section class="ad-card" style="margin-top: 24px;" aria-label="Conversation transcript">
+      <div class="ad-card-head">
+        <div>
+          <h2>{selectedConversation.full_name} ({selectedConversation.user_phone})</h2>
+          <p>{selectedConversation.location || 'No location'} · Opted-in chat transcript</p>
+        </div>
+        <a class="ad-more" href="/admin/chats">Close</a>
+      </div>
+      {selectedConversation.messages.length === 0 ? (
+        <p class="ad-empty">No messages logged yet after this user opted in.</p>
+      ) : (
+        <div style="display:flex;flex-direction:column;gap:10px;max-height:480px;overflow-y:auto;padding:4px 0;">
+          {selectedConversation.messages.map((m) => {
+            const isUser = m.direction === 'inbound';
+            return (
+              <div
+                style={`align-self:${isUser ? 'flex-start' : 'flex-end'};max-width:78%;padding:10px 14px;border-radius:10px;border:1px solid rgba(148,163,184,0.22);background:${isUser ? 'rgba(15,23,42,0.05)' : 'rgba(16,185,129,0.08)'};`}
+              >
+                <div style="font-size:12px;opacity:0.7;margin-bottom:4px;">
+                  {isUser ? 'User' : 'Hustlr Bot'} · {fmtTs(m.created_at)}{m.flow ? ` · ${m.flow}` : ''}
+                </div>
+                <div style="white-space:pre-wrap;font-size:14px;line-height:1.45;">{m.message_text}</div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </section>
+  )}
+
+  <section class="ad-card" style="margin-top: 24px;" aria-label="Shared WhatsApp conversations">
+    <div class="ad-card-head">
+      <div>
+        <h2>Shared WhatsApp conversations</h2>
+        <p>Users who agreed to share their chats with Hustlr employees to improve our services</p>
+      </div>
+      <form method="get" action="/admin/chats" style="display:flex;gap:8px;align-items:center;">
+        <input
+          type="search"
+          name="q"
+          value={searchQuery}
+          placeholder="Search name, phone, location..."
+          style="padding:6px 10px;border-radius:6px;border:1px solid rgba(148,163,184,0.35);font-size:13px;"
+        />
+        <button type="submit" class="ad-more" style="cursor:pointer;">Search</button>
+      </form>
+    </div>
+
+    {conversations === null ? (
+      <p class="ad-empty">Shared conversations unavailable — make sure the latest bot backend is deployed and BOT_API_URL / BOT_API_KEY are set.</p>
+    ) : conversations.items.length === 0 ? (
+      <p class="ad-empty">No consented conversations yet.</p>
+    ) : (
+      <div style="overflow-x:auto;">
+        <table class="ad-table" style="width:100%;border-collapse:collapse;">
+          <thead>
+            <tr>
+              <th style="text-align:left;padding:8px 10px;">User</th>
+              <th style="text-align:left;padding:8px 10px;">Location</th>
+              <th style="text-align:left;padding:8px 10px;">Messages</th>
+              <th style="text-align:left;padding:8px 10px;">Latest message</th>
+              <th style="text-align:left;padding:8px 10px;">Last activity</th>
+              <th style="text-align:right;padding:8px 10px;">Transcript</th>
+            </tr>
+          </thead>
+          <tbody>
+            {conversations.items.map((c) => (
+              <tr style="border-top:1px solid rgba(148,163,184,0.18);">
+                <td style="padding:10px;">
+                  <strong>{c.full_name}</strong>
+                  <div style="font-size:12px;opacity:0.7;">{c.user_phone}</div>
+                </td>
+                <td style="padding:10px;">{c.location || '—'}</td>
+                <td style="padding:10px;">{fmt(c.message_count)}</td>
+                <td style="padding:10px;max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+                  {c.last_message_preview || '—'}
+                </td>
+                <td style="padding:10px;white-space:nowrap;">{fmtTs(c.last_message_at)}</td>
+                <td style="padding:10px;text-align:right;white-space:nowrap;">
+                  <a
+                    class="ad-more"
+                    href={`/admin/chats?phone=${encodeURIComponent(c.user_phone)}${searchQuery ? `&q=${encodeURIComponent(searchQuery)}` : ''}`}
+                  >
+                    Review <span aria-hidden="true">&rarr;</span>
+                  </a>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    )}
   </section>
 </AdminLayout>

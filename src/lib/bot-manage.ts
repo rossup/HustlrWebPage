@@ -90,7 +90,14 @@ export interface ProviderDetail {
     last_active_at: string | null;
     updated_at: string | null;
   };
-  documents: { id_document: boolean; selfie: boolean; work_samples: number };
+  documents: {
+    id_document: boolean;
+    selfie: boolean;
+    work_samples: number;
+    id_document_url?: string | null;
+    selfie_url?: string | null;
+    work_sample_urls?: string[];
+  };
   stats: { bookings_total: number; bookings_shown: number; by_status: Record<string, number> };
   bookings: ManagedBooking[];
   past_work: { id?: string; description: string; photo_url?: string | null; created_at?: string | null }[];

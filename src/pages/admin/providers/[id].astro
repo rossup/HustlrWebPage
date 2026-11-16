@@ -158,6 +158,43 @@ const verification: [string, boolean | null | undefined][] = p && detail
             <dt>Vouches</dt><dd>{detail.vouches.total}{detail.vouches.recent.length ? ` (${detail.vouches.recent.join(', ')})` : ''}</dd>
             <dt>Broken commitments</dt><dd>{p.commitment_violations ?? 0}</dd>
           </dl>
+          {(detail.documents.id_document_url || detail.documents.selfie_url || (detail.documents.work_sample_urls && detail.documents.work_sample_urls.length > 0)) && (
+            <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(148,163,184,0.18);">
+              <h3 style="font-size:14px;margin:0 0 10px 0;">Submitted documents &amp; photos</h3>
+              <ul class="ad-photos">
+                {detail.documents.id_document_url && (
+                  <li>
+                    <figure>
+                      <a href={detail.documents.id_document_url} target="_blank" rel="noopener">
+                        <img src={detail.documents.id_document_url} alt="ID document" loading="lazy" />
+                      </a>
+                      <figcaption>ID document</figcaption>
+                    </figure>
+                  </li>
+                )}
+                {detail.documents.selfie_url && (
+                  <li>
+                    <figure>
+                      <a href={detail.documents.selfie_url} target="_blank" rel="noopener">
+                        <img src={detail.documents.selfie_url} alt="Selfie" loading="lazy" />
+                      </a>
+                      <figcaption>Selfie</figcaption>
+                    </figure>
+                  </li>
+                )}
+                {(detail.documents.work_sample_urls ?? []).map((url, idx) => (
+                  <li>
+                    <figure>
+                      <a href={url} target="_blank" rel="noopener">
+                        <img src={url} alt={`Work sample ${idx + 1}`} loading="lazy" />
+                      </a>
+                      <figcaption>Work sample {idx + 1}</figcaption>
+                    </figure>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </section>
       </div>
 
