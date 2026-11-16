@@ -1,4 +1,4 @@
----
+﻿---
 import '../styles/home.css';
 import { SITE_URL, PHONE_E164, SAME_AS } from '../data/seo';
 
@@ -27,7 +27,7 @@ const {
   scale = true,
   schema = [],
   ogImage = '/og-default.jpg',
-  ogImageAlt = 'Hustlr — Hire Vetted Skilled Workers on WhatsApp in Zimbabwe',
+  ogImageAlt = 'Hustlr â€” Hire Vetted Skilled Workers on WhatsApp in Zimbabwe',
   canonicalPath,
 } = Astro.props;
 
@@ -37,7 +37,7 @@ const pageNodes = (Array.isArray(schema) ? schema : [schema]).flatMap((node) =>
 );
 
 // One address per page for search engines: always https://hustlr.chat, no trailing slash.
-const path = Astro.url.pathname.replace(/\/$/, '').replace(/\.html$/, '') || '/';
+const path = Astro.url.pathname.replace(/(^|\/)index(\.html)?$/, '').replace(/\/$/, '').replace(/\.html$/, '') || '/';
 const canonicalTarget = canonicalPath ?? path;
 const canonical = `${SITE_URL}${canonicalTarget === '/' ? '/' : canonicalTarget}`;
 // Always an absolute https:// URL: WhatsApp's preview crawler ignores relative image paths
