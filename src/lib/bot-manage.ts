@@ -82,6 +82,8 @@ export interface ProviderDetail {
     reference_name: string | null;
     reference_phone: string | null;
     training_completed: boolean | null;
+    guaranteed_badge_requested_at?: string | null;
+    badge_review_pending?: boolean;
     verification_submitted_at: string | null;
     verification_completed_at: string | null;
     preferred_language: string | null;

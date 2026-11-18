@@ -102,6 +102,7 @@ const verification: [string, boolean | null | undefined][] = p && detail
               <span>{p.category ?? 'No trade set'}</span>
               <span>{p.service_areas || p.location || 'No area set'}</span>
               {p.active === false && <span>Hidden from customers</span>}
+              {p.badge_review_pending && <span>Guaranteed badge waiting for review</span>}
             </div>
           </div>
           <div class="ad-detail-actions">
@@ -111,6 +112,12 @@ const verification: [string, boolean | null | undefined][] = p && detail
             )}
             {(status === 'Pending' || status === 'Unverified') && (
               <button type="button" class="ad-btn" data-action="reject" data-confirm={`Reject ${name}'s verification?`}>Reject verification</button>
+            )}
+            {p.badge_review_pending && (
+              <>
+                <button type="button" class="ad-btn ad-btn--good" data-action="approve-badge" data-confirm={`Assign the Guaranteed badge to ${name}? They'll get a WhatsApp message.`}>Assign Guaranteed badge</button>
+                <button type="button" class="ad-btn" data-action="reject-badge">Reject badge</button>
+              </>
             )}
             {status === 'Suspended' ? (
               <button type="button" class="ad-btn ad-btn--good" data-action="restore">Restore</button>
@@ -310,6 +317,13 @@ const verification: [string, boolean | null | undefined][] = p && detail
     if (!button || !root || !message) return;
     if (button.dataset.confirm && !window.confirm(button.dataset.confirm)) return;
 
+    // Declining a badge needs the reason the provider will read on WhatsApp
+    let reason = '';
+    if (button.dataset.action === 'reject-badge') {
+      reason = (window.prompt('Reason to show the provider on WhatsApp:') || '').trim();
+      if (!reason) return;
+    }
+
     button.disabled = true;
     message.classList.remove('is-error');
     message.textContent = 'Working…';
@@ -317,6 +331,7 @@ const verification: [string, boolean | null | undefined][] = p && detail
       const res = await fetch(`/admin/api/providers/${root.dataset.providerId}/${button.dataset.action}`, {
         method: 'POST',
         credentials: 'same-origin',
+        ...(reason ? { headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ reason }) } : {}),
       });
       // An expired login answers with a redirect to the login page instead of JSON
       if (res.redirected || !(res.headers.get('content-type') ?? '').includes('json')) {

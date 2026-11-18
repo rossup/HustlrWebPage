@@ -1,6 +1,7 @@
 // Changes made from the admin pages (add, edit, verify, suspend, delete…), passed on to the bot backend.
 //   POST   /admin/api/providers                 add          PATCH  /admin/api/providers/<id>   edit
 //   POST   /admin/api/providers/<id>/verify     (or reject, suspend, restore)
+//   POST   /admin/api/providers/<id>/approve-badge   (or reject-badge, with {"reason": "..."})
 //   DELETE /admin/api/providers/<id>            delete permanently
 // The same add / edit / delete routes exist for bookings and users.
 //
@@ -17,9 +18,11 @@ const ID = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
 const COLLECTION = /^(providers|bookings|users)$/;
 const RECORD = new RegExp(`^(providers|bookings|users)/${ID}$`);
 const PROVIDER_ACTION = new RegExp(`^providers/${ID}/(verify|reject|suspend|restore)$`);
+// Guaranteed badge decisions. Their body is read like any other POST, so reject-badge can carry its reason.
+const BADGE_ACTION = new RegExp(`^providers/${ID}/(approve|reject)-badge$`);
 
 const ALLOWED: Record<string, RegExp[]> = {
-  POST: [COLLECTION, PROVIDER_ACTION],
+  POST: [COLLECTION, PROVIDER_ACTION, BADGE_ACTION],
   PATCH: [RECORD],
   DELETE: [RECORD],
 };
